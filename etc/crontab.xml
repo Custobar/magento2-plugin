@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="index">
+        <job name="custoconnector_callcustobarapi" instance="Custobar\CustoConnector\Cron\ExportToCustobar" method="execute">
+            <schedule>* * * * *</schedule>
+        </job>
+        <job name="custoconnector_initial_schedule_population" instance="Custobar\CustoConnector\Cron\InitialSchedulePopulation" method="execute">
+            <schedule>* * * * *</schedule>
+        </job>
+        <job name="custoconnector_schedule_clean_up" instance="Custobar\CustoConnector\Cron\ScheduleCleanUp" method="execute">
+            <schedule>0 0 * * *</schedule>
+        </job>
+    </group>
+</config>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Custobar_CustoConnector::custobar"
+             title="Custobar"
+             translate="title"
+             module="Custobar_CustoConnector"
+             sortOrder="9999"
+             parent="Magento_Backend::system"
+             resource="Custobar_CustoConnector::custobar" />
+
+        <add id="Custobar_CustoConnector::status"
+             title="Custobar Status"
+             translate="title"
+             module="Custobar_CustoConnector"
+             parent="Custobar_CustoConnector::custobar"
+             sortOrder="100"
+             action="custobar/status/index"
+             resource="Custobar_CustoConnector::status" />
+
+        <add id="Custobar_CustoConnector::logs"
+             title="Custobar Logs"
+             translate="title"
+             module="Custobar_CustoConnector"
+             parent="Custobar_CustoConnector::custobar"
+             sortOrder="200"
+             action="custobar/logs/index"
+             resource="Custobar_CustoConnector::logs" />
+    </menu>
+</config>

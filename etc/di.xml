@@ -1,0 +1,391 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- PREFERENCES -->
+
+    <preference for="Custobar\CustoConnector\Api\Data\InitialInterface" type="Custobar\CustoConnector\Model\Initial" />
+    <preference for="Custobar\CustoConnector\Api\InitialRepositoryInterface" type="Custobar\CustoConnector\Model\InitialRepository" />
+    <preference for="Custobar\CustoConnector\Model\Initial\Entity\CollectionResolverProviderInterface" type="Custobar\CustoConnector\Model\Initial\Entity\CollectionResolverProvider" />
+    <preference for="Custobar\CustoConnector\Model\Initial\InitialRunnerInterface" type="Custobar\CustoConnector\Model\Initial\InitialRunner" />
+    <preference for="Custobar\CustoConnector\Model\Initial\PopulatorInterface" type="Custobar\CustoConnector\Model\Initial\Populator" />
+    <preference for="Custobar\CustoConnector\Model\Initial\StatusDataInterface" type="Custobar\CustoConnector\Model\Initial\StatusData" />
+    <preference for="Custobar\CustoConnector\Model\Initial\StatusDataBuilderInterface" type="Custobar\CustoConnector\Model\Initial\StatusDataBuilder" />
+
+    <preference for="Custobar\CustoConnector\Api\Data\ScheduleInterface" type="Custobar\CustoConnector\Model\Schedule" />
+    <preference for="Custobar\CustoConnector\Api\ScheduleBuilderInterface" type="Custobar\CustoConnector\Model\ScheduleBuilder" />
+    <preference for="Custobar\CustoConnector\Api\ScheduleGeneratorInterface" type="Custobar\CustoConnector\Model\ScheduleGenerator" />
+    <preference for="Custobar\CustoConnector\Api\ScheduleRepositoryInterface" type="Custobar\CustoConnector\Model\ScheduleRepository" />
+    <preference for="Custobar\CustoConnector\Model\Schedule\LockControlInterface" type="Custobar\CustoConnector\Model\Schedule\LockControl" />
+    <preference for="Custobar\CustoConnector\Model\Schedule\ExportableProviderInterface" type="Custobar\CustoConnector\Model\Schedule\ExportableProvider" />
+
+    <preference for="Custobar\CustoConnector\Api\MappedDataBuilderInterface" type="Custobar\CustoConnector\Model\MappedDataBuilder" />
+    <preference for="Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderProviderInterface" type="Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderProvider" />
+    <preference for="Custobar\CustoConnector\Api\Data\MappingDataInterface" type="Custobar\CustoConnector\Model\MappingData" />
+    <preference for="Custobar\CustoConnector\Api\MappingDataProviderInterface" type="Custobar\CustoConnector\Model\MappingDataProvider" />
+    <preference for="Custobar\CustoConnector\Model\MappingDataProvider\DataExtenderInterface" type="Custobar\CustoConnector\Model\MappingDataProvider\DataExtenderChain" />
+
+    <preference for="Custobar\CustoConnector\Api\EntityDataConverterInterface" type="Custobar\CustoConnector\Model\EntityDataConverter" />
+    <preference for="Custobar\CustoConnector\Api\EntityDataResolverInterface" type="Custobar\CustoConnector\Model\EntityDataResolver" />
+    <preference for="Custobar\CustoConnector\Api\EntityTypeResolverInterface" type="Custobar\CustoConnector\Model\EntityTypeResolver" />
+    <preference for="Custobar\CustoConnector\Model\Product\SkuProviderInterface" type="Custobar\CustoConnector\Model\Product\SkuProvider" />
+    <preference for="Custobar\CustoConnector\Model\ResourceModel\Product\ProductProviderInterface" type="Custobar\CustoConnector\Model\ResourceModel\Product\ProductProvider" />
+
+    <preference for="Custobar\CustoConnector\Api\ExecutionValidatorInterface" type="Custobar\CustoConnector\Model\Validation\ExecutionValidatorChain" />
+    <preference for="Custobar\CustoConnector\Api\SchedulingValidatorInterface" type="Custobar\CustoConnector\Model\Validation\SchedulingValidatorChain" />
+    <preference for="Custobar\CustoConnector\Api\WebsiteValidatorInterface" type="Custobar\CustoConnector\Model\Validation\WebsiteValidator" />
+
+    <preference for="Custobar\CustoConnector\Api\Data\LogDataInterface" type="Custobar\CustoConnector\Model\LogData" />
+    <preference for="Custobar\CustoConnector\Model\LogData\LocatorInterface" type="Custobar\CustoConnector\Model\LogData\Locator\RequestLocator" />
+    <preference for="Custobar\CustoConnector\Api\LoggerInterface" type="Custobar\CustoConnector\Model\Logger" />
+
+    <preference for="Custobar\CustoConnector\Api\ExportInterface" type="Custobar\CustoConnector\Model\Export" />
+    <preference for="Custobar\CustoConnector\Api\Data\ExportDataInterface" type="Custobar\CustoConnector\Model\Export\ExportData" />
+    <preference for="Custobar\CustoConnector\Model\Export\ExportData\InitializerInterface" type="Custobar\CustoConnector\Model\Export\ExportData\Initializer" />
+    <preference for="Custobar\CustoConnector\Model\Export\ExportData\ProcessorInterface" type="Custobar\CustoConnector\Model\Export\ExportData\ProcessorChain" />
+
+    <preference for="Custobar\CustoConnector\Model\CustobarApi\ClientBuilderInterface" type="Custobar\CustoConnector\Model\CustobarApi\ClientBuilder" />
+    <preference for="Custobar\CustoConnector\Model\CustobarApi\ClientUrlProviderInterface" type="Custobar\CustoConnector\Model\CustobarApi\ClientUrlProvider" />
+
+    <!-- LOGGER CONFIGURATION -->
+
+    <virtualType name="custoConnectorDebugLoggerHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="filePath" xsi:type="string">var/log/</argument>
+            <argument name="fileName" xsi:type="string">custoconnector-debug.log</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="custoConnectorExceptionLoggerHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="filePath" xsi:type="string">var/log/</argument>
+            <argument name="fileName" xsi:type="string">custoconnector-exception.log</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="custoConnectorSystemLoggerHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="filePath" xsi:type="string">var/log/</argument>
+            <argument name="fileName" xsi:type="string">custoconnector-system.log</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="custoConnectorLogger" type="Monolog\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">custoconnector</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">custoConnectorDebugLoggerHandler</item>
+                <item name="system" xsi:type="object">custoConnectorSystemLoggerHandler</item>
+                <item name="exception" xsi:type="object">custoConnectorExceptionLoggerHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Custobar\CustoConnector\Model\Logger\LoggerComponent\LogFile">
+        <arguments>
+            <argument name="logger" xsi:type="object">custoConnectorLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="Custobar\CustoConnector\Model\Logger">
+        <arguments>
+            <argument name="components" xsi:type="array">
+                <item name="log_data" xsi:type="object">Custobar\CustoConnector\Model\Logger\LoggerComponent\LogData</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- SCHEDULE LOCK CONFIGURATION -->
+
+    <type name="Custobar\CustoConnector\Model\Schedule\LockFlag">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="flag_code" xsi:type="string">custconnector_initial</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- PRODUCT PROVIDER -->
+
+    <type name="Custobar\CustoConnector\Model\ResourceModel\Product\ProductProvider\CollectionPreProcessor\AddAttributesToSelect">
+        <arguments>
+            <argument name="additionalCodes" xsi:type="array">
+                <item name="description" xsi:type="string">description</item>
+                <item name="image" xsi:type="string">image</item>
+                <item name="visibility" xsi:type="string">visibility</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Custobar\CustoConnector\Model\ResourceModel\Product\ProductProvider">
+        <arguments>
+            <argument name="preProcessors" xsi:type="array">
+                <item name="add_attributes_to_select" xsi:type="object">Custobar\CustoConnector\Model\ResourceModel\Product\ProductProvider\CollectionPreProcessor\AddAttributesToSelect</item>
+                <item name="add_price_data" xsi:type="object">Custobar\CustoConnector\Model\ResourceModel\Product\ProductProvider\CollectionPreProcessor\AddPriceData</item>
+                <item name="add_website_data" xsi:type="object">Custobar\CustoConnector\Model\ResourceModel\Product\ProductProvider\CollectionPreProcessor\AddWebsiteData</item>
+            </argument>
+            <argument name="postProcessors" xsi:type="array">
+                <item name="add_category_data" xsi:type="object">Custobar\CustoConnector\Model\ResourceModel\Product\ProductProvider\CollectionPostProcessor\AddCategoryData</item>
+                <item name="add_url_rewrite_data" xsi:type="object">Custobar\CustoConnector\Model\ResourceModel\Product\ProductProvider\CollectionPostProcessor\AddUrlRewriteData</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- ENTITY DATA CONFIGURATIONS -->
+
+    <type name="Custobar\CustoConnector\Model\EntityDataResolver">
+        <arguments>
+            <argument name="components" xsi:type="array">
+                <item name="Magento\Catalog\Model\Product" xsi:type="object">Custobar\CustoConnector\Model\EntityDataResolver\ResolverComponent\CatalogProduct</item>
+                <item name="Magento\Customer\Model\Customer" xsi:type="object">Custobar\CustoConnector\Model\EntityDataResolver\ResolverComponent\Customer</item>
+                <item name="Magento\Newsletter\Model\Subscriber" xsi:type="object">Custobar\CustoConnector\Model\EntityDataResolver\ResolverComponent\NewsletterSubscriber</item>
+                <item name="Magento\Sales\Model\Order" xsi:type="object">Custobar\CustoConnector\Model\EntityDataResolver\ResolverComponent\SalesOrder</item>
+                <item name="Magento\Store\Model\Store" xsi:type="object">Custobar\CustoConnector\Model\EntityDataResolver\ResolverComponent\Store</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Custobar\CustoConnector\Model\EntityDataConverter">
+        <arguments>
+            <argument name="converters" xsi:type="array">
+                <item name="Magento\Customer\Model\Address" xsi:type="object">Custobar\CustoConnector\Model\EntityDataConverter\ToMapped\CustomerAddress</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Custobar\CustoConnector\Model\EntityTypeResolver">
+        <arguments>
+            <argument name="components" xsi:type="array">
+                <item name="Magento\Catalog\Model\Product" xsi:type="object">Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponent\CatalogProduct</item>
+                <item name="Magento\Customer\Model\Customer" xsi:type="object">Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponent\Customer</item>
+                <item name="Magento\Customer\Model\Address" xsi:type="object">Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponent\CustomerAddress</item>
+                <item name="Magento\Newsletter\Model\Subscriber" xsi:type="object">Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponent\NewsletterSubscriber</item>
+                <item name="Magento\Sales\Model\Order" xsi:type="object">Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponent\SalesOrder</item>
+                <item name="Magento\Store\Model\Store" xsi:type="object">Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponent\Store</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- MAPPING DATA CONFIGURATIONS -->
+
+    <virtualType name="Custobar\CustoConnector\Model\MappingData\CatalogProduct" type="Custobar\CustoConnector\Model\MappingData">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="entity_type" xsi:type="string">Magento\Catalog\Model\Product</item>
+                <item name="target_field" xsi:type="string">products</item>
+                <item name="label" xsi:type="string" translatable="true">Products</item>
+                <item name="field_map_config" xsi:type="const">Custobar\CustoConnector\Model\Config::CONFIG_MAPPING_PRODUCT</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Custobar\CustoConnector\Model\MappingData\Customer" type="Custobar\CustoConnector\Model\MappingData">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="entity_type" xsi:type="string">Magento\Customer\Model\Customer</item>
+                <item name="target_field" xsi:type="string">customers</item>
+                <item name="label" xsi:type="string" translatable="true">Customers</item>
+                <item name="field_map_config" xsi:type="const">Custobar\CustoConnector\Model\Config::CONFIG_MAPPING_CUSTOMER</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Custobar\CustoConnector\Model\MappingData\NewsletterSubscriber" type="Custobar\CustoConnector\Model\MappingData">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="entity_type" xsi:type="string">Magento\Newsletter\Model\Subscriber</item>
+                <item name="target_field" xsi:type="string">events</item>
+                <item name="label" xsi:type="string" translatable="true">Events</item>
+                <item name="field_map_config" xsi:type="const">Custobar\CustoConnector\Model\Config::CONFIG_MAPPING_NEWSLETTER</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Custobar\CustoConnector\Model\MappingData\SalesOrder" type="Custobar\CustoConnector\Model\MappingData">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="entity_type" xsi:type="string">Magento\Sales\Model\Order</item>
+                <item name="target_field" xsi:type="string">sales</item>
+                <item name="label" xsi:type="string" translatable="true">Sales</item>
+                <item name="field_map_config" xsi:type="const">Custobar\CustoConnector\Model\Config::CONFIG_MAPPING_ORDER</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Custobar\CustoConnector\Model\MappingData\Store" type="Custobar\CustoConnector\Model\MappingData">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="entity_type" xsi:type="string">Magento\Store\Model\Store</item>
+                <item name="target_field" xsi:type="string">shops</item>
+                <item name="label" xsi:type="string" translatable="true">Shops</item>
+                <item name="field_map" xsi:type="array">
+                    <item name="id" xsi:type="string">external_id</item>
+                    <item name="custobar_name" xsi:type="string">name</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Custobar\CustoConnector\Model\MappingDataProvider">
+        <arguments>
+            <argument name="mappingDataModels" xsi:type="array">
+                <item name="Magento\Catalog\Model\Product" xsi:type="object">Custobar\CustoConnector\Model\MappingData\CatalogProduct</item>
+                <item name="Magento\Customer\Model\Customer" xsi:type="object">Custobar\CustoConnector\Model\MappingData\Customer</item>
+                <item name="Magento\Newsletter\Model\Subscriber" xsi:type="object">Custobar\CustoConnector\Model\MappingData\NewsletterSubscriber</item>
+                <item name="Magento\Sales\Model\Order" xsi:type="object">Custobar\CustoConnector\Model\MappingData\SalesOrder</item>
+                <item name="Magento\Store\Model\Store" xsi:type="object">Custobar\CustoConnector\Model\MappingData\Store</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Custobar\CustoConnector\Model\MappingDataProvider\DataExtenderChain">
+        <arguments>
+            <argument name="dataExtenders" xsi:type="array">
+                <item name="adjust_field_mapping_from_config" xsi:type="object">Custobar\CustoConnector\Model\MappingDataProvider\DataExtender\AdjustFieldMappingFromConfig</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- MAPPED DATA BUILDER - DATA EXTENDER CONFIGURATIONS -->
+
+    <virtualType name="Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogProduct" type="Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderChain">
+        <arguments>
+            <argument name="dataExtenders" xsi:type="array">
+                <item name="add_basic_data" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogProduct\AddBasicData</item>
+                <item name="add_attribute_data" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogProduct\AddAttributeData</item>
+                <item name="add_category_data" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogProduct\AddCategoryData</item>
+                <item name="add_image_data" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogProduct\AddImageData</item>
+                <item name="add_language_data" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogProduct\AddLanguageData</item>
+                <item name="add_url_data" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogProduct\AddUrlData</item>
+                <item name="add_bundle_data" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogProduct\AddBundleData</item>
+                <item name="add_configurable_data" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogProduct\AddConfigurableData</item>
+                <item name="add_grouped_data" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogProduct\AddGroupedData</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\Customer" type="Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderChain">
+        <arguments>
+            <argument name="dataExtenders" xsi:type="array">
+                <item name="add_basic_data" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\Customer\AddBasicData</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\NewsletterSubscriber" type="Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderChain">
+        <arguments>
+            <argument name="dataExtenders" xsi:type="array">
+                <item name="add_basic_data" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\NewsletterSubscriber\AddBasicData</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\SalesOrder" type="Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderChain">
+        <arguments>
+            <argument name="dataExtenders" xsi:type="array">
+                <item name="add_basic_data" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\SalesOrder\AddBasicData</item>
+                <item name="add_item_data" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\SalesOrder\AddItemData</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\Store" type="Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderChain">
+        <arguments>
+            <argument name="dataExtenders" xsi:type="array">
+                <item name="add_basic_data" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\Store\AddBasicData</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderProvider">
+        <arguments>
+            <argument name="dataExtenders" xsi:type="array">
+                <item name="Magento\Catalog\Model\Product" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogProduct</item>
+                <item name="Magento\Customer\Model\Customer" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\Customer</item>
+                <item name="Magento\Newsletter\Model\Subscriber" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\NewsletterSubscriber</item>
+                <item name="Magento\Sales\Model\Order" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\SalesOrder</item>
+                <item name="Magento\Store\Model\Store" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\Store</item>
+            </argument>
+        </arguments>
+    </type>
+    
+    <!-- SCHEDULING VALIDATOR CONFIGURATION -->
+    
+    <type name="Custobar\CustoConnector\Model\Validation\SchedulingValidatorChain">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="check_has_mapping_data" xsi:type="object">Custobar\CustoConnector\Model\Validation\SchedulingValidator\CheckHasMappingData</item>
+                <item name="check_is_allowed_website" xsi:type="object">Custobar\CustoConnector\Model\Validation\SchedulingValidator\CheckIsAllowedWebsite</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- EXECUTION VALIDATOR CONFIGURATION -->
+
+    <type name="Custobar\CustoConnector\Model\Validation\ExecutionValidatorChain">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="check_if_config_allows" xsi:type="object">Custobar\CustoConnector\Model\Validation\ExecutionValidator\CheckIfConfigAllows</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- WEBSITE VALIDATOR -->
+
+    <type name="Custobar\CustoConnector\Model\Validation\WebsiteValidator">
+        <arguments>
+            <argument name="entityResolvers" xsi:type="array">
+                <item name="Magento\Catalog\Model\Product" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\EntityWebsiteResolver\ByWebsiteIds</item>
+                <item name="Magento\Customer\Model\Customer" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\EntityWebsiteResolver\ByWebsiteId</item>
+                <item name="Magento\Newsletter\Model\Subscriber" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\EntityWebsiteResolver\ByStoreId</item>
+                <item name="Magento\Sales\Model\Order" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\EntityWebsiteResolver\ByStoreId</item>
+                <item name="Magento\Store\Model\Store" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\EntityWebsiteResolver\ByWebsiteId</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- EXPORT CONFIGURATIONS -->
+
+    <type name="Custobar\CustoConnector\Model\Export\ExportData\Initializer">
+        <arguments>
+            <argument name="components" xsi:type="array">
+                <item name="add_mapping_data" xsi:type="object">Custobar\CustoConnector\Model\Export\ExportData\Initializer\InitializerComponent\AddMappingData</item>
+                <item name="add_mapped_data_rows" xsi:type="object">Custobar\CustoConnector\Model\Export\ExportData\Initializer\InitializerComponent\AddMappedDataRows</item>
+                <item name="add_request_data_json" xsi:type="object">Custobar\CustoConnector\Model\Export\ExportData\Initializer\InitializerComponent\AddRequestDataJson</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Custobar\CustoConnector\Model\Export\ExportData\ProcessorChain">
+        <arguments>
+            <argument name="processors" xsi:type="array">
+                <item name="execute_export" xsi:type="object">Custobar\CustoConnector\Model\Export\ExportData\Processor\ExecuteExport</item>
+                <item name="adjust_schedules" xsi:type="object">Custobar\CustoConnector\Model\Export\ExportData\Processor\AdjustSchedules</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- INITIAL CONFIGURATIONS -->
+
+    <type name="Custobar\CustoConnector\Model\Initial\Entity\CollectionResolverProvider">
+        <arguments>
+            <argument name="resolvers" xsi:type="array">
+                <item name="Magento\Catalog\Model\Product" xsi:type="object">Custobar\CustoConnector\Model\Initial\Entity\CollectionResolver\CatalogProduct</item>
+                <item name="Magento\Customer\Model\Customer" xsi:type="object">Custobar\CustoConnector\Model\Initial\Entity\CollectionResolver\Customer</item>
+                <item name="Magento\Newsletter\Model\Subscriber" xsi:type="object">Custobar\CustoConnector\Model\Initial\Entity\CollectionResolver\NewsletterSubscriber</item>
+                <item name="Magento\Sales\Model\Order" xsi:type="object">Custobar\CustoConnector\Model\Initial\Entity\CollectionResolver\SalesOrder</item>
+                <item name="Magento\Store\Model\Store" xsi:type="object">Custobar\CustoConnector\Model\Initial\Entity\CollectionResolver\Store</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Custobar\CustoConnector\Model\Initial\StatusDataBuilder">
+        <arguments>
+            <argument name="builderComponents" xsi:type="array">
+                <item name="add_time_data" xsi:type="object">Custobar\CustoConnector\Model\Initial\StatusDataBuilder\BuilderComponent\AddTimeData</item>
+                <item name="add_status_label" xsi:type="object">Custobar\CustoConnector\Model\Initial\StatusDataBuilder\BuilderComponent\AddStatusLabel</item>
+                <item name="add_export_percent" xsi:type="object">Custobar\CustoConnector\Model\Initial\StatusDataBuilder\BuilderComponent\AddExportPercent</item>
+                <item name="add_action_data" xsi:type="object">Custobar\CustoConnector\Model\Initial\StatusDataBuilder\BuilderComponent\AddActionData</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

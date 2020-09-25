@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Custobar_CustoConnector::custobar" title="Custobar">
+                    <resource id="Custobar_CustoConnector::status" title="Custobar status" />
+                    <resource id="Custobar_CustoConnector::population" title="Custobar population" />
+                    <resource id="Custobar_CustoConnector::logs" title="Custobar logs" />
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

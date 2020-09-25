@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="custobar" translate="label" sortOrder="20">
+            <label>Custobar</label>
+        </tab>
+        <section id="custobar" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>CustoConnector</label>
+            <tab>custobar</tab>
+            <resource>Custobar_CustoConnector::settings</resource>
+            <group id="custobar_custoconnector" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" translate="label">
+                <label>Configuration</label>
+                <field id="mode" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Set development mode</label>
+                    <comment>Is this live or dev</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="prefix" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Company Domain</label>
+                    <comment>Enter the unique domain prefix for your Custobar account</comment>
+                </field>
+                <field id="apikey" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>API Token</label>
+                    <comment>Enter your Custobar API token</comment>
+                </field>
+                <field id="tracking_mode" translate="label" type="select" sortOrder="400" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Tracking Script Mode</label>
+                    <source_model>Custobar\CustoConnector\Model\Config\Source\TrackingMode</source_model>
+                </field>
+                <field id="tracking_script" translate="label" type="textarea" sortOrder="500" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Tracking Script</label>
+                    <comment>Paste your tracking script here</comment>
+                    <depends>
+                        <field id="tracking_mode">1</field>
+                    </depends>
+                </field>
+                <field id="allowed_websites" translate="label" type="multiselect" sortOrder="600" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Allowed websites to send data from</label>
+                    <source_model>Magento\CatalogRule\Model\Rule\WebsitesOptionsProvider</source_model>
+                </field>
+            </group>
+            <group id="custoconnector_field_mapping" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" translate="label">
+                <label>Field Mapping</label>
+                <frontend_model>Custobar\CustoConnector\Block\Adminhtml\System\Config\Fieldset\FieldMapping</frontend_model>
+                <field id="customer" translate="label" type="textarea" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Customer Field Map</label>
+                </field>
+                <field id="product" translate="label" type="textarea" sortOrder="200" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Product Field Map</label>
+                </field>
+                <field id="order" translate="label" type="textarea" sortOrder="300" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Sale Field Map</label>
+                </field>
+                <field id="newsletter" translate="label" type="textarea" sortOrder="300" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Newsletter Field Map</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="before.body.end">
+            <block name="custobar_statistics"
+                   class="Custobar\CustoConnector\Block\Statistics"
+                   template="custoconnector/statistics.phtml">
+                <block name="custobar_statistics_custom_script"
+                       as="custom_script"
+                       class="Custobar\CustoConnector\Block\Statistics"
+                       template="custoconnector/statistics/custom-script.phtml">
+                    <block name="custobar_statistics_custom_script_customer"
+                           class="Custobar\CustoConnector\Block\Statistics\Config\Customer"
+                           template="custoconnector/statistics/config/customer.phtml" />
+                </block>
+                <block name="custobar_statistics_gtm"
+                       as="gtm"
+                       class="Custobar\CustoConnector\Block\Statistics\GTM"
+                       template="custoconnector/statistics/gtm.phtml">
+                    <block name="custobar_statistics_gtm_customer"
+                           class="Custobar\CustoConnector\Block\Statistics\Config\Customer"
+                           template="custoconnector/statistics/config/customer.phtml" />
+                    <arguments>
+                        <argument name="gtm_field_mapping" xsi:type="array">
+                            <!-- cb_customer_id is the field in GTM -->
+                            <!-- customerId is defined in the block custobar_statistics_gtm_customer -->
+                            <item name="cb_customer_id" xsi:type="string">customerId</item>
+                        </argument>
+                    </arguments>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

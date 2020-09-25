@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="custobar_statistics_custom_script">
+            <block name="custobar_statistics_custom_script_product"
+                   class="Custobar\CustoConnector\Block\Statistics\Config\Product"
+                   template="custoconnector/statistics/config/product.phtml" />
+        </referenceBlock>
+        <referenceBlock name="custobar_statistics_gtm">
+            <block name="custobar_statistics_gtm_product"
+                   class="Custobar\CustoConnector\Block\Statistics\Config\Product"
+                   template="custoconnector/statistics/config/product.phtml" />
+            <arguments>
+                <argument name="gtm_field_mapping" xsi:type="array">
+                    <!-- cb_product_id is the field in GTM -->
+                    <!-- productId is defined in the block custobar_statistics_gtm_product -->
+                    <item name="cb_product_id" xsi:type="string">productId</item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>

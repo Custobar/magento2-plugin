@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">custobar_logs_listing.custobar_logs_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <buttons />
+        <spinner>custobar_logs_listing_columns</spinner>
+        <deps>
+            <dep>custobar_logs_listing.custobar_logs_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="custobar_logs_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">log_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Custobar_CustoConnector::logs</aclResource>
+        <dataProvider class="Custobar\CustoConnector\Model\LogData\Listing\DataProvider" name="custobar_logs_listing_data_source">
+            <settings>
+                <requestFieldName>log_id</requestFieldName>
+                <primaryFieldName>log_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filterSearch name="fulltext"/>
+        <filters name="listing_filters" />
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="custobar_logs_listing_columns">
+        <column name="log_id" sortOrder="100">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+                <visible>false</visible>
+                <sorting>desc</sorting>
+            </settings>
+        </column>
+        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" sortOrder="200">
+            <settings>
+                <dataType>date</dataType>
+                <dataScope>created_at</dataScope>
+                <filter>dateRange</filter>
+                <label translate="true">Time</label>
+            </settings>
+        </column>
+        <column name="type" component="Magento_Ui/js/grid/columns/select" sortOrder="300">
+            <settings>
+                <dataType>select</dataType>
+                <filter>select</filter>
+                <dataScope>type</dataScope>
+                <label translate="true">Type</label>
+                <options class="Custobar\CustoConnector\Model\LogData\Config\Source\Type" />
+            </settings>
+        </column>
+        <column name="message" class="Custobar\CustoConnector\Ui\Component\LogData\Listing\Columns\Message" sortOrder="400">
+            <settings>
+                <dataType>text</dataType>
+                <filter>text</filter>
+                <dataScope>message</dataScope>
+                <label translate="true">Message</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Custobar\CustoConnector\Ui\Component\LogData\Listing\Columns\Actions" sortOrder="500">
+            <settings>
+                <indexField>log_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

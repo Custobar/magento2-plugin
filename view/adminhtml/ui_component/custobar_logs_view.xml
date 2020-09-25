@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">custobar_logs_view.custobar_logs_view_data_source</item>
+            <item name="deps" xsi:type="string">custobar_logs_view.custobar_logs_view_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Information</item>
+        <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">data</item>
+            <item name="namespace" xsi:type="string">custobar_logs_view</item>
+        </item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="back" class="Custobar\CustoConnector\Block\Adminhtml\LogData\Edit\Button\Back" />
+        </buttons>
+        <namespace>custobar_logs_view</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>custobar_logs_view.custobar_logs_view_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="custobar_logs_view_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <dataProvider class="Custobar\CustoConnector\Model\LogData\View\DataProvider" name="custobar_logs_view_data_source">
+            <settings>
+                <requestFieldName>log_id</requestFieldName>
+                <primaryFieldName>log_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general" sortOrder="100">
+        <settings>
+            <collapsible>false</collapsible>
+            <label translate="true" />
+        </settings>
+        <field name="created_at" formElement="date" sortOrder="100">
+            <settings>
+                <label translate="true">Time</label>
+                <dataScope>created_at</dataScope>
+                <dataType>date</dataType>
+                <disabled>true</disabled>
+            </settings>
+        </field>
+        <field name="type" formElement="select" sortOrder="200">
+            <settings>
+                <label translate="true">Type</label>
+                <dataScope>type</dataScope>
+                <dataType>select</dataType>
+                <disabled>true</disabled>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Custobar\CustoConnector\Model\LogData\Config\Source\Type" />
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="message" formElement="textarea" sortOrder="300">
+            <settings>
+                <label translate="true">Message</label>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <dataScope>message</dataScope>
+                <dataType>textarea</dataType>
+            </settings>
+        </field>
+        <field name="context_data" formElement="textarea" sortOrder="400">
+            <settings>
+                <label translate="true">Context Data</label>
+                <elementTmpl>ui/form/element/html</elementTmpl>
+                <dataScope>context_data</dataScope>
+                <dataType>textarea</dataType>
+            </settings>
+        </field>
+    </fieldset>
+</form>

@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <custobar>
+            <custobar_custoconnector>
+                <tracking_mode>1</tracking_mode>
+            </custobar_custoconnector>
+            <custoconnector_field_mapping>
+                <customer>
+<![CDATA[firstname:first_name
+lastname:last_name
+id:external_id
+email:email
+custobar_telephone:phone_number
+custobar_street:street_address
+custobar_city:city
+custobar_postcode:zip_code
+custobar_country_id:country
+custobar_created_at:date_joined
+store_id:store_id]]>
+                </customer>
+                <product>
+<![CDATA[name:title
+sku:external_id
+custobar_minimal_price:minimal_price
+custobar_price:price
+type_id:mage_type
+configurable_min_price:my_configurable_min_price
+custobar_attribute_set_name:type
+custobar_category:category
+custobar_category_id:category_id
+custobar_image:image
+custobar_product_url:url
+custobar_special_price:sale_price
+description:description
+custobar_language:language
+custobar_store_id:store_id
+custobar_child_ids:mage_child_ids
+custobar_parent_ids:mage_parent_ids]]>
+                </product>
+                <order>
+<![CDATA[custobar_state:sale_state
+increment_id:sale_external_id
+customer_id:sale_customer_id
+custobar_created_at:sale_date
+customer_email:sale_email
+store_id:sale_shop_id
+custobar_discount:sale_discount
+custobar_grand_total:sale_total
+custobar_payment_method:sale_payment_method
+custobar_order_items:magento__items]]>
+                </order>
+                <newsletter>
+<![CDATA[subscriber_email:email
+customer_id:customer_id
+custobar_status:type
+custobar_date:date
+store_id:store_id]]></newsletter>
+            </custoconnector_field_mapping>
+        </custobar>
+    </default>
+</config>

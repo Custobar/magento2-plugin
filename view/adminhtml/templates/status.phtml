@@ -1,0 +1,50 @@
+<?php
+/** @var \Custobar\CustoConnector\Block\Adminhtml\Status $block */
+?>
+
+<p>
+    <?php $url = $block->getExportRunAllUrl();?>
+    <a href="<?= $block->escapeUrl($url); ?>" class="button action-default">Run All</a>
+    <?php $url = $block->getExportCancelAllUrl();?>
+    <a href="<?= $block->escapeUrl($url); ?>" class="button action-default">Cancel All</a>
+</p>
+
+<table id="status-listing" class="admin__table-secondary">
+    <thead>
+        <tr>
+            <th><?= \__('Record type'); ?></th>
+            <th><?= \__('Status'); ?></th>
+            <th><?= \__('Export %'); ?></th>
+            <th><?= \__('Last Export'); ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php $mappingDataItems = $block->getAllMappingData(); ?>
+        <?php foreach ($mappingDataItems as $mappingDataItem) : ?>
+            <?php $statusData = $block->getStatusData($mappingDataItem); ?>
+            <tr id="status-<?= $block->escapeHtml($mappingDataItem->getTargetField()); ?>"
+                data-current-status="<?= $block->escapeHtml($statusData->getStatusId()); ?>">
+                <td class="column-label"><?= $block->escapeHtml($statusData->getLabel()); ?></td>
+                <td class="column-status"><?= $block->escapeHtml($statusData->getStatusLabel()); ?></td>
+                <td class="column-export-percent"><?= $block->escapeHtml($statusData->getExportPercent()); ?></td>
+                <td class="column-last-export-time"><?= $block->escapeHtml($statusData->getLastExportTime()); ?></td>
+                <td class="column-button">
+                    <a href="<?= $block->escapeUrl($statusData->getActionUrl()); ?>" class="button action-default">
+                        <?= $block->escapeHtml($statusData->getActionLabel()); ?>
+                    </a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+<script type="text/x-magento-init">
+    {
+        "#status-listing": {
+            "Custobar_CustoConnector/js/status-refresh": {
+                "refreshDataUrl": "<?= $block->escapeUrl($block->getRefreshDataUrl()); ?>",
+                "isRefreshActive": 1
+            }
+        }
+    }
+</script>

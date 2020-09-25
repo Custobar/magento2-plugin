@@ -1,0 +1,11 @@
+<?php
+/* @var \Custobar\CustoConnector\Block\Statistics\Config\Product $block */
+?>
+
+<?php // Assumes cstbrConfig is defined in parent blocks --> ?>
+<?php $sku = $block->getProduct()->getSku(); ?>
+<?php if ($sku) : ?>
+    <script>
+        cstbrConfig.productId = "<?= $block->escapeHtml($sku); ?>";
+    </script>
+<?php endif; ?>

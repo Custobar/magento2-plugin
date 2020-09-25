@@ -1,0 +1,26 @@
+<?php
+/* @var \Custobar\CustoConnector\Block\Statistics\GTM $block */
+?>
+
+<?php // cstbrConfig is filled up in child blocks ?>
+<script>
+    var cstbrConfig = {};
+</script>
+<?= $block->getChildHtml(); ?>
+
+<?php $fieldMapping = $block->getFieldMapping(); ?>
+<?php if (!empty($fieldMapping)) : ?>
+    <script>
+        var gtmData = {};
+
+        <?php // And here it's contents are put to object pushed to dataLayer, based on block configuration ?>
+        <?php foreach ($fieldMapping as $gtmField => $configField) : ?>
+            if (cstbrConfig.hasOwnProperty('<?= $block->escapeJs($configField); ?>')) {
+                gtmData.<?= $block->escapeJs($gtmField); ?> = cstbrConfig.<?= $block->escapeJs($configField); ?>;
+            }
+        <?php endforeach; ?>
+
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push(gtmData);
+    </script>
+<?php endif; ?>

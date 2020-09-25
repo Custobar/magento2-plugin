@@ -1,0 +1,51 @@
+{
+    "name": "custobar/custobar_m2_custoconnector",
+    "type": "magento2-module",
+    "description": "Custobar magento connector",
+    "keywords": [
+        "custobar"
+    ],
+    "version": "2.0.0",
+    "homepage": "https://custobar.com/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Juha Törönen",
+            "email": "juha@custobar.com",
+            "homepage": "https://custobar.com/",
+            "role": "developer"
+        },
+        {
+            "name": "Olli Tyynelä",
+            "email": "olli.tyynela@focus.fi",
+            "homepage": "http://www.focus.fi/",
+            "role": "developer"
+        },
+        {
+            "name": "Jyrki Lilja",
+            "email": "jyrki.lilja@focus.fi",
+            "homepage": "https://www.focus.fi/",
+            "role": "developer"
+        },
+        {
+            "name": "Pyry Pennanen",
+            "email": "pyry.pennanen@focus.fi",
+            "homepage": "https://www.focus.fi/",
+            "role": "developer"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Custobar\\CustoConnector\\": ""
+        }
+    },
+    "require": {
+        "magento/framework": "*"
+    },
+    "require-dev": {
+        "mustangostang/spyc": "^0.6.2"
+    }
+}

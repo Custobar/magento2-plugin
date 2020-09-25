@@ -1,0 +1,13 @@
+<?php
+/* @var \Custobar\CustoConnector\Block\Statistics $block */
+?>
+
+<?php $trackingScript = $block->getTrackingScript(); ?>
+<?php if (!empty($trackingScript)) : ?>
+    <?php // Not escaping this can cause issues -> eventually use only the GTM solution? ?>
+    <script><?= /* @noEscape */ $trackingScript; ?></script>
+
+    <?php // Tracking script should define cstbrConfig, which will be filled up in child blocks ?>
+
+    <?= $block->getChildHtml(); ?>
+<?php endif; ?>

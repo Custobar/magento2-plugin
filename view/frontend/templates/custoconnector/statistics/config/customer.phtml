@@ -1,0 +1,11 @@
+<?php
+/* @var \Custobar\CustoConnector\Block\Statistics\Config\Customer $block */
+?>
+
+<?php // Assumes cstbrConfig is defined in parent blocks --> ?>
+<?php $customerId = $block->getCurrentCustomerId(); ?>
+<?php if ($customerId > 0) : ?>
+    <script>
+        cstbrConfig.customerId = "<?= $block->escapeHtml($customerId); ?>";
+    </script>
+<?php endif; ?>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Custobar Logs</title>
+    </head>
+    <update handle="styles"/>
+    <body>
+        <referenceBlock name="menu">
+            <action method="setActive">
+                <argument name="itemId" xsi:type="string">Custobar_CustoConnector::logs</argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="page.title">
+            <action method="setTitleClass">
+                <argument name="class" xsi:type="string">complex</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <uiComponent name="custobar_logs_listing" />
+        </referenceContainer>
+    </body>
+</page>
