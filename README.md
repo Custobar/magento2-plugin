@@ -21,7 +21,7 @@ Add a `repositories` object to the `composer.json`
          "repositories": [
             {
                 "type": "git",
-                "url": "git@bitbucket.org:custobar/custobar_m2_custoconnector.git"
+                "url": "https://github.com/Custobar/magento2-plugin"
             }
          ]
 
