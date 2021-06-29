@@ -241,6 +241,7 @@
         <arguments>
             <argument name="dataExtenders" xsi:type="array">
                 <item name="adjust_field_mapping_from_config" xsi:type="object">Custobar\CustoConnector\Model\MappingDataProvider\DataExtender\AdjustFieldMappingFromConfig</item>
+                <item name="apply_domain_on_field_mapping" xsi:type="object">Custobar\CustoConnector\Model\MappingDataProvider\DataExtender\ApplyDomainOnFieldMapping</item>
             </argument>
         </arguments>
     </type>
@@ -307,9 +308,9 @@
             </argument>
         </arguments>
     </type>
-    
+
     <!-- SCHEDULING VALIDATOR CONFIGURATION -->
-    
+
     <type name="Custobar\CustoConnector\Model\Validation\SchedulingValidatorChain">
         <arguments>
             <argument name="validators" xsi:type="array">

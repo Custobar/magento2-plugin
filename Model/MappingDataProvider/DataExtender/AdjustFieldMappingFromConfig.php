@@ -5,6 +5,7 @@ namespace Custobar\CustoConnector\Model\MappingDataProvider\DataExtender;
 use Custobar\CustoConnector\Model\MappingDataProvider\DataExtenderInterface;
 use Custobar\CustoConnector\Api\Data\MappingDataInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
 
 class AdjustFieldMappingFromConfig implements DataExtenderInterface
 {
@@ -22,7 +23,7 @@ class AdjustFieldMappingFromConfig implements DataExtenderInterface
     /**
      * @inheritDoc
      */
-    public function extendData(MappingDataInterface $mappingData)
+    public function extendData(MappingDataInterface $mappingData, int $storeId = null)
     {
         $configPath = $mappingData->getFieldMapConfig();
         if (!$configPath) {
@@ -31,6 +32,13 @@ class AdjustFieldMappingFromConfig implements DataExtenderInterface
 
         $fieldMapping = $mappingData->getFieldMap() ?? [];
         $configData = (string)$this->scopeConfig->getValue($configPath);
+        if ($storeId) {
+            $configData = (string)$this->scopeConfig->getValue(
+                $configPath,
+                ScopeInterface::SCOPE_STORE,
+                $storeId
+            );
+        }
         if (!empty($configData)) {
             $splitDataItems = \explode("\n", $configData);
             foreach ($splitDataItems as $splitDataItem) {
