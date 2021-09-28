@@ -6,6 +6,7 @@ use Custobar\CustoConnector\Api\EntityTypeResolverInterface;
 use Custobar\CustoConnector\Api\MappedDataBuilderInterface;
 use Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderProviderInterface;
 use Custobar\CustoConnector\Api\MappingDataProviderInterface;
+use Magento\Catalog\Model\Product;
 use Magento\Framework\DataObject\Mapper;
 use Magento\Framework\DataObjectFactory;
 use Magento\Framework\Exception\NotFoundException;
@@ -57,7 +58,9 @@ class MappedDataBuilder implements MappedDataBuilderInterface
     public function buildMappedData($entity)
     {
         $entityType = $this->identiferResolver->resolveEntityType($entity);
-        $mappingData = $this->mappingDataProvider->getMappingDataByEntityType($entityType);
+        // For now products only support this
+        $storeId = $entityType == Product::ENTITY ? $entity->getStoreId() : null;
+        $mappingData = $this->mappingDataProvider->getMappingDataByEntityType($entityType, $storeId);
         if (!$mappingData) {
             throw new NotFoundException(\__('No mapping data available for \'%1\'', $entityType));
         }

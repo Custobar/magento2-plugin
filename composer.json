@@ -15,8 +15,5 @@
         "psr-4": {
             "Custobar\\CustoConnector\\": ""
         }
-    },
-    "keywords": [
-        "custobar"
-    ]
+    }
 }

@@ -57,12 +57,12 @@ class MappingDataProvider implements MappingDataProviderInterface
     /**
      * @inheritDoc
      */
-    public function getAllMappingData()
+    public function getAllMappingData(int $storeId = null)
     {
-        if ($this->cachedData === null) {
+        if (!isset($this->cachedData[$storeId])) {
             $mappingModels = $this->resolveValidModels();
             foreach ($mappingModels as $index => $mappingModel) {
-                $mappingModel = $this->dataExtender->extendData($mappingModel);
+                $mappingModel = $this->dataExtender->extendData($mappingModel, $storeId);
                 $mappingModels[$index] = $mappingModel;
             }
 
@@ -70,18 +70,18 @@ class MappingDataProvider implements MappingDataProviderInterface
                 $this->logger->debug('No mapping data models set');
             }
 
-            $this->cachedData = $mappingModels;
+            $this->cachedData[$storeId] = $mappingModels;
         }
 
-        return $this->cachedData;
+        return $this->cachedData[$storeId];
     }
 
     /**
      * @inheritDoc
      */
-    public function getMappingDataByEntityType(string $entityType)
+    public function getMappingDataByEntityType(string $entityType, int $storeId = null)
     {
-        $models = $this->getAllMappingData();
+        $models = $this->getAllMappingData($storeId);
 
         return $models[$entityType] ?? null;
     }
@@ -89,9 +89,9 @@ class MappingDataProvider implements MappingDataProviderInterface
     /**
      * @inheritDoc
      */
-    public function getMappingDataByTargetField(string $targetField)
+    public function getMappingDataByTargetField(string $targetField, int $storeId = null)
     {
-        $models = $this->getAllMappingData();
+        $models = $this->getAllMappingData($storeId);
         foreach ($models as $model) {
             if ($model->getTargetField() == $targetField) {
                 return $model;
@@ -104,11 +104,11 @@ class MappingDataProvider implements MappingDataProviderInterface
     /**
      * @inheritDoc
      */
-    public function getMappingDataByObject($entity)
+    public function getMappingDataByObject($entity, int $storeId = null)
     {
         $entityType = $this->typeResolver->resolveEntityType($entity);
 
-        return $this->getMappingDataByEntityType($entityType);
+        return $this->getMappingDataByEntityType($entityType, $storeId);
     }
 
     /**
