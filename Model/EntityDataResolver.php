@@ -100,7 +100,7 @@ class EntityDataResolver implements EntityDataResolverInterface
             throw new ValidationException(\__('Entity resolver for \'%1\' is not valid', $entityType));
         }
 
-        $mappingData = $this->mappingDataProvider->getMappingDataByEntityType($entityType);
+        $mappingData = $this->mappingDataProvider->getMappingDataByEntityType($entityType, $storeId);
         if (!$mappingData) {
             return [];
         }

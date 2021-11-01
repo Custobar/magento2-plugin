@@ -7,7 +7,6 @@ use Custobar\CustoConnector\Model\MappedDataBuilder;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Customer\Model\CustomerFactory;
-use Magento\Framework\App\MutableScopeConfig;
 use Magento\Newsletter\Model\Subscriber;
 use Magento\Newsletter\Model\SubscriberFactory;
 use Magento\Sales\Model\OrderFactory;
@@ -258,21 +257,18 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
      * @magentoDbIsolation enabled
      *
      * @magentoDataFixture Magento/Catalog/_files/products_with_multiselect_attribute.php
+     * @magentoConfigFixture current_store custobar/custoconnector_field_mapping/product name:scope_title<br>sku:external_id<br>custobar_minimal_price:minimal_price<br>custobar_price:price<br>type_id:mage_type<br>configurable_min_price:my_configurable_min_price<br>custobar_attribute_set_name:type<br>custobar_category:category<br>custobar_category_id:category_id<br>custobar_image:image<br>custobar_product_url:url<br>custobar_special_price:sale_price<br>description:description<br>custobar_language:language<br>custobar_store_id:store_id<br>custobar_child_ids:mage_child_ids<br>custobar_parent_ids:mage_parent_ids<br>multiselect_attribute:brand
      */
     public function testBuildMappedDataProductMultiselectAttribute()
     {
-        $this->extendMappingConfig(
-            'custobar/custoconnector_field_mapping/product',
-            'multiselect_attribute:brand'
-        );
-
+        $storeId = $this->storeManager->getStore()->getId();
         $product = $this->productRepository->get('simple_ms_2');
         $productData = $this->entityDataResolver->resolveEntity(
             \Magento\Catalog\Model\Product::class,
             $product->getId(),
-            $this->storeManager->getStore()->getId()
+            $storeId
         );
-        $mappedData = $this->mappedDataBuilder->buildMappedData($productData);
+        $mappedData = $this->mappedDataBuilder->buildMappedData($productData, $storeId);
 
         $this->assertEquals(
             'simple_ms_2',
@@ -292,21 +288,18 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
      * @magentoDbIsolation enabled
      *
      * @magentoDataFixture Magento/Catalog/_files/products_with_dropdown_attribute.php
+     * @magentoConfigFixture current_store custobar/custoconnector_field_mapping/product name:scope_title<br>sku:external_id<br>custobar_minimal_price:minimal_price<br>custobar_price:price<br>type_id:mage_type<br>configurable_min_price:my_configurable_min_price<br>custobar_attribute_set_name:type<br>custobar_category:category<br>custobar_category_id:category_id<br>custobar_image:image<br>custobar_product_url:url<br>custobar_special_price:sale_price<br>description:description<br>custobar_language:language<br>custobar_store_id:store_id<br>custobar_child_ids:mage_child_ids<br>custobar_parent_ids:mage_parent_ids<br>dropdown_attribute:brand
      */
     public function testBuildMappedDataDropdownAttribute()
     {
-        $this->extendMappingConfig(
-            'custobar/custoconnector_field_mapping/product',
-            'dropdown_attribute:brand'
-        );
-
+        $storeId = $this->storeManager->getStore()->getId();
         $product = $this->productRepository->get('simple_op_2');
         $productData = $this->entityDataResolver->resolveEntity(
             \Magento\Catalog\Model\Product::class,
             $product->getId(),
-            $this->storeManager->getStore()->getId()
+            $storeId
         );
-        $mappedData = $this->mappedDataBuilder->buildMappedData($productData);
+        $mappedData = $this->mappedDataBuilder->buildMappedData($productData, $storeId);
 
         $this->assertEquals(
             'simple_op_2',
@@ -668,19 +661,5 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
             'Test Website, Main Website Store, Fixture Second Store',
             $mappedData->getData('name')
         );
-    }
-
-    /**
-     * @param string $configPath
-     * @param string $newValue
-     * @throws \Exception
-     */
-    private function extendMappingConfig(string $configPath, string $newValue)
-    {
-        /** @var MutableScopeConfig $config */
-        $config = $this->objectManager->get(MutableScopeConfig::class);
-        $value = $config->getValue($configPath);
-        $value .= "\n$newValue";
-        $config->setValue($configPath, $value);
     }
 }

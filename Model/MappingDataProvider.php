@@ -32,9 +32,9 @@ class MappingDataProvider implements MappingDataProviderInterface
     private $mappingDataModels;
 
     /**
-     * @var MappingDataInterface[]
+     * @var MappingDataInterface[][]
      */
-    private $cachedData;
+    private $cachedData = [];
 
     /**
      * @param DataExtenderInterface $dataExtender
@@ -126,7 +126,7 @@ class MappingDataProvider implements MappingDataProviderInterface
                 throw new ValidationException(\__('Mapping data model \'%1\' is not valid', $index));
             }
 
-            $models[$index] = $mappingData;
+            $models[$index] = clone $mappingData;
         }
 
         return $models;

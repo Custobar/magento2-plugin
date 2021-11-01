@@ -283,7 +283,7 @@ class ExportTest extends \PHPUnit\Framework\TestCase
                 ExportDataInterface::ENTITY_TYPE => Customer::class,
                 ExportDataInterface::FAILED_SCHEDULE_IDS => $idsByType[Customer::class],
                 ExportDataInterface::SUCCESSFUL_SCHEDULE_IDS => [],
-                ExportDataInterface::MAPPED_DATA_ROWS => [],
+                ExportDataInterface::MAPPED_DATA_ROWS => null,
             ],
             Address::class => [
                 ExportDataInterface::ENTITY_TYPE => Address::class,

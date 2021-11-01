@@ -40,6 +40,7 @@ class AdjustFieldMappingFromConfig implements DataExtenderInterface
             );
         }
         if (!empty($configData)) {
+            $configData = \str_replace('<br>', "\n", $configData);
             $splitDataItems = \explode("\n", $configData);
             foreach ($splitDataItems as $splitDataItem) {
                 $rowData = \explode(":", $splitDataItem);
