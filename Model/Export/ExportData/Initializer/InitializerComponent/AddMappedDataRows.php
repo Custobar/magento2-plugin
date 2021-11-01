@@ -78,7 +78,7 @@ class AddMappedDataRows implements InitializerComponentInterface
                 continue;
             }
 
-            $mappedData = $this->mappedDataBuilder->buildMappedData($entity);
+            $mappedData = $this->mappedDataBuilder->buildMappedData($entity, $schedule->getStoreId());
             if (empty($mappedData)) {
                 $this->logger->debug(\__(
                     'Did not process \'%1\' of \'%2\', failed to construct data for export',

@@ -50,7 +50,7 @@ class AddAttributeData implements DataExtenderInterface
         $attributes = $entity->getAttributes();
         $mappingData = $this->mappingDataProvider->getMappingDataByEntityType(
             \Magento\Catalog\Model\Product::class,
-            $entity->getStore()->getId()
+            $entity->getStoreId()
         );
         $fieldMap = $mappingData->getFieldMap();
 
@@ -65,7 +65,7 @@ class AddAttributeData implements DataExtenderInterface
             $rawValue = $this->productResource->getAttributeRawValue(
                 $entity->getId(),
                 $index,
-                $entity->getStore()->getId()
+                $entity->getStoreId()
             );
             $rawValue = \is_array($rawValue) ? $rawValue[$index] ?? null : $rawValue;
             if (!$rawValue) {

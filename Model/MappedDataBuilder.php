@@ -55,11 +55,13 @@ class MappedDataBuilder implements MappedDataBuilderInterface
     /**
      * @inheritDoc
      */
-    public function buildMappedData($entity)
+    public function buildMappedData($entity, int $storeId = null)
     {
         $entityType = $this->identiferResolver->resolveEntityType($entity);
-        // For now products only support this
-        $storeId = $entityType == Product::ENTITY ? $entity->getStoreId() : null;
+        if ($entityType == Product::ENTITY) {
+            $storeId = $storeId === null ? $entity->getStoreId() : $storeId;
+            $entity->setStoreId($storeId);
+        }
         $mappingData = $this->mappingDataProvider->getMappingDataByEntityType($entityType, $storeId);
         if (!$mappingData) {
             throw new NotFoundException(\__('No mapping data available for \'%1\'', $entityType));

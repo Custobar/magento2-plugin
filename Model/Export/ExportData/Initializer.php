@@ -52,6 +52,8 @@ class Initializer implements InitializerInterface
             $exportData = $this->exportDataFactory->create();
             $exportData->setEntityType($entityType);
             $exportData->setAllSchedules($schedules);
+            $allScheduleIds = \array_keys($schedules);
+            $exportData->setAttemptedScheduleIds($allScheduleIds);
 
             try {
                 foreach ($this->components as $component) {
@@ -61,8 +63,6 @@ class Initializer implements InitializerInterface
 
                     $exportData = $component->execute($exportData);
                 }
-
-                $allSyncData[$entityType] = $exportData;
             } catch (\Exception $e) {
                 $this->logger->debug(\__(
                     'Failed to construct export data for \'%1\': %2',
@@ -71,9 +71,9 @@ class Initializer implements InitializerInterface
                 ), [
                     'trace' => $e->getTrace(),
                 ]);
-
-                continue;
             }
+
+            $allSyncData[$entityType] = $exportData;
         }
 
         return $allSyncData;
