@@ -92,12 +92,16 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
         $product = $this->productRepository->get('simple');
         $this->assertEquals('Simple Product', $product->getName());
 
-        $this->expectException(NoSuchEntityException::class);
-        $this->scheduleRepository->getByData(
-            \Magento\Catalog\Model\Product::class,
-            $product->getId(),
-            $this->storeManager->getStore()->getId()
-        );
+        try {
+            $this->scheduleRepository->getByData(
+                \Magento\Catalog\Model\Product::class,
+                $product->getId(),
+                $this->storeManager->getStore()->getId()
+            );
+            $this->assertTrue(false, 'Assert that exception was thrown');
+        } catch (NoSuchEntityException $exception) {
+            $this->assertTrue(true, 'Assert that exception was thrown');
+        }
 
         $updatedName = 'Updated name';
         $product->setName($updatedName);
@@ -130,12 +134,16 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
         $product = $this->productRepository->get('simple');
         $this->assertEquals('Simple Product', $product->getName());
 
-        $this->expectException(NoSuchEntityException::class);
-        $this->scheduleRepository->getByData(
-            \Magento\Catalog\Model\Product::class,
-            $product->getId(),
-            $this->storeManager->getStore()->getId()
-        );
+        try {
+            $this->scheduleRepository->getByData(
+                \Magento\Catalog\Model\Product::class,
+                $product->getId(),
+                $this->storeManager->getStore()->getId()
+            );
+            $this->assertTrue(false, 'Assert that exception was thrown');
+        } catch (NoSuchEntityException $exception) {
+            $this->assertTrue(true, 'Assert that exception was thrown');
+        }
 
         $updatedName = 'Updated name';
         $product->setName($updatedName);
@@ -174,12 +182,16 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
         $product = $this->productRepository->get('simple');
         $this->assertEquals('Simple Product', $product->getName());
 
-        $this->expectException(NoSuchEntityException::class);
-        $this->scheduleRepository->getByData(
-            \Magento\Catalog\Model\Product::class,
-            $product->getId(),
-            $this->storeManager->getStore()->getId()
-        );
+        try {
+            $this->scheduleRepository->getByData(
+                \Magento\Catalog\Model\Product::class,
+                $product->getId(),
+                $this->storeManager->getStore()->getId()
+            );
+            $this->assertTrue(false, 'Assert that exception was thrown');
+        } catch (NoSuchEntityException $exception) {
+            $this->assertTrue(true, 'Assert that exception was thrown');
+        }
 
         $updatedName = 'Updated name';
         $product->setName($updatedName);
@@ -295,12 +307,16 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
             ->loadByEmail('customer_one_address@test.com');
         $this->assertEquals('John', $customer->getDataModel()->getFirstname());
 
-        $this->expectException(NoSuchEntityException::class);
-        $this->scheduleRepository->getByData(
-            \Magento\Customer\Model\Customer::class,
-            $customer->getId(),
-            $this->storeManager->getStore()->getId()
-        );
+        try {
+            $this->scheduleRepository->getByData(
+                \Magento\Customer\Model\Customer::class,
+                $customer->getId(),
+                $this->storeManager->getStore()->getId()
+            );
+            $this->assertTrue(false, 'Assert that exception was thrown');
+        } catch (NoSuchEntityException $exception) {
+            $this->assertTrue(true, 'Assert that exception was thrown');
+        }
 
         $updatedFieldValue = 'New first name';
         $dataModel = $customer->getDataModel();
@@ -341,12 +357,16 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
             ->loadByIncrementId('100000001');
         $this->assertEquals(100, $order->getSubtotal());
 
-        $this->expectException(NoSuchEntityException::class);
-        $this->scheduleRepository->getByData(
-            \Magento\Sales\Model\Order::class,
-            $order->getId(),
-            $order->getStoreId()
-        );
+        try {
+            $this->scheduleRepository->getByData(
+                \Magento\Sales\Model\Order::class,
+                $order->getId(),
+                $this->storeManager->getStore()->getId()
+            );
+            $this->assertTrue(false, 'Assert that exception was thrown');
+        } catch (NoSuchEntityException $exception) {
+            $this->assertTrue(true, 'Assert that exception was thrown');
+        }
 
         $newSubTotal = 200;
         $order->setSubtotal($newSubTotal);
@@ -358,7 +378,7 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($newSubTotal, $order->getSubtotal());
 
         $schedule = $this->scheduleRepository->getByData(
-            \Magento\Customer\Model\Customer::class,
+            \Magento\Sales\Model\Order::class,
             $order->getId(),
             $order->getStoreId()
         );
@@ -387,12 +407,16 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
             $subscriber->getStatus()
         );
 
-        $this->expectException(NoSuchEntityException::class);
-        $this->scheduleRepository->getByData(
-            \Magento\Newsletter\Model\Subscriber::class,
-            $subscriber->getId(),
-            $subscriber->getStoreId()
-        );
+        try {
+            $this->scheduleRepository->getByData(
+                \Magento\Newsletter\Model\Subscriber::class,
+                $subscriber->getId(),
+                $this->storeManager->getStore()->getId()
+            );
+            $this->assertTrue(false, 'Assert that exception was thrown');
+        } catch (NoSuchEntityException $exception) {
+            $this->assertTrue(true, 'Assert that exception was thrown');
+        }
 
         $updatedStatus = \Magento\Newsletter\Model\Subscriber::STATUS_UNSUBSCRIBED;
         $subscriber->setSubscriberStatus($updatedStatus);
