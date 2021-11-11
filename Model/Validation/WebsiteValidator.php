@@ -5,7 +5,7 @@ namespace Custobar\CustoConnector\Model\Validation;
 use Custobar\CustoConnector\Api\EntityTypeResolverInterface;
 use Custobar\CustoConnector\Api\WebsiteValidatorInterface;
 use Custobar\CustoConnector\Model\Config;
-use Custobar\CustoConnector\Model\Validation\WebsiteValidator\EntityWebsiteResolverInterface;
+use Custobar\CustoConnector\Model\Validation\WebsiteValidator\WebsiteResolverInterface;
 use Magento\Framework\Validation\ValidationException;
 
 class WebsiteValidator implements WebsiteValidatorInterface
@@ -21,23 +21,28 @@ class WebsiteValidator implements WebsiteValidatorInterface
     private $typeResolver;
 
     /**
-     * @var EntityWebsiteResolverInterface[]
+     * @var WebsiteResolverInterface[]
      */
-    private $entityResolvers;
+    private $websiteResolvers;
+
+    /**
+     * @var bool[]
+     */
+    private $cachedResults;
 
     /**
      * @param Config $config
      * @param EntityTypeResolverInterface $typeResolver
-     * @param EntityWebsiteResolverInterface[] $entityResolvers
+     * @param WebsiteResolverInterface[] $websiteResolvers
      */
     public function __construct(
         Config $config,
         EntityTypeResolverInterface $typeResolver,
-        array $entityResolvers = []
+        array $websiteResolvers = []
     ) {
         $this->config = $config;
         $this->typeResolver = $typeResolver;
-        $this->entityResolvers = $entityResolvers;
+        $this->websiteResolvers = $websiteResolvers;
     }
 
     /**
@@ -45,10 +50,14 @@ class WebsiteValidator implements WebsiteValidatorInterface
      */
     public function isWebsiteAllowed(int $websiteId)
     {
-        $websites = $this->config->getAllowedWebsites();
-        $websites[] = 0;
+        if (!isset($this->cachedResults[$websiteId])) {
+            $websites = $this->config->getAllowedWebsites();
+            $websites[] = 0;
 
-        return \in_array($websiteId, $websites);
+            $this->cachedResults[$websiteId] = \in_array($websiteId, $websites);
+        }
+
+        return $this->cachedResults[$websiteId];
     }
 
     /**
@@ -56,16 +65,46 @@ class WebsiteValidator implements WebsiteValidatorInterface
      */
     public function isEntityInAllowedWebsites($entity)
     {
-        $entityType = $this->typeResolver->resolveEntityType($entity);
-        $websiteResolver = $this->entityResolvers[$entityType] ?? null;
-        if ($websiteResolver === null) {
+        if (!$entity) {
             return false;
         }
-        if (!($websiteResolver instanceof EntityWebsiteResolverInterface)) {
+
+        $entityId = $entity->getId();
+        $entityType = $this->typeResolver->resolveEntityType($entity);
+        $results = $this->isEntityIdsInAllowedWebsites([$entityId], $entityType);
+
+        return $results[$entityId] ?? false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isEntityIdsInAllowedWebsites(array $entityIds, string $entityType)
+    {
+        $websiteResolver = $this->websiteResolvers[$entityType];
+        if ($websiteResolver === null) {
+            return \array_fill_keys($entityIds, false);
+        }
+        if (!($websiteResolver instanceof WebsiteResolverInterface)) {
             throw new ValidationException(\__('Website resolver for \'%1\' is not valid', $entityType));
         }
 
-        $websiteIds = $websiteResolver->getEntityWebsiteIds($entity);
+        $validationResults = [];
+        $entityWebsiteIds = $websiteResolver->getEntityWebsiteIds($entityIds);
+        foreach ($entityWebsiteIds as $entityId => $websiteIds) {
+            $validationResults[$entityId] = $this->isOneWebsiteAllowed($websiteIds);
+        }
+
+        return $validationResults;
+    }
+
+    /**
+     * @param int[] $websiteIds
+     *
+     * @return bool
+     */
+    private function isOneWebsiteAllowed(array $websiteIds)
+    {
         foreach ($websiteIds as $id) {
             if ($this->isWebsiteAllowed($id)) {
                 return true;

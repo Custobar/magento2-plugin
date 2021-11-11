@@ -33,6 +33,17 @@ class CheckHasMappingData implements SchedulingValidatorInterface
     {
         $mappingData = $this->mappingDataProvider->getMappingDataByObject($entity);
 
-        return !empty($mappingData);
+        return !$mappingData;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function canScheduleEntityTypeAndIds(array $entityIds, string $entityType)
+    {
+        $mappingData = $this->mappingDataProvider->getMappingDataByEntityType($entityType);
+        $valid = !$mappingData ? false : true;
+
+        return \array_fill_keys($entityIds, $valid);
     }
 }

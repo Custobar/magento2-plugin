@@ -41,4 +41,33 @@ class SchedulingValidatorChain implements SchedulingValidatorInterface
 
         return true;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function canScheduleEntityTypeAndIds(array $entityIds, string $entityType)
+    {
+        $validationResults = \array_fill_keys($entityIds, true);
+        foreach ($this->validators as $name => $validator) {
+            if ($validator === null) {
+                continue;
+            }
+            if (!($validator instanceof SchedulingValidatorInterface)) {
+                throw new ValidationException(\__('Scheduling validator \'%1\' is not valid', $name));
+            }
+
+            $results = $validator->canScheduleEntityTypeAndIds($entityIds, $entityType);
+            foreach ($validationResults as $entityId => $result) {
+                $newResult = $results[$entityId] ?? null;
+                if ($newResult === null || $result === false) {
+                    continue;
+                }
+                if ($newResult === false) {
+                    $validationResults[$entityId] = false;
+                }
+            }
+        }
+
+        return $validationResults;
+    }
 }
