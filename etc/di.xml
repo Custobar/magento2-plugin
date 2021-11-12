@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <!-- PREFERENCES -->
+    <!-- PREFERENCES -->
 
     <preference for="Custobar\CustoConnector\Api\Data\InitialInterface" type="Custobar\CustoConnector\Model\Initial" />
     <preference for="Custobar\CustoConnector\Api\InitialRepositoryInterface" type="Custobar\CustoConnector\Model\InitialRepository" />
@@ -46,7 +46,7 @@
     <preference for="Custobar\CustoConnector\Model\CustobarApi\ClientBuilderInterface" type="Custobar\CustoConnector\Model\CustobarApi\ClientBuilder" />
     <preference for="Custobar\CustoConnector\Model\CustobarApi\ClientUrlProviderInterface" type="Custobar\CustoConnector\Model\CustobarApi\ClientUrlProvider" />
 
-    <!-- LOGGER CONFIGURATION -->
+    <!-- LOGGER CONFIGURATION -->
 
     <virtualType name="custoConnectorDebugLoggerHandler" type="Magento\Framework\Logger\Handler\Base">
         <arguments>
@@ -94,7 +94,7 @@
         </arguments>
     </type>
 
-    <!-- SCHEDULE LOCK CONFIGURATION -->
+    <!-- SCHEDULE LOCK CONFIGURATION -->
 
     <type name="Custobar\CustoConnector\Model\Schedule\LockFlag">
         <arguments>
@@ -104,7 +104,7 @@
         </arguments>
     </type>
 
-    <!-- PRODUCT PROVIDER -->
+    <!-- PRODUCT PROVIDER -->
 
     <type name="Custobar\CustoConnector\Model\ResourceModel\Product\ProductProvider\CollectionPreProcessor\AddAttributesToSelect">
         <arguments>
@@ -130,7 +130,7 @@
         </arguments>
     </type>
 
-    <!-- ENTITY DATA CONFIGURATIONS -->
+    <!-- ENTITY DATA CONFIGURATIONS -->
 
     <type name="Custobar\CustoConnector\Model\EntityDataResolver">
         <arguments>
@@ -165,7 +165,7 @@
         </arguments>
     </type>
 
-    <!-- MAPPING DATA CONFIGURATIONS -->
+    <!-- MAPPING DATA CONFIGURATIONS -->
 
     <virtualType name="Custobar\CustoConnector\Model\MappingData\CatalogProduct" type="Custobar\CustoConnector\Model\MappingData">
         <arguments>
@@ -246,7 +246,7 @@
         </arguments>
     </type>
 
-    <!-- MAPPED DATA BUILDER - DATA EXTENDER CONFIGURATIONS -->
+    <!-- MAPPED DATA BUILDER - DATA EXTENDER CONFIGURATIONS -->
 
     <virtualType name="Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogProduct" type="Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderChain">
         <arguments>
@@ -309,7 +309,7 @@
         </arguments>
     </type>
 
-    <!-- SCHEDULING VALIDATOR CONFIGURATION -->
+    <!-- SCHEDULING VALIDATOR CONFIGURATION -->
 
     <type name="Custobar\CustoConnector\Model\Validation\SchedulingValidatorChain">
         <arguments>
@@ -320,7 +320,7 @@
         </arguments>
     </type>
 
-    <!-- EXECUTION VALIDATOR CONFIGURATION -->
+    <!-- EXECUTION VALIDATOR CONFIGURATION -->
 
     <type name="Custobar\CustoConnector\Model\Validation\ExecutionValidatorChain">
         <arguments>
@@ -330,21 +330,21 @@
         </arguments>
     </type>
 
-    <!-- WEBSITE VALIDATOR -->
+    <!-- WEBSITE VALIDATOR -->
 
     <type name="Custobar\CustoConnector\Model\Validation\WebsiteValidator">
         <arguments>
-            <argument name="entityResolvers" xsi:type="array">
-                <item name="Magento\Catalog\Model\Product" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\EntityWebsiteResolver\ByWebsiteIds</item>
-                <item name="Magento\Customer\Model\Customer" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\EntityWebsiteResolver\ByWebsiteId</item>
-                <item name="Magento\Newsletter\Model\Subscriber" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\EntityWebsiteResolver\ByStoreId</item>
-                <item name="Magento\Sales\Model\Order" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\EntityWebsiteResolver\ByStoreId</item>
-                <item name="Magento\Store\Model\Store" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\EntityWebsiteResolver\ByWebsiteId</item>
+            <argument name="websiteResolvers" xsi:type="array">
+                <item name="Magento\Catalog\Model\Product" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\WebsiteResolver\CatalogProduct</item>
+                <item name="Magento\Customer\Model\Customer" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\WebsiteResolver\Customer</item>
+                <item name="Magento\Newsletter\Model\Subscriber" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\WebsiteResolver\NewsletterSubscriber</item>
+                <item name="Magento\Sales\Model\Order" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\WebsiteResolver\SalesOrder</item>
+                <item name="Magento\Store\Model\Store" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\WebsiteResolver\Store</item>
             </argument>
         </arguments>
     </type>
 
-    <!-- EXPORT CONFIGURATIONS -->
+    <!-- EXPORT CONFIGURATIONS -->
 
     <type name="Custobar\CustoConnector\Model\Export\ExportData\Initializer">
         <arguments>
@@ -365,7 +365,7 @@
         </arguments>
     </type>
 
-    <!-- INITIAL CONFIGURATIONS -->
+    <!-- INITIAL CONFIGURATIONS -->
 
     <type name="Custobar\CustoConnector\Model\Initial\Entity\CollectionResolverProvider">
         <arguments>
@@ -388,5 +388,11 @@
                 <item name="add_action_data" xsi:type="object">Custobar\CustoConnector\Model\Initial\StatusDataBuilder\BuilderComponent\AddActionData</item>
             </argument>
         </arguments>
+    </type>
+
+    <!-- PLUGINS -->
+
+    <type name="Magento\Catalog\Model\Indexer\Product\Price\Action\Rows">
+        <plugin name="generate_schedules_on_price_indexing" type="Custobar\CustoConnector\Plugin\GenerateSchedulesOnPriceIndexing" />
     </type>
 </config>
