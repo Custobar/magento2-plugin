@@ -10,7 +10,7 @@ $collectionFactory = $objectManager->create(CollectionFactory::class);
 $schedules = $collectionFactory->create()
     ->addFieldToFilter(
         ScheduleInterface::SCHEDULED_ENTITY_TYPE,
-        \Magento\Store\Model\Store::class
+        \Magento\Store\Model\Store::ENTITY
     )
     ->getItems();
 foreach ($schedules as $schedule) {
@@ -23,7 +23,7 @@ $scheduleFactory = $objectManager->create(\Custobar\CustoConnector\Model\Schedul
 $allScheduleData = [
     [
         ScheduleInterface::SCHEDULED_ENTITY_ID => 1,
-        ScheduleInterface::SCHEDULED_ENTITY_TYPE => \Magento\Store\Model\Store::class,
+        ScheduleInterface::SCHEDULED_ENTITY_TYPE => \Magento\Store\Model\Store::ENTITY,
         ScheduleInterface::STORE_ID => 1,
         ScheduleInterface::PROCESSED_AT => '0000-00-00 00:00:00',
     ],

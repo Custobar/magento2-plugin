@@ -81,7 +81,7 @@ class WebsiteValidator implements WebsiteValidatorInterface
      */
     public function isEntityIdsInAllowedWebsites(array $entityIds, string $entityType)
     {
-        $websiteResolver = $this->websiteResolvers[$entityType];
+        $websiteResolver = $this->websiteResolvers[$entityType] ?? null;
         if ($websiteResolver === null) {
             return \array_fill_keys($entityIds, false);
         }

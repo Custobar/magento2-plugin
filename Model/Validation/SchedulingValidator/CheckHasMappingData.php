@@ -33,7 +33,7 @@ class CheckHasMappingData implements SchedulingValidatorInterface
     {
         $mappingData = $this->mappingDataProvider->getMappingDataByObject($entity);
 
-        return !$mappingData;
+        return (bool)$mappingData;
     }
 
     /**

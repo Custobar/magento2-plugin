@@ -12,7 +12,7 @@ $collectionFactory = $objectManager->create(CollectionFactory::class);
 $schedules = $collectionFactory->create()
     ->addFieldToFilter(
         ScheduleInterface::SCHEDULED_ENTITY_TYPE,
-        \Magento\Catalog\Model\Product::class
+        \Magento\Catalog\Model\Product::ENTITY
     )
     ->getItems();
 foreach ($schedules as $schedule) {
@@ -29,21 +29,21 @@ $allScheduleData = [
     [
         ScheduleInterface::SCHEDULED_ENTITY_ID => $productFactory->create()
             ->loadByAttribute('sku', 'wrong-simple')->getId(),
-        ScheduleInterface::SCHEDULED_ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
+        ScheduleInterface::SCHEDULED_ENTITY_TYPE => \Magento\Catalog\Model\Product::ENTITY,
         ScheduleInterface::STORE_ID => 1,
         ScheduleInterface::PROCESSED_AT => '0000-00-00 00:00:00',
     ],
     [
         ScheduleInterface::SCHEDULED_ENTITY_ID => $productFactory->create()
             ->loadByAttribute('sku', 'simple-249')->getId(),
-        ScheduleInterface::SCHEDULED_ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
+        ScheduleInterface::SCHEDULED_ENTITY_TYPE => \Magento\Catalog\Model\Product::ENTITY,
         ScheduleInterface::STORE_ID => 1,
         ScheduleInterface::PROCESSED_AT => '0000-00-00 00:00:00',
     ],
     [
         ScheduleInterface::SCHEDULED_ENTITY_ID => $productFactory->create()
             ->loadByAttribute('sku', 'simple-156')->getId(),
-        ScheduleInterface::SCHEDULED_ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
+        ScheduleInterface::SCHEDULED_ENTITY_TYPE => \Magento\Catalog\Model\Product::ENTITY,
         ScheduleInterface::STORE_ID => 1,
         ScheduleInterface::PROCESSED_AT => '0000-00-00 00:00:00',
     ],

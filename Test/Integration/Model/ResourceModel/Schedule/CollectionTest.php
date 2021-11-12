@@ -50,7 +50,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
             'Assert if id is as expected'
         );
         $this->assertEquals(
-            \Magento\Customer\Model\Customer::class,
+            \Magento\Customer\Model\Customer::ENTITY,
             $first->getScheduledEntityType(),
             'Assert if type is as expected'
         );

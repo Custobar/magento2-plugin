@@ -27,6 +27,6 @@ class SalesOrder implements ResolverComponentInterface
      */
     public function getEntityType()
     {
-        return \Magento\Sales\Model\Order::class;
+        return \Magento\Sales\Model\Order::ENTITY;
     }
 }

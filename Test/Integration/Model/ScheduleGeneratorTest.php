@@ -54,7 +54,7 @@ class ScheduleGeneratorTest extends \PHPUnit\Framework\TestCase
         $result = $this->scheduleGenerator->generateByData(
             3,
             1,
-            \Magento\Customer\Model\Customer::class
+            \Magento\Customer\Model\Customer::ENTITY
         );
 
         $this->assertFalse(
@@ -76,7 +76,7 @@ class ScheduleGeneratorTest extends \PHPUnit\Framework\TestCase
         $productSchedule = $this->scheduleGenerator->generateByData(
             1,
             1,
-            \Magento\Catalog\Model\Product::class
+            \Magento\Catalog\Model\Product::ENTITY
         );
 
         $this->assertNotFalse(
@@ -91,7 +91,7 @@ class ScheduleGeneratorTest extends \PHPUnit\Framework\TestCase
         $firstSchedule = $schedules->getFirstItem();
         $this->assertEquals(3, $firstSchedule->getScheduledEntityId());
         $this->assertEquals(
-            \Magento\Customer\Model\Customer::class,
+            \Magento\Customer\Model\Customer::ENTITY,
             $firstSchedule->getScheduledEntityType(),
             'Test that customer model is the first in the schedules'
         );

@@ -33,7 +33,7 @@ class MappingDataProviderTest extends \PHPUnit\Framework\TestCase
      */
     public function testHasProductMappingData()
     {
-        $entityType = \Magento\Catalog\Model\Product::class;
+        $entityType = \Magento\Catalog\Model\Product::ENTITY;
         $mappingData = $this->dataProvider->getMappingDataByEntityType($entityType);
         $this->assertNotNull($mappingData);
     }

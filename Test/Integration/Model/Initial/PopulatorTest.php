@@ -56,11 +56,11 @@ class PopulatorTest extends \PHPUnit\Framework\TestCase
     public function testExecute()
     {
         $originalData = [
-            \Magento\Catalog\Model\Product::class => [],
-            \Magento\Customer\Model\Customer::class => [],
-            \Magento\Sales\Model\Order::class => [],
-            \Magento\Newsletter\Model\Subscriber::class => [],
-            \Magento\Store\Model\Store::class => [],
+            \Magento\Catalog\Model\Product::ENTITY => [],
+            \Magento\Customer\Model\Customer::ENTITY => [],
+            \Magento\Sales\Model\Order::ENTITY => [],
+            'newsletter_subscriber' => [],
+            \Magento\Store\Model\Store::ENTITY => [],
         ];
 
         $initials = $this->getInitials(\array_keys($originalData));
@@ -68,34 +68,34 @@ class PopulatorTest extends \PHPUnit\Framework\TestCase
         $this->assertInitials($originalData, $initials);
 
         $expectedData = [
-            \Magento\Catalog\Model\Product::class => [
+            \Magento\Catalog\Model\Product::ENTITY => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
+                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::ENTITY,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Customer\Model\Customer::class => [
+            \Magento\Customer\Model\Customer::ENTITY => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Customer\Model\Customer::class,
+                InitialInterface::ENTITY_TYPE => \Magento\Customer\Model\Customer::ENTITY,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Sales\Model\Order::class => [
+            \Magento\Sales\Model\Order::ENTITY => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Sales\Model\Order::class,
+                InitialInterface::ENTITY_TYPE => \Magento\Sales\Model\Order::ENTITY,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Newsletter\Model\Subscriber::class => [
+            'newsletter_subscriber' => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Newsletter\Model\Subscriber::class,
+                InitialInterface::ENTITY_TYPE => 'newsletter_subscriber',
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Store\Model\Store::class => [
+            \Magento\Store\Model\Store::ENTITY => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Store\Model\Store::class,
+                InitialInterface::ENTITY_TYPE => \Magento\Store\Model\Store::ENTITY,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
         ];
@@ -119,34 +119,34 @@ class PopulatorTest extends \PHPUnit\Framework\TestCase
     public function testExecuteOnExisting()
     {
         $originalData = [
-            \Magento\Catalog\Model\Product::class => [
+            \Magento\Catalog\Model\Product::ENTITY => [
                 InitialInterface::PAGE => 1,
                 InitialInterface::PAGES => 2,
-                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
+                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::ENTITY,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Customer\Model\Customer::class => [
+            \Magento\Customer\Model\Customer::ENTITY => [
                 InitialInterface::PAGE => 1,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Customer\Model\Customer::class,
+                InitialInterface::ENTITY_TYPE => \Magento\Customer\Model\Customer::ENTITY,
                 InitialInterface::STATUS => Status::STATUS_PROCESSED,
             ],
-            \Magento\Sales\Model\Order::class => [
+            \Magento\Sales\Model\Order::ENTITY => [
                 InitialInterface::PAGE => 1,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Sales\Model\Order::class,
+                InitialInterface::ENTITY_TYPE => \Magento\Sales\Model\Order::ENTITY,
                 InitialInterface::STATUS => Status::STATUS_IDLE,
             ],
-            \Magento\Newsletter\Model\Subscriber::class => [
+            'newsletter_subscriber' => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Newsletter\Model\Subscriber::class,
+                InitialInterface::ENTITY_TYPE => 'newsletter_subscriber',
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Store\Model\Store::class => [
+            \Magento\Store\Model\Store::ENTITY => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Store\Model\Store::class,
+                InitialInterface::ENTITY_TYPE => \Magento\Store\Model\Store::ENTITY,
                 InitialInterface::STATUS => Status::STATUS_IDLE,
             ],
         ];
@@ -155,34 +155,34 @@ class PopulatorTest extends \PHPUnit\Framework\TestCase
         $this->assertInitials($originalData, $initials);
 
         $expectedData = [
-            \Magento\Catalog\Model\Product::class => [
+            \Magento\Catalog\Model\Product::ENTITY => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
+                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::ENTITY,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Customer\Model\Customer::class => [
+            \Magento\Customer\Model\Customer::ENTITY => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Customer\Model\Customer::class,
+                InitialInterface::ENTITY_TYPE => \Magento\Customer\Model\Customer::ENTITY,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Sales\Model\Order::class => [
+            \Magento\Sales\Model\Order::ENTITY => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Sales\Model\Order::class,
+                InitialInterface::ENTITY_TYPE => \Magento\Sales\Model\Order::ENTITY,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Newsletter\Model\Subscriber::class => [
+            'newsletter_subscriber' => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Newsletter\Model\Subscriber::class,
+                InitialInterface::ENTITY_TYPE => 'newsletter_subscriber',
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Store\Model\Store::class => [
+            \Magento\Store\Model\Store::ENTITY => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Store\Model\Store::class,
+                InitialInterface::ENTITY_TYPE => \Magento\Store\Model\Store::ENTITY,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
         ];

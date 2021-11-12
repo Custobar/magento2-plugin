@@ -135,11 +135,11 @@
     <type name="Custobar\CustoConnector\Model\EntityDataResolver">
         <arguments>
             <argument name="components" xsi:type="array">
-                <item name="Magento\Catalog\Model\Product" xsi:type="object">Custobar\CustoConnector\Model\EntityDataResolver\ResolverComponent\CatalogProduct</item>
-                <item name="Magento\Customer\Model\Customer" xsi:type="object">Custobar\CustoConnector\Model\EntityDataResolver\ResolverComponent\Customer</item>
-                <item name="Magento\Newsletter\Model\Subscriber" xsi:type="object">Custobar\CustoConnector\Model\EntityDataResolver\ResolverComponent\NewsletterSubscriber</item>
-                <item name="Magento\Sales\Model\Order" xsi:type="object">Custobar\CustoConnector\Model\EntityDataResolver\ResolverComponent\SalesOrder</item>
-                <item name="Magento\Store\Model\Store" xsi:type="object">Custobar\CustoConnector\Model\EntityDataResolver\ResolverComponent\Store</item>
+                <item name="catalog_product" xsi:type="object">Custobar\CustoConnector\Model\EntityDataResolver\ResolverComponent\CatalogProduct</item>
+                <item name="customer" xsi:type="object">Custobar\CustoConnector\Model\EntityDataResolver\ResolverComponent\Customer</item>
+                <item name="newsletter_subscriber" xsi:type="object">Custobar\CustoConnector\Model\EntityDataResolver\ResolverComponent\NewsletterSubscriber</item>
+                <item name="order" xsi:type="object">Custobar\CustoConnector\Model\EntityDataResolver\ResolverComponent\SalesOrder</item>
+                <item name="store" xsi:type="object">Custobar\CustoConnector\Model\EntityDataResolver\ResolverComponent\Store</item>
             </argument>
         </arguments>
     </type>
@@ -147,7 +147,7 @@
     <type name="Custobar\CustoConnector\Model\EntityDataConverter">
         <arguments>
             <argument name="converters" xsi:type="array">
-                <item name="Magento\Customer\Model\Address" xsi:type="object">Custobar\CustoConnector\Model\EntityDataConverter\ToMapped\CustomerAddress</item>
+                <item name="customer_address" xsi:type="object">Custobar\CustoConnector\Model\EntityDataConverter\ToMapped\CustomerAddress</item>
             </argument>
         </arguments>
     </type>
@@ -155,12 +155,12 @@
     <type name="Custobar\CustoConnector\Model\EntityTypeResolver">
         <arguments>
             <argument name="components" xsi:type="array">
-                <item name="Magento\Catalog\Model\Product" xsi:type="object">Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponent\CatalogProduct</item>
-                <item name="Magento\Customer\Model\Customer" xsi:type="object">Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponent\Customer</item>
+                <item name="catalog_product" xsi:type="object">Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponent\CatalogProduct</item>
+                <item name="customer" xsi:type="object">Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponent\Customer</item>
                 <item name="Magento\Customer\Model\Address" xsi:type="object">Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponent\CustomerAddress</item>
-                <item name="Magento\Newsletter\Model\Subscriber" xsi:type="object">Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponent\NewsletterSubscriber</item>
-                <item name="Magento\Sales\Model\Order" xsi:type="object">Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponent\SalesOrder</item>
-                <item name="Magento\Store\Model\Store" xsi:type="object">Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponent\Store</item>
+                <item name="newsletter_subscriber" xsi:type="object">Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponent\NewsletterSubscriber</item>
+                <item name="order" xsi:type="object">Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponent\SalesOrder</item>
+                <item name="store" xsi:type="object">Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponent\Store</item>
             </argument>
         </arguments>
     </type>
@@ -170,7 +170,7 @@
     <virtualType name="Custobar\CustoConnector\Model\MappingData\CatalogProduct" type="Custobar\CustoConnector\Model\MappingData">
         <arguments>
             <argument name="data" xsi:type="array">
-                <item name="entity_type" xsi:type="string">Magento\Catalog\Model\Product</item>
+                <item name="entity_type" xsi:type="string">catalog_product</item>
                 <item name="target_field" xsi:type="string">products</item>
                 <item name="label" xsi:type="string" translatable="true">Products</item>
                 <item name="field_map_config" xsi:type="const">Custobar\CustoConnector\Model\Config::CONFIG_MAPPING_PRODUCT</item>
@@ -181,7 +181,7 @@
     <virtualType name="Custobar\CustoConnector\Model\MappingData\Customer" type="Custobar\CustoConnector\Model\MappingData">
         <arguments>
             <argument name="data" xsi:type="array">
-                <item name="entity_type" xsi:type="string">Magento\Customer\Model\Customer</item>
+                <item name="entity_type" xsi:type="string">customer</item>
                 <item name="target_field" xsi:type="string">customers</item>
                 <item name="label" xsi:type="string" translatable="true">Customers</item>
                 <item name="field_map_config" xsi:type="const">Custobar\CustoConnector\Model\Config::CONFIG_MAPPING_CUSTOMER</item>
@@ -192,7 +192,7 @@
     <virtualType name="Custobar\CustoConnector\Model\MappingData\NewsletterSubscriber" type="Custobar\CustoConnector\Model\MappingData">
         <arguments>
             <argument name="data" xsi:type="array">
-                <item name="entity_type" xsi:type="string">Magento\Newsletter\Model\Subscriber</item>
+                <item name="entity_type" xsi:type="string">newsletter_subscriber</item>
                 <item name="target_field" xsi:type="string">events</item>
                 <item name="label" xsi:type="string" translatable="true">Events</item>
                 <item name="field_map_config" xsi:type="const">Custobar\CustoConnector\Model\Config::CONFIG_MAPPING_NEWSLETTER</item>
@@ -203,7 +203,7 @@
     <virtualType name="Custobar\CustoConnector\Model\MappingData\SalesOrder" type="Custobar\CustoConnector\Model\MappingData">
         <arguments>
             <argument name="data" xsi:type="array">
-                <item name="entity_type" xsi:type="string">Magento\Sales\Model\Order</item>
+                <item name="entity_type" xsi:type="string">order</item>
                 <item name="target_field" xsi:type="string">sales</item>
                 <item name="label" xsi:type="string" translatable="true">Sales</item>
                 <item name="field_map_config" xsi:type="const">Custobar\CustoConnector\Model\Config::CONFIG_MAPPING_ORDER</item>
@@ -214,7 +214,7 @@
     <virtualType name="Custobar\CustoConnector\Model\MappingData\Store" type="Custobar\CustoConnector\Model\MappingData">
         <arguments>
             <argument name="data" xsi:type="array">
-                <item name="entity_type" xsi:type="string">Magento\Store\Model\Store</item>
+                <item name="entity_type" xsi:type="string">store</item>
                 <item name="target_field" xsi:type="string">shops</item>
                 <item name="label" xsi:type="string" translatable="true">Shops</item>
                 <item name="field_map" xsi:type="array">
@@ -228,11 +228,11 @@
     <type name="Custobar\CustoConnector\Model\MappingDataProvider">
         <arguments>
             <argument name="mappingDataModels" xsi:type="array">
-                <item name="Magento\Catalog\Model\Product" xsi:type="object">Custobar\CustoConnector\Model\MappingData\CatalogProduct</item>
-                <item name="Magento\Customer\Model\Customer" xsi:type="object">Custobar\CustoConnector\Model\MappingData\Customer</item>
-                <item name="Magento\Newsletter\Model\Subscriber" xsi:type="object">Custobar\CustoConnector\Model\MappingData\NewsletterSubscriber</item>
-                <item name="Magento\Sales\Model\Order" xsi:type="object">Custobar\CustoConnector\Model\MappingData\SalesOrder</item>
-                <item name="Magento\Store\Model\Store" xsi:type="object">Custobar\CustoConnector\Model\MappingData\Store</item>
+                <item name="catalog_product" xsi:type="object">Custobar\CustoConnector\Model\MappingData\CatalogProduct</item>
+                <item name="customer" xsi:type="object">Custobar\CustoConnector\Model\MappingData\Customer</item>
+                <item name="newsletter_subscriber" xsi:type="object">Custobar\CustoConnector\Model\MappingData\NewsletterSubscriber</item>
+                <item name="order" xsi:type="object">Custobar\CustoConnector\Model\MappingData\SalesOrder</item>
+                <item name="store" xsi:type="object">Custobar\CustoConnector\Model\MappingData\Store</item>
             </argument>
         </arguments>
     </type>
@@ -299,11 +299,11 @@
     <type name="Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderProvider">
         <arguments>
             <argument name="dataExtenders" xsi:type="array">
-                <item name="Magento\Catalog\Model\Product" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogProduct</item>
-                <item name="Magento\Customer\Model\Customer" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\Customer</item>
-                <item name="Magento\Newsletter\Model\Subscriber" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\NewsletterSubscriber</item>
-                <item name="Magento\Sales\Model\Order" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\SalesOrder</item>
-                <item name="Magento\Store\Model\Store" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\Store</item>
+                <item name="catalog_product" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogProduct</item>
+                <item name="customer" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\Customer</item>
+                <item name="newsletter_subscriber" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\NewsletterSubscriber</item>
+                <item name="order" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\SalesOrder</item>
+                <item name="store" xsi:type="object">Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\Store</item>
             </argument>
         </arguments>
     </type>
@@ -334,11 +334,11 @@
     <type name="Custobar\CustoConnector\Model\Validation\WebsiteValidator">
         <arguments>
             <argument name="websiteResolvers" xsi:type="array">
-                <item name="Magento\Catalog\Model\Product" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\WebsiteResolver\CatalogProduct</item>
-                <item name="Magento\Customer\Model\Customer" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\WebsiteResolver\Customer</item>
-                <item name="Magento\Newsletter\Model\Subscriber" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\WebsiteResolver\NewsletterSubscriber</item>
-                <item name="Magento\Sales\Model\Order" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\WebsiteResolver\SalesOrder</item>
-                <item name="Magento\Store\Model\Store" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\WebsiteResolver\Store</item>
+                <item name="catalog_product" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\WebsiteResolver\CatalogProduct</item>
+                <item name="customer" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\WebsiteResolver\Customer</item>
+                <item name="newsletter_subscriber" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\WebsiteResolver\NewsletterSubscriber</item>
+                <item name="order" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\WebsiteResolver\SalesOrder</item>
+                <item name="store" xsi:type="object">Custobar\CustoConnector\Model\Validation\WebsiteValidator\WebsiteResolver\Store</item>
             </argument>
         </arguments>
     </type>
@@ -369,11 +369,11 @@
     <type name="Custobar\CustoConnector\Model\Initial\Entity\CollectionResolverProvider">
         <arguments>
             <argument name="resolvers" xsi:type="array">
-                <item name="Magento\Catalog\Model\Product" xsi:type="object">Custobar\CustoConnector\Model\Initial\Entity\CollectionResolver\CatalogProduct</item>
-                <item name="Magento\Customer\Model\Customer" xsi:type="object">Custobar\CustoConnector\Model\Initial\Entity\CollectionResolver\Customer</item>
-                <item name="Magento\Newsletter\Model\Subscriber" xsi:type="object">Custobar\CustoConnector\Model\Initial\Entity\CollectionResolver\NewsletterSubscriber</item>
-                <item name="Magento\Sales\Model\Order" xsi:type="object">Custobar\CustoConnector\Model\Initial\Entity\CollectionResolver\SalesOrder</item>
-                <item name="Magento\Store\Model\Store" xsi:type="object">Custobar\CustoConnector\Model\Initial\Entity\CollectionResolver\Store</item>
+                <item name="catalog_product" xsi:type="object">Custobar\CustoConnector\Model\Initial\Entity\CollectionResolver\CatalogProduct</item>
+                <item name="customer" xsi:type="object">Custobar\CustoConnector\Model\Initial\Entity\CollectionResolver\Customer</item>
+                <item name="newsletter_subscriber" xsi:type="object">Custobar\CustoConnector\Model\Initial\Entity\CollectionResolver\NewsletterSubscriber</item>
+                <item name="order" xsi:type="object">Custobar\CustoConnector\Model\Initial\Entity\CollectionResolver\SalesOrder</item>
+                <item name="store" xsi:type="object">Custobar\CustoConnector\Model\Initial\Entity\CollectionResolver\Store</item>
             </argument>
         </arguments>
     </type>

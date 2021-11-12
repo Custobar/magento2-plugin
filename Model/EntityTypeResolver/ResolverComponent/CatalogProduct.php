@@ -27,6 +27,6 @@ class CatalogProduct implements ResolverComponentInterface
      */
     public function getEntityType()
     {
-        return \Magento\Catalog\Model\Product::class;
+        return \Magento\Catalog\Model\Product::ENTITY;
     }
 }

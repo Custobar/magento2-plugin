@@ -54,7 +54,7 @@ class SchedulingValidatorTest extends \PHPUnit\Framework\TestCase
 
         $results = $this->schedulingValidator->canScheduleEntityTypeAndIds(
             $productIds,
-            \Magento\Catalog\Model\Product::class
+            \Magento\Catalog\Model\Product::ENTITY
         );
         $this->assertEquals($expectedResults, $results);
     }

@@ -6,11 +6,11 @@ $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
 $initialRepository = $objectManager->create(\Custobar\CustoConnector\Model\InitialRepository::class);
 
 $entityTypes = [
-    \Magento\Catalog\Model\Product::class,
-    \Magento\Customer\Model\Customer::class,
-    \Magento\Sales\Model\Order::class,
-    \Magento\Newsletter\Model\Subscriber::class,
-    \Magento\Store\Model\Store::class,
+    \Magento\Catalog\Model\Product::ENTITY,
+    \Magento\Customer\Model\Customer::ENTITY,
+    \Magento\Sales\Model\Order::ENTITY,
+    'newsletter_subscriber',
+    \Magento\Store\Model\Store::ENTITY,
 ];
 
 foreach ($entityTypes as $entityType) {

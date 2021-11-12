@@ -6,8 +6,8 @@ $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
 $initialRepository = $objectManager->create(\Custobar\CustoConnector\Model\InitialRepository::class);
 
 $entityTypes = [
-    \Magento\Catalog\Model\Product::class,
-    \Magento\Customer\Model\Customer::class,
+    \Magento\Catalog\Model\Product::ENTITY,
+    \Magento\Customer\Model\Customer::ENTITY,
 ];
 
 foreach ($entityTypes as $entityType) {

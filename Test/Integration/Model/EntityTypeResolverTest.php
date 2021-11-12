@@ -3,6 +3,7 @@
 namespace Custobar\CustoConnector\Test\Integration\Model;
 
 use Custobar\CustoConnector\Model\EntityTypeResolver;
+use Magento\Catalog\Model\Product;
 use \Magento\TestFramework\Helper\Bootstrap;
 
 class EntityTypeResolverTest extends \PHPUnit\Framework\TestCase
@@ -30,13 +31,11 @@ class EntityTypeResolverTest extends \PHPUnit\Framework\TestCase
     /**
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
-     *
-     * @magentoDataFixture Magento/Catalog/_files/products_list.php
      */
     public function testResolveEntityType()
     {
-        $expectedEntityType = \Magento\Catalog\Model\Product::class;
-        $product = $this->objectManager->create($expectedEntityType);
+        $expectedEntityType = Product::ENTITY;
+        $product = $this->objectManager->create(Product::class);
         $entityType = $this->typeResolver->resolveEntityType($product);
 
         $this->assertEquals($expectedEntityType, $entityType);

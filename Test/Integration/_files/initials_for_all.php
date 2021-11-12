@@ -6,7 +6,7 @@ $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
 $initialFactory = $objectManager->create(\Custobar\CustoConnector\Model\InitialFactory::class);
 
 $productInitial = $initialFactory->create()
-    ->setEntityType(\Magento\Catalog\Model\Product::class)
+    ->setEntityType(\Magento\Catalog\Model\Product::ENTITY)
     ->setPage(0)
     ->setPage(1)
     ->setCreatedAt(\time())
@@ -14,7 +14,7 @@ $productInitial = $initialFactory->create()
 $productInitial->save();
 
 $customerInitial = $initialFactory->create()
-    ->setEntityType(\Magento\Customer\Model\Customer::class)
+    ->setEntityType(\Magento\Customer\Model\Customer::ENTITY)
     ->setPage(0)
     ->setPage(1)
     ->setCreatedAt(\time())
@@ -22,7 +22,7 @@ $customerInitial = $initialFactory->create()
 $customerInitial->save();
 
 $orderInitial = $initialFactory->create()
-    ->setEntityType(\Magento\Sales\Model\Order::class)
+    ->setEntityType(\Magento\Sales\Model\Order::ENTITY)
     ->setPage(0)
     ->setPage(1)
     ->setCreatedAt(\time())
@@ -30,7 +30,7 @@ $orderInitial = $initialFactory->create()
 $orderInitial->save();
 
 $subscriberInitial = $initialFactory->create()
-    ->setEntityType(\Magento\Newsletter\Model\Subscriber::class)
+    ->setEntityType('newsletter_subscriber')
     ->setPage(0)
     ->setPage(1)
     ->setCreatedAt(\time())
@@ -38,7 +38,7 @@ $subscriberInitial = $initialFactory->create()
 $subscriberInitial->save();
 
 $storeInitial = $initialFactory->create()
-    ->setEntityType(\Magento\Store\Model\Store::class)
+    ->setEntityType(\Magento\Store\Model\Store::ENTITY)
     ->setPage(0)
     ->setPage(1)
     ->setCreatedAt(\time())

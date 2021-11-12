@@ -10,7 +10,7 @@ $collectionFactory = $objectManager->create(CollectionFactory::class);
 $schedules = $collectionFactory->create()
     ->addFieldToFilter(
         ScheduleInterface::SCHEDULED_ENTITY_TYPE,
-        \Magento\Newsletter\Model\Subscriber::class
+        'newsletter_subscriber'
     )
     ->getItems();
 foreach ($schedules as $schedule) {
