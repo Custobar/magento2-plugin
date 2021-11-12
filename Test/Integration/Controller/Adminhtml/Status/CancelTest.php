@@ -46,8 +46,8 @@ class CancelTest extends \Magento\TestFramework\TestCase\AbstractBackendControll
     public function testCancel()
     {
         $this->assertInitials([
-            \Magento\Catalog\Model\Product::ENTITY => [
-                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::ENTITY,
+            \Magento\Catalog\Model\Product::class => [
+                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
         ]);
@@ -63,7 +63,7 @@ class CancelTest extends \Magento\TestFramework\TestCase\AbstractBackendControll
         $this->assertRedirect($this->stringContains('/backend/custobar/status/index'));
 
         $this->assertInitials([
-            \Magento\Catalog\Model\Product::ENTITY => null,
+            \Magento\Catalog\Model\Product::class => null,
         ]);
     }
 
@@ -74,7 +74,7 @@ class CancelTest extends \Magento\TestFramework\TestCase\AbstractBackendControll
     public function testCancelNoInitials()
     {
         $this->assertInitials([
-            \Magento\Catalog\Model\Product::ENTITY => null,
+            \Magento\Catalog\Model\Product::class => null,
         ]);
 
         $this->getRequest()->setMethod(HttpRequest::METHOD_POST);
@@ -85,7 +85,7 @@ class CancelTest extends \Magento\TestFramework\TestCase\AbstractBackendControll
             $this->equalTo([
                 \sprintf(
                     'No initial found with id \'%s\'',
-                    \Magento\Catalog\Model\Product::ENTITY
+                    \Magento\Catalog\Model\Product::class
                 ),
             ]),
             MessageInterface::TYPE_SUCCESS
@@ -123,24 +123,24 @@ class CancelTest extends \Magento\TestFramework\TestCase\AbstractBackendControll
     public function testCancelAll()
     {
         $this->assertInitials([
-            \Magento\Catalog\Model\Product::ENTITY => [
-                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::ENTITY,
+            \Magento\Catalog\Model\Product::class => [
+                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Customer\Model\Customer::ENTITY => [
-                InitialInterface::ENTITY_TYPE => \Magento\Customer\Model\Customer::ENTITY,
+            \Magento\Customer\Model\Customer::class => [
+                InitialInterface::ENTITY_TYPE => \Magento\Customer\Model\Customer::class,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Sales\Model\Order::ENTITY => [
-                InitialInterface::ENTITY_TYPE => \Magento\Sales\Model\Order::ENTITY,
+            \Magento\Sales\Model\Order::class => [
+                InitialInterface::ENTITY_TYPE => \Magento\Sales\Model\Order::class,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            'newsletter_subscriber' => [
-                InitialInterface::ENTITY_TYPE => 'newsletter_subscriber',
+            \Magento\Newsletter\Model\Subscriber::class => [
+                InitialInterface::ENTITY_TYPE => \Magento\Newsletter\Model\Subscriber::class,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Store\Model\Store::ENTITY => [
-                InitialInterface::ENTITY_TYPE => \Magento\Store\Model\Store::ENTITY,
+            \Magento\Store\Model\Store::class => [
+                InitialInterface::ENTITY_TYPE => \Magento\Store\Model\Store::class,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
         ]);
@@ -156,11 +156,11 @@ class CancelTest extends \Magento\TestFramework\TestCase\AbstractBackendControll
         $this->assertRedirect($this->stringContains('/backend/custobar/status/index'));
 
         $this->assertInitials([
-            \Magento\Catalog\Model\Product::ENTITY => null,
-            \Magento\Customer\Model\Customer::ENTITY => null,
-            \Magento\Sales\Model\Order::ENTITY => null,
-            'newsletter_subscriber' => null,
-            \Magento\Store\Model\Store::ENTITY => null,
+            \Magento\Catalog\Model\Product::class => null,
+            \Magento\Customer\Model\Customer::class => null,
+            \Magento\Sales\Model\Order::class => null,
+            \Magento\Newsletter\Model\Subscriber::class => null,
+            \Magento\Store\Model\Store::class => null,
         ]);
     }
 

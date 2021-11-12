@@ -87,7 +87,7 @@ class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
 
         try {
             $this->scheduleRepository->getByData(
-                \Magento\Catalog\Model\Product::ENTITY,
+                \Magento\Catalog\Model\Product::class,
                 $product->getId(),
                 $storeId
             );
@@ -100,7 +100,7 @@ class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
 
         $this->expectException(NoSuchEntityException::class);
         $this->scheduleRepository->getByData(
-            \Magento\Catalog\Model\Product::ENTITY,
+            \Magento\Catalog\Model\Product::class,
             $product->getId(),
             $storeId
         );
@@ -128,7 +128,7 @@ class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
 
         try {
             $this->scheduleRepository->getByData(
-                \Magento\Catalog\Model\Product::ENTITY,
+                \Magento\Catalog\Model\Product::class,
                 $product->getId(),
                 $storeId
             );
@@ -140,13 +140,13 @@ class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
         $this->refreshSpecialPrices->execute();
 
         $schedule = $this->scheduleRepository->getByData(
-            \Magento\Catalog\Model\Product::ENTITY,
+            \Magento\Catalog\Model\Product::class,
             $product->getId(),
             $storeId
         );
 
         $this->assertEquals($product->getId(), $schedule->getScheduledEntityId());
-        $this->assertEquals(\Magento\Catalog\Model\Product::ENTITY, $schedule->getScheduledEntityType());
+        $this->assertEquals(\Magento\Catalog\Model\Product::class, $schedule->getScheduledEntityType());
         $this->assertEquals($storeId, $schedule->getStoreId());
     }
 }

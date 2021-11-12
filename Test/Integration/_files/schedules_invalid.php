@@ -12,9 +12,9 @@ $collectionFactory = $objectManager->create(CollectionFactory::class);
 $schedules = $collectionFactory->create()
     ->addFieldToFilter(ScheduleInterface::SCHEDULED_ENTITY_TYPE, [
         'unknown_type',
-        \Magento\Catalog\Model\Product::ENTITY,
-        \Magento\Customer\Model\Customer::ENTITY,
-        'customer_address',
+        \Magento\Catalog\Model\Product::class,
+        \Magento\Customer\Model\Customer::class,
+        \Magento\Customer\Model\Address::class,
     ])
     ->getItems();
 foreach ($schedules as $schedule) {
@@ -35,21 +35,21 @@ $allScheduleData = [
     [
         // Non existing entity
         ScheduleInterface::SCHEDULED_ENTITY_ID => 99999,
-        ScheduleInterface::SCHEDULED_ENTITY_TYPE => \Magento\Catalog\Model\Product::ENTITY,
+        ScheduleInterface::SCHEDULED_ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
         ScheduleInterface::STORE_ID => 1,
         ScheduleInterface::PROCESSED_AT => '0000-00-00 00:00:00',
     ],
     [
         // Non existing store
         ScheduleInterface::SCHEDULED_ENTITY_ID => 1,
-        ScheduleInterface::SCHEDULED_ENTITY_TYPE => \Magento\Customer\Model\Customer::ENTITY,
+        ScheduleInterface::SCHEDULED_ENTITY_TYPE => \Magento\Customer\Model\Customer::class,
         ScheduleInterface::STORE_ID => 1000,
         ScheduleInterface::PROCESSED_AT => '0000-00-00 00:00:00',
     ],
     [
         // Unmapped type
         ScheduleInterface::SCHEDULED_ENTITY_ID => 1,
-        ScheduleInterface::SCHEDULED_ENTITY_TYPE => 'customer_address',
+        ScheduleInterface::SCHEDULED_ENTITY_TYPE => \Magento\Customer\Model\Address::class,
         ScheduleInterface::STORE_ID => 1,
         ScheduleInterface::PROCESSED_AT => '0000-00-00 00:00:00',
     ],

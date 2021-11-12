@@ -11,8 +11,10 @@ use Custobar\CustoConnector\Model\Schedule\ExportableProvider;
 use Custobar\CustoConnector\Model\ScheduleRepository;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ProductFactory;
+use Magento\Customer\Model\Address;
 use Magento\Customer\Model\Customer;
 use Magento\Framework\HTTP\ZendClient;
+use Magento\Newsletter\Model\Subscriber;
 use Magento\Sales\Model\Order;
 use Magento\Store\Model\Store;
 use Magento\TestFramework\Helper\Bootstrap;
@@ -103,11 +105,11 @@ class ExportTest extends \PHPUnit\Framework\TestCase
         $schedules = $this->exportableProvider->getSchedulesForExport();
         $idsByType = $this->getScheduleIdsByType($schedules);
         $scheduleCounts = [
-            Product::ENTITY => 3,
-            Customer::ENTITY => 2,
-            Order::ENTITY => 2,
-            'newsletter_subscriber' => 3,
-            Store::ENTITY => 1,
+            Product::class => 3,
+            Customer::class => 2,
+            Order::class => 2,
+            Subscriber::class => 3,
+            Store::class => 1,
         ];
         $this->assertScheduleCounts($scheduleCounts, $schedules);
 
@@ -122,30 +124,30 @@ class ExportTest extends \PHPUnit\Framework\TestCase
             ));
 
         $allExpectedData = [
-            Product::ENTITY => [
-                ExportDataInterface::ENTITY_TYPE => Product::ENTITY,
+            Product::class => [
+                ExportDataInterface::ENTITY_TYPE => Product::class,
                 ExportDataInterface::FAILED_SCHEDULE_IDS => [],
-                ExportDataInterface::SUCCESSFUL_SCHEDULE_IDS => $idsByType[Product::ENTITY],
+                ExportDataInterface::SUCCESSFUL_SCHEDULE_IDS => $idsByType[Product::class],
             ],
-            Customer::ENTITY => [
-                ExportDataInterface::ENTITY_TYPE => Customer::ENTITY,
+            Customer::class => [
+                ExportDataInterface::ENTITY_TYPE => Customer::class,
                 ExportDataInterface::FAILED_SCHEDULE_IDS => [],
-                ExportDataInterface::SUCCESSFUL_SCHEDULE_IDS => $idsByType[Customer::ENTITY],
+                ExportDataInterface::SUCCESSFUL_SCHEDULE_IDS => $idsByType[Customer::class],
             ],
-            Order::ENTITY => [
-                ExportDataInterface::ENTITY_TYPE => Order::ENTITY,
+            Order::class => [
+                ExportDataInterface::ENTITY_TYPE => Order::class,
                 ExportDataInterface::FAILED_SCHEDULE_IDS => [],
-                ExportDataInterface::SUCCESSFUL_SCHEDULE_IDS => $idsByType[Order::ENTITY],
+                ExportDataInterface::SUCCESSFUL_SCHEDULE_IDS => $idsByType[Order::class],
             ],
-            'newsletter_subscriber' => [
-                ExportDataInterface::ENTITY_TYPE => 'newsletter_subscriber',
+            Subscriber::class => [
+                ExportDataInterface::ENTITY_TYPE => Subscriber::class,
                 ExportDataInterface::FAILED_SCHEDULE_IDS => [],
-                ExportDataInterface::SUCCESSFUL_SCHEDULE_IDS => $idsByType['newsletter_subscriber'],
+                ExportDataInterface::SUCCESSFUL_SCHEDULE_IDS => $idsByType[Subscriber::class],
             ],
-            Store::ENTITY => [
-                ExportDataInterface::ENTITY_TYPE => Store::ENTITY,
+            Store::class => [
+                ExportDataInterface::ENTITY_TYPE => Store::class,
                 ExportDataInterface::FAILED_SCHEDULE_IDS => [],
-                ExportDataInterface::SUCCESSFUL_SCHEDULE_IDS => $idsByType[Store::ENTITY],
+                ExportDataInterface::SUCCESSFUL_SCHEDULE_IDS => $idsByType[Store::class],
             ],
         ];
         $allExportData = $this->export->exportBySchedules($schedules);
@@ -171,11 +173,11 @@ class ExportTest extends \PHPUnit\Framework\TestCase
         $schedules = $this->exportableProvider->getSchedulesForExport();
         $idsByType = $this->getScheduleIdsByType($schedules);
         $scheduleCounts = [
-            Customer::ENTITY => 2,
+            Customer::class => 2,
         ];
         $this->assertScheduleCounts($scheduleCounts, $schedules);
         $this->assertScheduleData([
-            Customer::ENTITY => [
+            Customer::class => [
                 1 => [
                     1 => [
                         ScheduleInterface::ERROR_COUNT => Schedule::MAX_ERROR_COUNT - 1,
@@ -205,9 +207,9 @@ class ExportTest extends \PHPUnit\Framework\TestCase
             ));
 
         $allExpectedData = [
-            Customer::ENTITY => [
-                ExportDataInterface::ENTITY_TYPE => Customer::ENTITY,
-                ExportDataInterface::FAILED_SCHEDULE_IDS => $idsByType[Customer::ENTITY],
+            Customer::class => [
+                ExportDataInterface::ENTITY_TYPE => Customer::class,
+                ExportDataInterface::FAILED_SCHEDULE_IDS => $idsByType[Customer::class],
                 ExportDataInterface::SUCCESSFUL_SCHEDULE_IDS => [],
             ],
         ];
@@ -215,7 +217,7 @@ class ExportTest extends \PHPUnit\Framework\TestCase
         $this->assertExportData($allExpectedData, $allExportData);
 
         $this->assertScheduleData([
-            Customer::ENTITY => [
+            Customer::class => [
                 1 => [
                     1 => [
                         ScheduleInterface::ERROR_COUNT => Schedule::MAX_ERROR_COUNT,
@@ -255,9 +257,9 @@ class ExportTest extends \PHPUnit\Framework\TestCase
         $idsByType = $this->getScheduleIdsByType($schedules);
         $scheduleCounts = [
             'unknown_type' => 1,
-            Product::ENTITY => 1,
-            Customer::ENTITY => 1,
-            'customer_address' => 1,
+            Product::class => 1,
+            Customer::class => 1,
+            Address::class => 1,
         ];
         $this->assertScheduleCounts($scheduleCounts, $schedules);
 
@@ -271,21 +273,21 @@ class ExportTest extends \PHPUnit\Framework\TestCase
                 ExportDataInterface::SUCCESSFUL_SCHEDULE_IDS => [],
                 ExportDataInterface::MAPPED_DATA_ROWS => [],
             ],
-            Product::ENTITY => [
-                ExportDataInterface::ENTITY_TYPE => Product::ENTITY,
-                ExportDataInterface::FAILED_SCHEDULE_IDS => $idsByType[Product::ENTITY],
+            Product::class => [
+                ExportDataInterface::ENTITY_TYPE => Product::class,
+                ExportDataInterface::FAILED_SCHEDULE_IDS => $idsByType[Product::class],
                 ExportDataInterface::SUCCESSFUL_SCHEDULE_IDS => [],
                 ExportDataInterface::MAPPED_DATA_ROWS => [],
             ],
-            Customer::ENTITY => [
-                ExportDataInterface::ENTITY_TYPE => Customer::ENTITY,
-                ExportDataInterface::FAILED_SCHEDULE_IDS => $idsByType[Customer::ENTITY],
+            Customer::class => [
+                ExportDataInterface::ENTITY_TYPE => Customer::class,
+                ExportDataInterface::FAILED_SCHEDULE_IDS => $idsByType[Customer::class],
                 ExportDataInterface::SUCCESSFUL_SCHEDULE_IDS => [],
                 ExportDataInterface::MAPPED_DATA_ROWS => [],
             ],
-            'customer_address' => [
-                ExportDataInterface::ENTITY_TYPE => 'customer_address',
-                ExportDataInterface::FAILED_SCHEDULE_IDS => $idsByType['customer_address'],
+            Address::class => [
+                ExportDataInterface::ENTITY_TYPE => Address::class,
+                ExportDataInterface::FAILED_SCHEDULE_IDS => $idsByType[Address::class],
                 ExportDataInterface::SUCCESSFUL_SCHEDULE_IDS => [],
                 ExportDataInterface::MAPPED_DATA_ROWS => [],
             ],
@@ -301,21 +303,21 @@ class ExportTest extends \PHPUnit\Framework\TestCase
                     ],
                 ],
             ],
-            Product::ENTITY => [
+            Product::class => [
                 99999 => [
                     1 => [
                         ScheduleInterface::ERROR_COUNT => Schedule::MAX_ERROR_COUNT,
                     ],
                 ],
             ],
-            Customer::ENTITY => [
+            Customer::class => [
                 1 => [
                     1000 => [
                         ScheduleInterface::ERROR_COUNT => Schedule::MAX_ERROR_COUNT,
                     ],
                 ],
             ],
-            'customer_address' => [
+            Address::class => [
                 1 => [
                     1 => [
                         ScheduleInterface::ERROR_COUNT => Schedule::MAX_ERROR_COUNT,

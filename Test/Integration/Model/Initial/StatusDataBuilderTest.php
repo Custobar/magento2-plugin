@@ -59,7 +59,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
         }
 
         $allExpectedData = [
-            \Magento\Catalog\Model\Product::ENTITY => [
+            \Magento\Catalog\Model\Product::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_RUNNING,
                 StatusDataInterface::EXPORT_PERCENT => '50 %',
                 StatusDataInterface::ACTION_LABEL => 'Cancel',
@@ -67,7 +67,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
                     'identifier' => 'products',
                 ]),
             ],
-            \Magento\Customer\Model\Customer::ENTITY => [
+            \Magento\Customer\Model\Customer::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_PROCESSED,
                 StatusDataInterface::EXPORT_PERCENT => '-',
                 StatusDataInterface::ACTION_LABEL => 'Rerun',
@@ -75,7 +75,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
                     'identifier' => 'customers',
                 ]),
             ],
-            \Magento\Sales\Model\Order::ENTITY => [
+            \Magento\Sales\Model\Order::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_IDLE,
                 StatusDataInterface::EXPORT_PERCENT => '-',
                 StatusDataInterface::ACTION_LABEL => 'Run',
@@ -83,7 +83,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
                     'identifier' => 'sales',
                 ]),
             ],
-            'newsletter_subscriber' => [
+            \Magento\Newsletter\Model\Subscriber::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_RUNNING,
                 StatusDataInterface::EXPORT_PERCENT => '0 %',
                 StatusDataInterface::ACTION_LABEL => 'Cancel',
@@ -91,7 +91,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
                     'identifier' => 'events',
                 ]),
             ],
-            \Magento\Store\Model\Store::ENTITY => [
+            \Magento\Store\Model\Store::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_IDLE,
                 StatusDataInterface::EXPORT_PERCENT => '-',
                 StatusDataInterface::ACTION_LABEL => 'Run',
@@ -118,7 +118,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
         }
 
         $allExpectedData = [
-            \Magento\Catalog\Model\Product::ENTITY => [
+            \Magento\Catalog\Model\Product::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_IDLE,
                 StatusDataInterface::EXPORT_PERCENT => '-',
                 StatusDataInterface::ACTION_LABEL => 'Run',
@@ -126,7 +126,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
                     'identifier' => 'products',
                 ]),
             ],
-            \Magento\Customer\Model\Customer::ENTITY => [
+            \Magento\Customer\Model\Customer::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_IDLE,
                 StatusDataInterface::EXPORT_PERCENT => '-',
                 StatusDataInterface::ACTION_LABEL => 'Run',
@@ -134,7 +134,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
                     'identifier' => 'customers',
                 ]),
             ],
-            \Magento\Sales\Model\Order::ENTITY => [
+            \Magento\Sales\Model\Order::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_IDLE,
                 StatusDataInterface::EXPORT_PERCENT => '-',
                 StatusDataInterface::ACTION_LABEL => 'Run',
@@ -142,7 +142,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
                     'identifier' => 'sales',
                 ]),
             ],
-            'newsletter_subscriber' => [
+            \Magento\Newsletter\Model\Subscriber::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_IDLE,
                 StatusDataInterface::EXPORT_PERCENT => '-',
                 StatusDataInterface::ACTION_LABEL => 'Run',
@@ -150,7 +150,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
                     'identifier' => 'events',
                 ]),
             ],
-            \Magento\Store\Model\Store::ENTITY => [
+            \Magento\Store\Model\Store::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_IDLE,
                 StatusDataInterface::EXPORT_PERCENT => '-',
                 StatusDataInterface::ACTION_LABEL => 'Run',

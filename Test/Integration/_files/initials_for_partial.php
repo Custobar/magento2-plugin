@@ -6,7 +6,7 @@ $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
 $initialFactory = $objectManager->create(\Custobar\CustoConnector\Model\InitialFactory::class);
 
 $productInitial = $initialFactory->create()
-    ->setEntityType(\Magento\Catalog\Model\Product::ENTITY)
+    ->setEntityType(\Magento\Catalog\Model\Product::class)
     ->setPage(0)
     ->setPage(1)
     ->setCreatedAt(\time())
@@ -14,7 +14,7 @@ $productInitial = $initialFactory->create()
 $productInitial->save();
 
 $customerInitial = $initialFactory->create()
-    ->setEntityType(\Magento\Customer\Model\Customer::ENTITY)
+    ->setEntityType(\Magento\Customer\Model\Customer::class)
     ->setPage(0)
     ->setPage(1)
     ->setCreatedAt(\time())

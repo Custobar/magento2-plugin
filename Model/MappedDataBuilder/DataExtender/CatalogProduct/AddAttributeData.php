@@ -48,7 +48,7 @@ class AddAttributeData implements DataExtenderInterface
         $entity->setData('custobar_attribute_set_name', $attributeSetName);
 
         $attributes = $entity->getAttributes();
-        $mappingData = $this->mappingDataProvider->getMappingDataByEntityType(\Magento\Catalog\Model\Product::ENTITY);
+        $mappingData = $this->mappingDataProvider->getMappingDataByEntityType(\Magento\Catalog\Model\Product::class);
         $fieldMap = $mappingData->getFieldMap();
 
         $additionalData = [];

@@ -27,6 +27,6 @@ class Customer implements ResolverComponentInterface
      */
     public function getEntityType()
     {
-        return \Magento\Customer\Model\Customer::ENTITY;
+        return \Magento\Customer\Model\Customer::class;
     }
 }

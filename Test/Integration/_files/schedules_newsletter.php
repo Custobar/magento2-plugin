@@ -12,7 +12,7 @@ $collectionFactory = $objectManager->create(CollectionFactory::class);
 $schedules = $collectionFactory->create()
     ->addFieldToFilter(
         ScheduleInterface::SCHEDULED_ENTITY_TYPE,
-        'newsletter_subscriber'
+        \Magento\Newsletter\Model\Subscriber::class
     )
     ->getItems();
 foreach ($schedules as $schedule) {
@@ -29,21 +29,21 @@ $allScheduleData = [
     [
         ScheduleInterface::SCHEDULED_ENTITY_ID => $subscriberFactory->create()
             ->loadByEmail('customer@example.com')->getId(),
-        ScheduleInterface::SCHEDULED_ENTITY_TYPE => 'newsletter_subscriber',
+        ScheduleInterface::SCHEDULED_ENTITY_TYPE => \Magento\Newsletter\Model\Subscriber::class,
         ScheduleInterface::STORE_ID => 1,
         ScheduleInterface::PROCESSED_AT => '0000-00-00 00:00:00',
     ],
     [
         ScheduleInterface::SCHEDULED_ENTITY_ID => $subscriberFactory->create()
             ->loadByEmail('customer_two@example.com')->getId(),
-        ScheduleInterface::SCHEDULED_ENTITY_TYPE => 'newsletter_subscriber',
+        ScheduleInterface::SCHEDULED_ENTITY_TYPE => \Magento\Newsletter\Model\Subscriber::class,
         ScheduleInterface::STORE_ID => 1,
         ScheduleInterface::PROCESSED_AT => '0000-00-00 00:00:00',
     ],
     [
         ScheduleInterface::SCHEDULED_ENTITY_ID => $subscriberFactory->create()
             ->loadByEmail('customer_confirm@example.com')->getId(),
-        ScheduleInterface::SCHEDULED_ENTITY_TYPE => 'newsletter_subscriber',
+        ScheduleInterface::SCHEDULED_ENTITY_TYPE => \Magento\Newsletter\Model\Subscriber::class,
         ScheduleInterface::STORE_ID => 1,
         ScheduleInterface::PROCESSED_AT => '0000-00-00 00:00:00',
     ],

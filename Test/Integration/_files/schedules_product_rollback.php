@@ -10,7 +10,7 @@ $collectionFactory = $objectManager->create(CollectionFactory::class);
 $schedules = $collectionFactory->create()
     ->addFieldToFilter(
         ScheduleInterface::SCHEDULED_ENTITY_TYPE,
-        \Magento\Catalog\Model\Product::ENTITY
+        \Magento\Catalog\Model\Product::class
     )
     ->getItems();
 foreach ($schedules as $schedule) {

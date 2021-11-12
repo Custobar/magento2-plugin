@@ -24,6 +24,6 @@ class NewsletterSubscriber implements ResolverComponentInterface
      */
     public function getEntityType()
     {
-        return 'newsletter_subscriber';
+        return Subscriber::class;
     }
 }

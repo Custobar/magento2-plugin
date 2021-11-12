@@ -34,8 +34,8 @@ class EntityTypeResolverTest extends \PHPUnit\Framework\TestCase
      */
     public function testResolveEntityType()
     {
-        $expectedEntityType = Product::ENTITY;
-        $product = $this->objectManager->create(Product::class);
+        $expectedEntityType = Product::class;
+        $product = $this->objectManager->create($expectedEntityType);
         $entityType = $this->typeResolver->resolveEntityType($product);
 
         $this->assertEquals($expectedEntityType, $entityType);

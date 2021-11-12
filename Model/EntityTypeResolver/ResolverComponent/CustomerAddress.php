@@ -27,6 +27,6 @@ class CustomerAddress implements ResolverComponentInterface
      */
     public function getEntityType()
     {
-        return 'customer_address';
+        return \Magento\Customer\Model\Address::class;
     }
 }

@@ -27,6 +27,6 @@ class Store implements ResolverComponentInterface
      */
     public function getEntityType()
     {
-        return \Magento\Store\Model\Store::ENTITY;
+        return \Magento\Store\Model\Store::class;
     }
 }

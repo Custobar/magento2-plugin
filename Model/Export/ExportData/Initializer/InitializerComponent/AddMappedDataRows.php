@@ -90,7 +90,7 @@ class AddMappedDataRows implements InitializerComponentInterface
             }
 
             // TODO: Figure out how to implement this properly
-            if ($exportData->getEntityType() == \Magento\Sales\Model\Order::ENTITY) {
+            if ($exportData->getEntityType() == \Magento\Sales\Model\Order::class) {
                 $itemsData = $mappedData->getData('magento__items') ?? [];
                 $mappedData->unsetData('magento__items');
                 if (!empty($itemsData)) {

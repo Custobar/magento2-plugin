@@ -67,7 +67,7 @@ class GenerateSchedulesOnPriceIndexing
         }
 
         $scheduleIds = [];
-        $entityType = \Magento\Catalog\Model\Product::ENTITY;
+        $entityType = \Magento\Catalog\Model\Product::class;
         $validationResults = $this->schedulingValidator->canScheduleEntityTypeAndIds($ids, $entityType);
         foreach ($validationResults as $entityId => $validationResult) {
             if ($validationResult) {
