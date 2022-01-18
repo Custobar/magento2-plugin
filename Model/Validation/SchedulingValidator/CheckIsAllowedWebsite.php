@@ -25,4 +25,12 @@ class CheckIsAllowedWebsite implements SchedulingValidatorInterface
     {
         return $this->websiteValidator->isEntityInAllowedWebsites($entity);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function canScheduleEntityTypeAndIds(array $entityIds, string $entityType)
+    {
+        return $this->websiteValidator->isEntityIdsInAllowedWebsites($entityIds, $entityType);
+    }
 }
