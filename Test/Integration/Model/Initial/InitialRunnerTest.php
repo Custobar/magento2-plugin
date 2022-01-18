@@ -70,6 +70,7 @@ class InitialRunnerTest extends \PHPUnit\Framework\TestCase
      * @magentoDbIsolation enabled
      *
      * @magentoDataFixture Magento/Catalog/_files/products_list.php
+     * @magentoConfigFixture default_store custobar/custobar_custoconnector/allowed_websites 1
      */
     public function testRunInitialProduct()
     {
@@ -109,6 +110,7 @@ class InitialRunnerTest extends \PHPUnit\Framework\TestCase
      * @magentoDbIsolation enabled
      *
      * @magentoDataFixture Magento/Catalog/_files/products_list.php
+     * @magentoConfigFixture default_store custobar/custobar_custoconnector/allowed_websites 1
      */
     public function testRunInitialProductPagingProgress()
     {
@@ -170,6 +172,7 @@ class InitialRunnerTest extends \PHPUnit\Framework\TestCase
      * @magentoDataFixture Magento/Sales/_files/order_list.php
      * @magentoDataFixture Magento/Newsletter/_files/subscribers.php
      * @magentoDataFixture Magento/Catalog/_files/products_list.php
+     * @magentoConfigFixture default_store custobar/custobar_custoconnector/allowed_websites 1
      */
     public function testRunInitialAllPagingProgress()
     {
