@@ -72,6 +72,14 @@ Magento crons run above the /pub folder so If you are running Magento frontend f
 
 ## Update notices
 
+### 2.1.0:
+- Fixed issue where entities that were restricted to certain websites still got scheduled for export
+for all websites
+- Added possibility to specify field mappings per store view in admin
+- Added possibility to automatically add domain on field mappings
+- Fixed issue where applying/expiring special prices would not automatically cause product to be scheduled
+for export 
+
 ### 2.0.0:
 - Module refactored to better follow Magento standards and improve general code quality
 - Admin view for logs added
