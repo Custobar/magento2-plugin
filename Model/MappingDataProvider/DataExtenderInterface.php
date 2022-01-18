@@ -10,8 +10,9 @@ interface DataExtenderInterface
      * Intended for modifying the given mapping data and returning the modified one back
      *
      * @param MappingDataInterface $mappingData
+     * @param int|null $storeId
      *
      * @return MappingDataInterface
      */
-    public function extendData(MappingDataInterface $mappingData);
+    public function extendData(MappingDataInterface $mappingData, int $storeId = null);
 }

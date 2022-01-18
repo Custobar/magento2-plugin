@@ -24,7 +24,7 @@ class DataExtenderChain implements DataExtenderInterface
     /**
      * @inheritDoc
      */
-    public function extendData(MappingDataInterface $mappingData)
+    public function extendData(MappingDataInterface $mappingData, int $storeId = null)
     {
         foreach ($this->dataExtenders as $name => $dataExtender) {
             if ($dataExtender === null) {
@@ -34,7 +34,7 @@ class DataExtenderChain implements DataExtenderInterface
                 throw new ValidationException(\__('Mapping data extender \'%1\' is not valid', $name));
             }
 
-            $mappingData = $dataExtender->extendData($mappingData);
+            $mappingData = $dataExtender->extendData($mappingData, $storeId);
         }
 
         return $mappingData;

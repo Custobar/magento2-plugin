@@ -12,6 +12,7 @@ class Type implements OptionSourceInterface
      */
     public function toOptionArray()
     {
+        $options = [];
         $options[] = [
             'value' => Logger::INFO,
             'label' => \__('Info'),
