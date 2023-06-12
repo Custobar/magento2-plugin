@@ -29,7 +29,7 @@ class AddBasicData implements DataExtenderInterface
     {
         /** @var Order $entity */
         $additionalData = [
-            'custobar_created_at' => $this->formatDate((string)$entity->getCreatedAtDate()),
+            'custobar_created_at' => $this->formatDate((string)$entity->getCreatedAt()),
             'custobar_discount' => \round((float)$entity->getDiscountAmount() * 100),
             'custobar_grand_total' => \round((float)$entity->getGrandTotal() * 100),
         ];
