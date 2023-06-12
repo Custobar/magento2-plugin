@@ -4,12 +4,14 @@ namespace Custobar\CustoConnector\Test\Integration\Model\ResourceModel\Schedule;
 
 use Custobar\CustoConnector\Model\ResourceModel\Initial;
 use Custobar\CustoConnector\Model\ResourceModel\Initial\CollectionFactory;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
+use PHPUnit\Framework\TestCase;
 
-class InitialTest extends \PHPUnit\Framework\TestCase
+class InitialTest extends TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 

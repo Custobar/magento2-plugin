@@ -8,6 +8,7 @@ use Custobar\CustoConnector\Api\MappedDataBuilderInterface;
 use Custobar\CustoConnector\Model\Export\ExportData\Initializer\InitializerComponentInterface;
 use Custobar\CustoConnector\Api\Data\ExportDataInterface;
 use Magento\Framework\DataObjectFactory;
+use Magento\Sales\Model\Order;
 
 class AddMappedDataRows implements InitializerComponentInterface
 {
@@ -31,6 +32,12 @@ class AddMappedDataRows implements InitializerComponentInterface
      */
     private $dataObjectFactory;
 
+    /**
+     * @param EntityDataResolverInterface $dataResolver
+     * @param MappedDataBuilderInterface $mappedDataBuilder
+     * @param LoggerInterface $logger
+     * @param DataObjectFactory $dataObjectFactory
+     */
     public function __construct(
         EntityDataResolverInterface $dataResolver,
         MappedDataBuilderInterface $mappedDataBuilder,
@@ -49,7 +56,7 @@ class AddMappedDataRows implements InitializerComponentInterface
     public function execute(ExportDataInterface $exportData)
     {
         $schedules = $exportData->getAllSchedules();
-        if (empty($exportData->getMappingData())) {
+        if (!$exportData->getMappingData()) {
             $allScheduleIds = \array_keys($schedules);
 
             $exportData->setSuccessfulScheduleIds([]);
@@ -68,7 +75,7 @@ class AddMappedDataRows implements InitializerComponentInterface
         /** @var \Custobar\CustoConnector\Api\Data\ScheduleInterface $schedule */
         foreach ($schedules as $schedule) {
             $entity = $scheduleEntities[$schedule->getScheduleId()] ?? null;
-            if (empty($entity)) {
+            if (!$entity) {
                 $this->logger->debug(__(
                     'Did not process \'%1\' of \'%2\', entity data not found',
                     $schedule->getScheduledEntityId(),
@@ -79,7 +86,7 @@ class AddMappedDataRows implements InitializerComponentInterface
             }
 
             $mappedData = $this->mappedDataBuilder->buildMappedData($entity, $schedule->getStoreId());
-            if (empty($mappedData)) {
+            if (!$mappedData) {
                 $this->logger->debug(__(
                     'Did not process \'%1\' of \'%2\', failed to construct data for export',
                     $schedule->getScheduledEntityId(),
@@ -89,11 +96,11 @@ class AddMappedDataRows implements InitializerComponentInterface
                 continue;
             }
 
-            // TODO: Figure out how to implement this properly
-            if ($exportData->getEntityType() == \Magento\Sales\Model\Order::class) {
+            // TODO: Figure out how to implement this properly
+            if ($exportData->getEntityType() == Order::class) {
                 $itemsData = $mappedData->getData('magento__items') ?? [];
                 $mappedData->unsetData('magento__items');
-                if (!empty($itemsData)) {
+                if ($itemsData) {
                     $first = \array_shift($itemsData);
                     $mappedData->addData($first);
                 }

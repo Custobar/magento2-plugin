@@ -19,6 +19,10 @@ class ClientBuilder implements ClientBuilderInterface
      */
     private $config;
 
+    /**
+     * @param LaminasClientFactory $clientFactory
+     * @param Config $config
+     */
     public function __construct(
         LaminasClientFactory $clientFactory,
         Config $config

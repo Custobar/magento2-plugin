@@ -14,6 +14,9 @@ class AdjustFieldMappingFromConfig implements DataExtenderInterface
      */
     private $scopeConfig;
 
+    /**
+     * @param ScopeConfigInterface $scopeConfig
+     */
     public function __construct(
         ScopeConfigInterface $scopeConfig
     ) {
@@ -39,7 +42,7 @@ class AdjustFieldMappingFromConfig implements DataExtenderInterface
                 $storeId
             );
         }
-        if (!empty($configData)) {
+        if ($configData) {
             $configData = \str_replace('<br>', "\n", $configData);
             $splitDataItems = \explode("\n", $configData);
             foreach ($splitDataItems as $splitDataItem) {

@@ -4,6 +4,7 @@ namespace Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponent;
 
 use Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponentInterface;
 use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Model\Order;
 
 class SalesOrder implements ResolverComponentInterface
 {
@@ -15,7 +16,7 @@ class SalesOrder implements ResolverComponentInterface
         if ($entity instanceof OrderInterface) {
             return true;
         }
-        if ($entity instanceof \Magento\Sales\Model\Order) {
+        if ($entity instanceof Order) {
             return true;
         }
 
@@ -27,6 +28,6 @@ class SalesOrder implements ResolverComponentInterface
      */
     public function getEntityType()
     {
-        return \Magento\Sales\Model\Order::class;
+        return Order::class;
     }
 }

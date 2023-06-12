@@ -12,6 +12,9 @@ class AddBasicData implements DataExtenderInterface
      */
     private $timezone;
 
+    /**
+     * @param TimezoneInterface $timezone
+     */
     public function __construct(
         TimezoneInterface $timezone
     ) {
@@ -44,7 +47,10 @@ class AddBasicData implements DataExtenderInterface
     }
 
     /**
+     * Format date into ISO 8601
+     *
      * @param string $createdAt
+     *
      * @return string
      */
     private function formatDate(string $createdAt)

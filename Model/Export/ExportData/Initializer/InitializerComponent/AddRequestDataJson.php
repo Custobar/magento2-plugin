@@ -14,6 +14,9 @@ class AddRequestDataJson implements InitializerComponentInterface
      */
     private $jsonSerializer;
 
+    /**
+     * @param Json $jsonSerializer
+     */
     public function __construct(
         Json $jsonSerializer
     ) {
@@ -27,7 +30,7 @@ class AddRequestDataJson implements InitializerComponentInterface
     {
         $mappingData = $exportData->getMappingData();
         $mappedDataRows = $exportData->getMappedDataRows();
-        if (empty($mappingData) || empty($mappedDataRows)) {
+        if (!$mappingData || !$mappedDataRows) {
             return $exportData;
         }
 

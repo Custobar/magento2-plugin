@@ -6,10 +6,11 @@ use Custobar\CustoConnector\Model\Export\ExportData\Initializer;
 use Custobar\CustoConnector\Model\Schedule\ExportableProvider;
 use Magento\Catalog\Model\Product;
 use Magento\Store\Model\StoreManagerInterface;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
+use PHPUnit\Framework\TestCase;
 
-class InitializerTest extends \PHPUnit\Framework\TestCase
+class InitializerTest extends TestCase
 {
     /**
      * @var ObjectManager

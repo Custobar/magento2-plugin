@@ -3,11 +3,14 @@
 namespace Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogProduct;
 
 use Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderInterface;
+use Magento\Catalog\Model\Product;
+use Magento\Directory\Helper\Data;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
 
 class AddLanguageData implements DataExtenderInterface
 {
-    const DEFAULT_LANGUAGE = 'fi';
+    public const DEFAULT_LANGUAGE = 'fi';
 
     /**
      * @var ScopeConfigInterface
@@ -15,7 +18,7 @@ class AddLanguageData implements DataExtenderInterface
     private $scopeConfig;
 
     /**
-     * @inheritDoc
+     * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig
@@ -28,7 +31,7 @@ class AddLanguageData implements DataExtenderInterface
      */
     public function execute($entity)
     {
-        /** @var \Magento\Catalog\Model\Product $entity */
+        /** @var Product $entity */
 
         $storeId = (int)$entity->getStore()->getId();
         $lang = $this->resolveLanguage($storeId);
@@ -38,14 +41,17 @@ class AddLanguageData implements DataExtenderInterface
     }
 
     /**
+     * Resolve locale code from store
+     *
      * @param int $storeId
+     *
      * @return string
      */
     private function resolveLanguage(int $storeId)
     {
         $locale = $this->scopeConfig->getValue(
-            \Magento\Directory\Helper\Data::XML_PATH_DEFAULT_LOCALE,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            Data::XML_PATH_DEFAULT_LOCALE,
+            ScopeInterface::SCOPE_STORE,
             $storeId
         );
 

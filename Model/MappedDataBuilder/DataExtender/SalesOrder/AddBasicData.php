@@ -4,6 +4,7 @@ namespace Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\SalesOrde
 
 use Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Sales\Model\Order;
 
 class AddBasicData implements DataExtenderInterface
 {
@@ -12,6 +13,9 @@ class AddBasicData implements DataExtenderInterface
      */
     private $timezone;
 
+    /**
+     * @param TimezoneInterface $timezone
+     */
     public function __construct(
         TimezoneInterface $timezone
     ) {
@@ -23,7 +27,7 @@ class AddBasicData implements DataExtenderInterface
      */
     public function execute($entity)
     {
-        /** @var \Magento\Sales\Model\Order $entity */
+        /** @var Order $entity */
         $additionalData = [
             'custobar_created_at' => $this->formatDate((string)$entity->getCreatedAtDate()),
             'custobar_discount' => \round((float)$entity->getDiscountAmount() * 100),
@@ -41,7 +45,10 @@ class AddBasicData implements DataExtenderInterface
     }
 
     /**
+     * Format date into ISO 8601
+     *
      * @param string $createdAt
+     *
      * @return string
      */
     private function formatDate(string $createdAt)

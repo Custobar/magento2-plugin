@@ -3,12 +3,13 @@
 namespace Custobar\CustoConnector\Model\Initial\Config\Source;
 
 use Magento\Framework\Data\OptionSourceInterface;
+use Magento\Framework\Phrase;
 
 class Status implements OptionSourceInterface
 {
-    const STATUS_IDLE = 0;
-    const STATUS_PROCESSED = 1;
-    const STATUS_RUNNING = 2;
+    public const STATUS_IDLE = 0;
+    public const STATUS_PROCESSED = 1;
+    public const STATUS_RUNNING = 2;
 
     /**
      * @inheritDoc
@@ -24,11 +25,13 @@ class Status implements OptionSourceInterface
             ];
         }
 
-        return $options;
+        return $optionArray;
     }
 
     /**
-     * @return \Magento\Framework\Phrase[]
+     * Get options as associative array
+     *
+     * @return Phrase[]
      */
     public function getOptions()
     {
@@ -40,8 +43,11 @@ class Status implements OptionSourceInterface
     }
 
     /**
+     * Get label by initial status id
+     *
      * @param int $status
-     * @return \Magento\Framework\Phrase
+     *
+     * @return Phrase
      */
     public function getOptionLabel(int $status)
     {

@@ -4,11 +4,13 @@ namespace Custobar\CustoConnector\Test\Integration\Model\ResourceModel\Schedule;
 
 use Custobar\CustoConnector\Api\Data\ScheduleInterface;
 use Custobar\CustoConnector\Model\ResourceModel\Schedule\CollectionFactory;
+use Magento\Customer\Model\Customer;
 use Magento\Framework\Data\Collection\AbstractDb;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
+use PHPUnit\Framework\TestCase;
 
-class CollectionTest extends \PHPUnit\Framework\TestCase
+class CollectionTest extends TestCase
 {
     /**
      * @var ObjectManager
@@ -51,7 +53,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
             'Assert if id is as expected'
         );
         $this->assertEquals(
-            \Magento\Customer\Model\Customer::class,
+            Customer::class,
             $first->getScheduledEntityType(),
             'Assert if type is as expected'
         );

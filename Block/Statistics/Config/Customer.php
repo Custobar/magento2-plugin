@@ -27,6 +27,8 @@ class Customer extends Template
     }
 
     /**
+     * Get currently logged in customer id
+     *
      * @return int|null
      */
     public function getCurrentCustomerId()

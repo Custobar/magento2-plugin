@@ -2,11 +2,14 @@
 
 namespace Custobar\CustoConnector\Model\Config\Source;
 
-class TrackingMode implements \Magento\Framework\Data\OptionSourceInterface
+use Magento\Framework\Data\OptionSourceInterface;
+use Magento\Framework\Phrase;
+
+class TrackingMode implements OptionSourceInterface
 {
-    const MODE_NONE = 0;
-    const MODE_CUSTOM_SCRIPT = 1;
-    const MODE_GTM = 2;
+    public const MODE_NONE = 0;
+    public const MODE_CUSTOM_SCRIPT = 1;
+    public const MODE_GTM = 2;
 
     /**
      * @inheritDoc
@@ -26,7 +29,9 @@ class TrackingMode implements \Magento\Framework\Data\OptionSourceInterface
     }
 
     /**
-     * @return mixed[]
+     * Get options as associative array
+     *
+     * @return Phrase[]
      */
     public function toArray()
     {

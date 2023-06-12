@@ -14,12 +14,12 @@ class AddExportPercent implements BuilderComponentInterface
      */
     public function execute(StatusDataInterface $statusData, InitialInterface $initial)
     {
-        if (empty($initial)) {
+        if (!$initial) {
             $statusData->setExportPercent('-');
 
             return $statusData;
         }
-        if (empty($initial->getPages()) || $initial->getStatus() != InitialStatus::STATUS_RUNNING) {
+        if (!$initial->getPages() || $initial->getStatus() != InitialStatus::STATUS_RUNNING) {
             $statusData->setExportPercent('-');
 
             return $statusData;

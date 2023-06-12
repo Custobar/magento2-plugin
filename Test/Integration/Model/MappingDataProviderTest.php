@@ -3,10 +3,12 @@
 namespace Custobar\CustoConnector\Test\Integration\Model;
 
 use Custobar\CustoConnector\Model\MappingDataProvider;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\Catalog\Model\Product;
+use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
+use PHPUnit\Framework\TestCase;
 
-class MappingDataProviderTest extends \PHPUnit\Framework\TestCase
+class MappingDataProviderTest extends TestCase
 {
     /**
      * @var ObjectManager
@@ -34,7 +36,7 @@ class MappingDataProviderTest extends \PHPUnit\Framework\TestCase
      */
     public function testHasProductMappingData()
     {
-        $entityType = \Magento\Catalog\Model\Product::class;
+        $entityType = Product::class;
         $mappingData = $this->dataProvider->getMappingDataByEntityType($entityType);
         $this->assertNotNull($mappingData);
     }

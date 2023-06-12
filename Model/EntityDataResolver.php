@@ -65,7 +65,7 @@ class EntityDataResolver implements EntityDataResolverInterface
                 $resolvedEntities = $this->resolveEntities($entityType, $entityIds, $storeId);
                 foreach ($entityIds as $scheduleId => $entityId) {
                     $resolvedEntity = $resolvedEntities[$entityId] ?? null;
-                    if (empty($resolvedEntity)) {
+                    if (!$resolvedEntity) {
                         continue;
                     }
 

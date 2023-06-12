@@ -8,10 +8,14 @@ use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Newsletter\Model\SubscriberFactory;
 use Magento\Sales\Model\OrderFactory;
 use Magento\Store\Model\StoreManagerInterface;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
+use PHPUnit\Framework\TestCase;
 
-class WebsiteValidatorTest extends \PHPUnit\Framework\TestCase
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
+class WebsiteValidatorTest extends TestCase
 {
     /**
      * @var ObjectManager

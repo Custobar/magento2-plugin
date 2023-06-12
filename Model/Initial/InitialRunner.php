@@ -12,7 +12,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 
 class InitialRunner implements InitialRunnerInterface
 {
-    const DEFAULT_PAGE_SIZE = 500;
+    public const DEFAULT_PAGE_SIZE = 500;
 
     /**
      * @var InitialRepositoryInterface
@@ -34,6 +34,12 @@ class InitialRunner implements InitialRunnerInterface
      */
     private $pageSize;
 
+    /**
+     * @param InitialRepositoryInterface $initialRepository
+     * @param CollectionResolverProviderInterface $collectionResolver
+     * @param ScheduleGeneratorInterface $scheduleGenerator
+     * @param int $pageSize
+     */
     public function __construct(
         InitialRepositoryInterface $initialRepository,
         CollectionResolverProviderInterface $collectionResolver,

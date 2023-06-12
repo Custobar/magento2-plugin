@@ -2,17 +2,20 @@
 
 namespace Custobar\CustoConnector\Controller\Adminhtml\Status;
 
+use Custobar\CustoConnector\Api\Data\MappingDataInterface;
 use Custobar\CustoConnector\Api\InitialRepositoryInterface;
 use Custobar\CustoConnector\Api\LoggerInterface;
 use Custobar\CustoConnector\Api\MappingDataProviderInterface;
 use Custobar\CustoConnector\Model\Initial\Config\Source\Status;
-use \Magento\Backend\App\Action;
-use \Magento\Backend\App\Action\Context;
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 class Cancel extends Action
 {
+    public const ADMIN_RESOURCE = 'Custobar_CustoConnector::status';
+
     /**
      * @var InitialRepositoryInterface
      */
@@ -28,6 +31,12 @@ class Cancel extends Action
      */
     private $logger;
 
+    /**
+     * @param Context $context
+     * @param InitialRepositoryInterface $initialRepository
+     * @param MappingDataProviderInterface $mappingDataProvider
+     * @param LoggerInterface $logger
+     */
     public function __construct(
         Context $context,
         InitialRepositoryInterface $initialRepository,
@@ -69,7 +78,7 @@ class Cancel extends Action
                 $cancelled[] = $entityType;
             }
 
-            if (!empty($cancelled)) {
+            if ($cancelled) {
                 $this->messageManager->addSuccessMessage(__('Successfully canceled all running exports'));
 
                 return $this->_redirect('custobar/status/index');
@@ -94,7 +103,9 @@ class Cancel extends Action
     }
 
     /**
-     * @return \Custobar\CustoConnector\Api\Data\MappingDataInterface[]
+     * Get mapping data instances based on current request
+     *
+     * @return MappingDataInterface[]
      * @throws LocalizedException
      */
     private function resolveMappingData()
@@ -113,13 +124,5 @@ class Cancel extends Action
         }
 
         return [$mappingData];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('Custobar_CustoConnector::status');
     }
 }

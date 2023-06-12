@@ -33,6 +33,11 @@ class InitialRepository implements InitialRepositoryInterface
      */
     private $cachedEntities;
 
+    /**
+     * @param InitialFactory $entityFactory
+     * @param ResourceModel $resourceModel
+     * @param LoggerInterface $logger
+     */
     public function __construct(
         InitialFactory $entityFactory,
         ResourceModel $resourceModel,
@@ -146,11 +151,20 @@ class InitialRepository implements InitialRepositoryInterface
         return true;
     }
 
+    /**
+     * Clean cached instance for the initial
+     *
+     * @param InitialInterface $initial
+     *
+     * @return void
+     */
     private function clearCached(InitialInterface $initial)
     {
         $initialId = $initial->getInitialId();
-        if (isset($this->cachedEntities[$initialId])) {
-            unset($this->cachedEntities[$initialId]);
+        if (!isset($this->cachedEntities[$initialId])) {
+            return;
         }
+
+        unset($this->cachedEntities[$initialId]);
     }
 }

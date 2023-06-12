@@ -4,10 +4,11 @@ namespace Custobar\CustoConnector\Test\Integration\Model;
 
 use Custobar\CustoConnector\Model\EntityTypeResolver;
 use Magento\Catalog\Model\Product;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
+use PHPUnit\Framework\TestCase;
 
-class EntityTypeResolverTest extends \PHPUnit\Framework\TestCase
+class EntityTypeResolverTest extends TestCase
 {
     /**
      * @var ObjectManager

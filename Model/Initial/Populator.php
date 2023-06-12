@@ -10,7 +10,7 @@ use Custobar\CustoConnector\Model\InitialFactory;
 
 class Populator implements PopulatorInterface
 {
-    const DEFAULT_PAGE_SIZE = 500;
+    public const DEFAULT_PAGE_SIZE = 500;
 
     /**
      * @var MappingDataProviderInterface
@@ -37,6 +37,13 @@ class Populator implements PopulatorInterface
      */
     private $pageSize;
 
+    /**
+     * @param MappingDataProviderInterface $mappingDataProvider
+     * @param InitialFactory $initialFactory
+     * @param InitialRepositoryInterface $initialRepository
+     * @param CollectionResolverProviderInterface $collectionResolver
+     * @param int $pageSize
+     */
     public function __construct(
         MappingDataProviderInterface $mappingDataProvider,
         InitialFactory $initialFactory,
@@ -61,7 +68,7 @@ class Populator implements PopulatorInterface
         $initials = [];
         foreach ($mappingDataItems as $mappingDataItem) {
             $entityType = $mappingDataItem->getEntityType();
-            if (!empty($entityTypes) && !\in_array($entityType, $entityTypes)) {
+            if ($entityTypes && !\in_array($entityType, $entityTypes)) {
                 continue;
             }
 

@@ -1,11 +1,16 @@
 <?php
-/* @var \Custobar\CustoConnector\Block\Statistics\Config\Product $block */
+
+use Custobar\CustoConnector\Block\Statistics\Config\Product;
+use Magento\Framework\Escaper;
+
+/* @var Product $block */
+/* @var Escaper $escaper */
 ?>
 
 <?php // Assumes cstbrConfig is defined in parent blocks --> ?>
 <?php $sku = $block->getProduct()->getSku(); ?>
-<?php if ($sku) : ?>
+<?php if ($sku): ?>
     <script>
-        cstbrConfig.productId = "<?= $block->escapeHtml($sku); ?>";
+        cstbrConfig.productId = "<?= $escaper->escapeHtml($sku); ?>";
     </script>
 <?php endif; ?>

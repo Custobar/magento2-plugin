@@ -13,6 +13,9 @@ class AddBasicData implements DataExtenderInterface
      */
     private $timezone;
 
+    /**
+     * @param TimezoneInterface $timezone
+     */
     public function __construct(
         TimezoneInterface $timezone
     ) {
@@ -24,7 +27,7 @@ class AddBasicData implements DataExtenderInterface
      */
     public function execute($entity)
     {
-        /** @var \Magento\Newsletter\Model\Subscriber $entity */
+        /** @var Subscriber $entity */
 
         $status = "MAIL_UNSUBSCRIBE";
         if ($entity->getStatus() == Subscriber::STATUS_SUBSCRIBED) {

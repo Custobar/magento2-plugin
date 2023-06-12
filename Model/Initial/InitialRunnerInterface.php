@@ -11,6 +11,7 @@ interface InitialRunnerInterface
      * Executes logic related to initial resolved from mapping data
      *
      * @param MappingDataInterface $mappingData
+     *
      * @return InitialInterface
      */
     public function runInitialByMappingData(MappingDataInterface $mappingData);
@@ -19,6 +20,7 @@ interface InitialRunnerInterface
      * Executes logic related to initial
      *
      * @param InitialInterface $initial
+     *
      * @return InitialInterface
      */
     public function runInitial(InitialInterface $initial);

@@ -99,6 +99,8 @@ class WebsiteValidator implements WebsiteValidatorInterface
     }
 
     /**
+     * Check if even one of the given websites is allowed
+     *
      * @param int[] $websiteIds
      *
      * @return bool

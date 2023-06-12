@@ -10,8 +10,12 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\MessageInterface;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\TestCase\AbstractBackendController;
 
-class CancelTest extends \Magento\TestFramework\TestCase\AbstractBackendController
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
+class CancelTest extends AbstractBackendController
 {
     /**
      * @var ObjectManagerInterface

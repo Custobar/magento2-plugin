@@ -12,6 +12,9 @@ class Customer implements WebsiteResolverInterface
      */
     private $websiteResource;
 
+    /**
+     * @param WebsiteResource $websiteResource
+     */
     public function __construct(
         WebsiteResource $websiteResource
     ) {

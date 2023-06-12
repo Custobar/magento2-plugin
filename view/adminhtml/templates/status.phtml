@@ -1,36 +1,42 @@
 <?php
-/** @var \Custobar\CustoConnector\Block\Adminhtml\Status $block */
+
+use Custobar\CustoConnector\Block\Adminhtml\Status;
+use Magento\Framework\Escaper;
+
+/** @var Status $block */
+/** @var Escaper $escaper */
+
 ?>
 
 <p>
     <?php $url = $block->getExportRunAllUrl();?>
-    <a href="<?= $block->escapeUrl($url); ?>" class="button action-default">Run All</a>
+    <a href="<?= $escaper->escapeUrl($url); ?>" class="button action-default">Run All</a>
     <?php $url = $block->getExportCancelAllUrl();?>
-    <a href="<?= $block->escapeUrl($url); ?>" class="button action-default">Cancel All</a>
+    <a href="<?= $escaper->escapeUrl($url); ?>" class="button action-default">Cancel All</a>
 </p>
 
 <table id="status-listing" class="admin__table-secondary">
     <thead>
         <tr>
-            <th><?= __('Record type'); ?></th>
-            <th><?= __('Status'); ?></th>
-            <th><?= __('Export %'); ?></th>
-            <th><?= __('Last Export'); ?></th>
+            <th><?= $escaper->escapeHtml(__('Record type')); ?></th>
+            <th><?= $escaper->escapeHtml(__('Status')); ?></th>
+            <th><?= $escaper->escapeHtml(__('Export %')); ?></th>
+            <th><?= $escaper->escapeHtml(__('Last Export')); ?></th>
         </tr>
     </thead>
     <tbody>
         <?php $mappingDataItems = $block->getAllMappingData(); ?>
-        <?php foreach ($mappingDataItems as $mappingDataItem) : ?>
+        <?php foreach ($mappingDataItems as $mappingDataItem): ?>
             <?php $statusData = $block->getStatusData($mappingDataItem); ?>
-            <tr id="status-<?= $block->escapeHtml($mappingDataItem->getTargetField()); ?>"
-                data-current-status="<?= $block->escapeHtml($statusData->getStatusId()); ?>">
-                <td class="column-label"><?= $block->escapeHtml($statusData->getLabel()); ?></td>
-                <td class="column-status"><?= $block->escapeHtml($statusData->getStatusLabel()); ?></td>
-                <td class="column-export-percent"><?= $block->escapeHtml($statusData->getExportPercent()); ?></td>
-                <td class="column-last-export-time"><?= $block->escapeHtml($statusData->getLastExportTime()); ?></td>
+            <tr id="status-<?= $escaper->escapeHtml($mappingDataItem->getTargetField()); ?>"
+                data-current-status="<?= $escaper->escapeHtml($statusData->getStatusId()); ?>">
+                <td class="column-label"><?= $escaper->escapeHtml($statusData->getLabel()); ?></td>
+                <td class="column-status"><?= $escaper->escapeHtml($statusData->getStatusLabel()); ?></td>
+                <td class="column-export-percent"><?= $escaper->escapeHtml($statusData->getExportPercent()); ?></td>
+                <td class="column-last-export-time"><?= $escaper->escapeHtml($statusData->getLastExportTime()); ?></td>
                 <td class="column-button">
-                    <a href="<?= $block->escapeUrl($statusData->getActionUrl()); ?>" class="button action-default">
-                        <?= $block->escapeHtml($statusData->getActionLabel()); ?>
+                    <a href="<?= $escaper->escapeUrl($statusData->getActionUrl()); ?>" class="button action-default">
+                        <?= $escaper->escapeHtml($statusData->getActionLabel()); ?>
                     </a>
                 </td>
             </tr>
@@ -42,7 +48,7 @@
     {
         "#status-listing": {
             "Custobar_CustoConnector/js/status-refresh": {
-                "refreshDataUrl": "<?= $block->escapeUrl($block->getRefreshDataUrl()); ?>",
+                "refreshDataUrl": "<?= $escaper->escapeUrl($block->getRefreshDataUrl()); ?>",
                 "isRefreshActive": 1
             }
         }

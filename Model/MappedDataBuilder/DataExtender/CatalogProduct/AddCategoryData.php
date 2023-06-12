@@ -3,6 +3,8 @@
 namespace Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogProduct;
 
 use Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderInterface;
+use Magento\Catalog\Model\Category;
+use Magento\Catalog\Model\Product;
 
 class AddCategoryData implements DataExtenderInterface
 {
@@ -11,7 +13,7 @@ class AddCategoryData implements DataExtenderInterface
      */
     public function execute($entity)
     {
-        /** @var \Magento\Catalog\Model\Product $entity */
+        /** @var Product $entity */
 
         $categories = $entity->getCategoryCollection()
             ->setStoreId($entity->getStore()->getId())
@@ -20,7 +22,7 @@ class AddCategoryData implements DataExtenderInterface
         $categoriesNames = [];
         $categoriesIds = [];
 
-        /** @var \Magento\Catalog\Model\Category $category */
+        /** @var Category $category */
         foreach ($categories as $category) {
             $categoriesNames[] = $category->getName();
             $categoriesIds[] = $category->getId();

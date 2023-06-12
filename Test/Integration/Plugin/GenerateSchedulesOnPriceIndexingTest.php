@@ -5,15 +5,17 @@ namespace Custobar\CustoConnector\Test\Integration\Plugin;
 use Custobar\CustoConnector\Model\ResourceModel\Schedule;
 use Custobar\CustoConnector\Model\ScheduleRepository;
 use Magento\Catalog\Cron\RefreshSpecialPrices;
+use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\StoreManager;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
+class GenerateSchedulesOnPriceIndexingTest extends TestCase
 {
     /**
      * @var ObjectManager
@@ -89,7 +91,7 @@ class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
 
         try {
             $this->scheduleRepository->getByData(
-                \Magento\Catalog\Model\Product::class,
+                Product::class,
                 $product->getId(),
                 $storeId
             );
@@ -102,7 +104,7 @@ class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
 
         $this->expectException(NoSuchEntityException::class);
         $this->scheduleRepository->getByData(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $product->getId(),
             $storeId
         );
@@ -130,7 +132,7 @@ class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
 
         try {
             $this->scheduleRepository->getByData(
-                \Magento\Catalog\Model\Product::class,
+                Product::class,
                 $product->getId(),
                 $storeId
             );
@@ -142,13 +144,13 @@ class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
         $this->refreshSpecialPrices->execute();
 
         $schedule = $this->scheduleRepository->getByData(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $product->getId(),
             $storeId
         );
 
         $this->assertEquals($product->getId(), $schedule->getScheduledEntityId());
-        $this->assertEquals(\Magento\Catalog\Model\Product::class, $schedule->getScheduledEntityType());
+        $this->assertEquals(Product::class, $schedule->getScheduledEntityType());
         $this->assertEquals($storeId, $schedule->getStoreId());
     }
 }

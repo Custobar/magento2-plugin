@@ -8,8 +8,11 @@ use Custobar\CustoConnector\Model\Initial\StatusDataInterface;
 interface BuilderComponentInterface
 {
     /**
+     * Fill in status data based on initial instance
+     *
      * @param StatusDataInterface $statusData
      * @param InitialInterface $initial
+     *
      * @return StatusDataInterface
      */
     public function execute(StatusDataInterface $statusData, InitialInterface $initial);

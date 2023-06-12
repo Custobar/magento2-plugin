@@ -8,10 +8,13 @@ use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 class SalesOrder implements CollectionResolverInterface
 {
     /**
-     * @var mixed
+     * @var CollectionFactory
      */
     private $collectionFactory;
 
+    /**
+     * @param CollectionFactory $collectionFactory
+     */
     public function __construct(
         CollectionFactory $collectionFactory
     ) {

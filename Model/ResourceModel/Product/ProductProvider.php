@@ -3,6 +3,7 @@
 namespace Custobar\CustoConnector\Model\ResourceModel\Product;
 
 use Custobar\CustoConnector\Model\ResourceModel\Product\ProductProvider\CollectionProcessorInterface;
+use Magento\Catalog\Model\ResourceModel\Product\Collection;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\Validation\ValidationException;
 
@@ -66,8 +67,11 @@ class ProductProvider implements ProductProviderInterface
     }
 
     /**
-     * @param \Magento\Catalog\Model\ResourceModel\Product\Collection $collection
-     * @return \Magento\Catalog\Model\ResourceModel\Product\Collection
+     * Apply CollectionProcessorInterface to customise product collection before and after load
+     *
+     * @param Collection $collection
+     *
+     * @return Collection
      * @throws ValidationException
      */
     private function processCollection($collection)

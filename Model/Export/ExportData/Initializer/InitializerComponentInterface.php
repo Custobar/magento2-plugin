@@ -10,6 +10,7 @@ interface InitializerComponentInterface
      * Intended for constructing export data before actually executing the export
      *
      * @param ExportDataInterface $exportData
+     *
      * @return ExportDataInterface
      */
     public function execute(ExportDataInterface $exportData);

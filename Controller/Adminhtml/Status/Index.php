@@ -6,6 +6,8 @@ use Magento\Backend\App\Action;
 
 class Index extends Action
 {
+    public const ADMIN_RESOURCE = 'Custobar_CustoConnector::status';
+
     /**
      * @inheritDoc
      */
@@ -13,13 +15,5 @@ class Index extends Action
     {
         $this->_view->loadLayout();
         $this->_view->renderLayout();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('Custobar_CustoConnector::status');
     }
 }

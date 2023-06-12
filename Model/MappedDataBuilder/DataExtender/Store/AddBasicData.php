@@ -3,6 +3,7 @@
 namespace Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\Store;
 
 use Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderInterface;
+use Magento\Store\Model\Store;
 
 class AddBasicData implements DataExtenderInterface
 {
@@ -11,7 +12,7 @@ class AddBasicData implements DataExtenderInterface
      */
     public function execute($entity)
     {
-        /** @var \Magento\Store\Model\Store $entity */
+        /** @var Store $entity */
         $websiteName = $entity->getWebsite()->getName();
         $groupName = $entity->getGroup()->getName();
         $storeName = $entity->getName();

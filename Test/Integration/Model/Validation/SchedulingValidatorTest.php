@@ -4,12 +4,14 @@ namespace Custobar\CustoConnector\Test\Integration\Model\Validation;
 
 use Custobar\CustoConnector\Api\SchedulingValidatorInterface;
 use Magento\Catalog\Model\ResourceModel\Product;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
+use PHPUnit\Framework\TestCase;
 
-class SchedulingValidatorTest extends \PHPUnit\Framework\TestCase
+class SchedulingValidatorTest extends TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 

@@ -4,12 +4,14 @@ namespace Custobar\CustoConnector\Test\Integration\Model\CustobarApi;
 
 use Custobar\CustoConnector\Model\CustobarApi\ClientUrlProvider;
 use Magento\Framework\Exception\LocalizedException;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
+use PHPUnit\Framework\TestCase;
 
-class ClientUrlProviderTest extends \PHPUnit\Framework\TestCase
+class ClientUrlProviderTest extends TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 

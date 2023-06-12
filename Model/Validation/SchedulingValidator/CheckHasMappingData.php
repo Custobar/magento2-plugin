@@ -2,27 +2,22 @@
 
 namespace Custobar\CustoConnector\Model\Validation\SchedulingValidator;
 
-use Custobar\CustoConnector\Api\EntityTypeResolverInterface;
 use Custobar\CustoConnector\Api\MappingDataProviderInterface;
 use Custobar\CustoConnector\Api\SchedulingValidatorInterface;
 
 class CheckHasMappingData implements SchedulingValidatorInterface
 {
     /**
-     * @var EntityTypeResolverInterface
-     */
-    private $typeResolver;
-
-    /**
      * @var MappingDataProviderInterface
      */
     private $mappingDataProvider;
 
+    /**
+     * @param MappingDataProviderInterface $mappingDataProvider
+     */
     public function __construct(
-        EntityTypeResolverInterface $typeResolver,
         MappingDataProviderInterface $mappingDataProvider
     ) {
-        $this->typeResolver = $typeResolver;
         $this->mappingDataProvider = $mappingDataProvider;
     }
 
@@ -42,7 +37,7 @@ class CheckHasMappingData implements SchedulingValidatorInterface
     public function canScheduleEntityTypeAndIds(array $entityIds, string $entityType)
     {
         $mappingData = $this->mappingDataProvider->getMappingDataByEntityType($entityType);
-        $valid = !$mappingData ? false : true;
+        $valid = (bool)$mappingData;
 
         return \array_fill_keys($entityIds, $valid);
     }

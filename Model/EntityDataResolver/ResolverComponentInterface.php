@@ -9,6 +9,7 @@ interface ResolverComponentInterface
      *
      * @param string[] $entityIds
      * @param int $storeId
+     *
      * @return mixed
      */
     public function execute(array $entityIds, int $storeId);

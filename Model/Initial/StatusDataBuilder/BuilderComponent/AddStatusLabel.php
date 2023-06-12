@@ -14,6 +14,9 @@ class AddStatusLabel implements BuilderComponentInterface
      */
     private $statusSource;
 
+    /**
+     * @param Status $statusSource
+     */
     public function __construct(
         Status $statusSource
     ) {

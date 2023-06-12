@@ -24,6 +24,8 @@ interface MappingDataProviderInterface
     public function getMappingDataByEntityType(string $entityType, int $storeId = null);
 
     /**
+     * Returns entity specific mapping data by target field
+     *
      * @param string $targetField
      * @param int|null $storeId
      *

@@ -12,6 +12,9 @@ class Back implements ButtonProviderInterface
      */
     private $context;
 
+    /**
+     * @param Context $context
+     */
     public function __construct(
         Context $context
     ) {

@@ -8,10 +8,13 @@ use Magento\Store\Model\ResourceModel\Store\CollectionFactory;
 class Store implements CollectionResolverInterface
 {
     /**
-     * @var mixed
+     * @var CollectionFactory
      */
     private $collectionFactory;
 
+    /**
+     * @param CollectionFactory $collectionFactory
+     */
     public function __construct(
         CollectionFactory $collectionFactory
     ) {

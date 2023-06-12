@@ -21,6 +21,10 @@ class AddActionData implements BuilderComponentInterface
      */
     private $mappingDataProvider;
 
+    /**
+     * @param UrlInterface $urlBuilder
+     * @param MappingDataProviderInterface $mappingDataProvider
+     */
     public function __construct(
         UrlInterface $urlBuilder,
         MappingDataProviderInterface $mappingDataProvider

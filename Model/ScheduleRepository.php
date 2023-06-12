@@ -33,6 +33,11 @@ class ScheduleRepository implements ScheduleRepositoryInterface
      */
     private $cachedEntities;
 
+    /**
+     * @param ScheduleFactory $entityFactory
+     * @param ResourceModel $resourceModel
+     * @param LoggerInterface $logger
+     */
     public function __construct(
         ScheduleFactory $entityFactory,
         ResourceModel $resourceModel,
@@ -153,11 +158,20 @@ class ScheduleRepository implements ScheduleRepositoryInterface
         return true;
     }
 
+    /**
+     * Clean cached instance for the schedule
+     *
+     * @param ScheduleInterface $schedule
+     *
+     * @return void
+     */
     private function clearCached(ScheduleInterface $schedule)
     {
         $scheduleId = $schedule->getScheduleId();
-        if (isset($this->cachedEntities[$scheduleId])) {
-            unset($this->cachedEntities[$scheduleId]);
+        if (!isset($this->cachedEntities[$scheduleId])) {
+            return;
         }
+
+        unset($this->cachedEntities[$scheduleId]);
     }
 }

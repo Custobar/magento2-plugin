@@ -15,6 +15,7 @@ interface ClientUrlProviderInterface
      * Returns the data upload url for the given target
      *
      * @param string $target
+     *
      * @return string
      */
     public function getUploadUrl(string $target);

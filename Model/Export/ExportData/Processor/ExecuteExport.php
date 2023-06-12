@@ -31,6 +31,12 @@ class ExecuteExport implements ProcessorInterface
      */
     private $clientBuilder;
 
+    /**
+     * @param LoggerInterface $logger
+     * @param Json $jsonSerializer
+     * @param ClientUrlProviderInterface $urlProvider
+     * @param ClientBuilderInterface $clientBuilder
+     */
     public function __construct(
         LoggerInterface $logger,
         Json $jsonSerializer,
@@ -54,7 +60,7 @@ class ExecuteExport implements ProcessorInterface
         $attemptedIds = $exportData->getAttemptedScheduleIds();
         $failedIds = $exportData->getFailedScheduleIds();
 
-        if (empty($requestData) || empty($mappingData)) {
+        if (!$requestData || !$mappingData) {
             $this->logger->error(__('Will not export %1, empty request data', $entityType));
 
             $failedIds = \array_merge($failedIds, $attemptedIds);
@@ -78,7 +84,7 @@ class ExecuteExport implements ProcessorInterface
             $errorMessage = $responseBody['error']['reason'] ?? '';
             $responseCode = $responseBody['response'] ?? null;
 
-            if (\strtolower((string)$responseCode) != 'ok' || !empty($errorMessage)) {
+            if (\strtolower((string)$responseCode) != 'ok' || $errorMessage) {
                 $this->logger->error(__(
                     'Export request failed with code %1: %2',
                     $response->getStatusCode(),

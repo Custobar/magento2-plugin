@@ -14,6 +14,7 @@ use Laminas\Http\Response as HttpResponse;
 use Magento\Catalog\Model\Product;
 use Magento\Customer\Model\Address;
 use Magento\Customer\Model\Customer;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\HTTP\LaminasClient;
 use Magento\Newsletter\Model\Subscriber;
 use Magento\Sales\Model\Order;
@@ -21,8 +22,12 @@ use Magento\Store\Model\Store;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class ExportTest extends \PHPUnit\Framework\TestCase
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
+class ExportTest extends TestCase
 {
     /**
      * @var ObjectManager
@@ -376,7 +381,7 @@ class ExportTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @param mixed[] $allExpectedData
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     private function assertScheduleData(array $allExpectedData)
     {
@@ -403,6 +408,7 @@ class ExportTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @param ScheduleInterface[] $allSchedules
+     *
      * @return int[]
      */
     private function getScheduleIdsByType(array $allSchedules)
@@ -423,6 +429,7 @@ class ExportTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @param ScheduleInterface[] $allSchedules
+     *
      * @return mixed[]
      */
     private function groupSchedulesByType(array $allSchedules)

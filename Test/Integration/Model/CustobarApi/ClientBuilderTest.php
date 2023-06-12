@@ -4,9 +4,10 @@ namespace Custobar\CustoConnector\Test\Integration\Model\CustobarApi;
 
 use Custobar\CustoConnector\Model\CustobarApi\ClientBuilder;
 use Custobar\CustoConnector\Model\CustobarApi\ClientUrlProvider;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\Helper\Bootstrap;
+use PHPUnit\Framework\TestCase;
 
-class ClientBuilderTest extends \PHPUnit\Framework\TestCase
+class ClientBuilderTest extends TestCase
 {
     /**
      * @var \Magento\TestFramework\ObjectManager

@@ -6,7 +6,7 @@ use Magento\Ui\Component\Listing\Columns\Column;
 
 class Message extends Column
 {
-    const LENGTH_LIMIT = 100;
+    public const LENGTH_LIMIT = 100;
 
     /**
      * @inheritDoc

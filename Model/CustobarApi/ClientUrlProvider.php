@@ -12,6 +12,9 @@ class ClientUrlProvider implements ClientUrlProviderInterface
      */
     private $config;
 
+    /**
+     * @param Config $config
+     */
     public function __construct(
         Config $config
     ) {
@@ -42,6 +45,8 @@ class ClientUrlProvider implements ClientUrlProviderInterface
     }
 
     /**
+     * Get domain based on config
+     *
      * @return string
      * @throws LocalizedException
      */
@@ -53,7 +58,7 @@ class ClientUrlProvider implements ClientUrlProviderInterface
             $apiPrefix = 'dev';
         }
 
-        if (empty($apiPrefix)) {
+        if (!$apiPrefix) {
             throw new LocalizedException(__('Domain name must be set'));
         }
 

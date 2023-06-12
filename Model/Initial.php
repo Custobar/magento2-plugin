@@ -10,6 +10,7 @@ class Initial extends AbstractModel implements InitialInterface
 {
     /**
      * @inheritDoc
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _construct()
     {

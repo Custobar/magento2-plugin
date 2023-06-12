@@ -1,15 +1,17 @@
 <?php
-/* @var \Custobar\CustoConnector\Block\Statistics $block */
 
+use Custobar\CustoConnector\Block\Statistics;
 use Custobar\CustoConnector\Model\Config\Source\TrackingMode;
+
+/* @var Statistics $block */
 ?>
 
-<?php if ($block->canTrack()) : ?>
-    <?php if ($block->getTrackingMode() == TrackingMode::MODE_CUSTOM_SCRIPT) : ?>
+<?php if ($block->canTrack()): ?>
+    <?php if ($block->getTrackingMode() == TrackingMode::MODE_CUSTOM_SCRIPT): ?>
         <?= $block->getChildHtml('custom_script'); ?>
     <?php endif; ?>
 
-    <?php if ($block->getTrackingMode() == TrackingMode::MODE_GTM) : ?>
+    <?php if ($block->getTrackingMode() == TrackingMode::MODE_GTM): ?>
         <?= $block->getChildHtml('gtm'); ?>
     <?php endif; ?>
 <?php endif; ?>

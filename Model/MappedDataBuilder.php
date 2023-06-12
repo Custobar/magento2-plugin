@@ -38,6 +38,13 @@ class MappedDataBuilder implements MappedDataBuilderInterface
      */
     private $mapper;
 
+    /**
+     * @param EntityTypeResolverInterface $identiferResolver
+     * @param MappingDataProviderInterface $mappingDataProvider
+     * @param DataObjectFactory $dataFactory
+     * @param DataExtenderProviderInterface $extenderProvider
+     * @param Mapper $mapper
+     */
     public function __construct(
         EntityTypeResolverInterface $identiferResolver,
         MappingDataProviderInterface $mappingDataProvider,
@@ -79,8 +86,11 @@ class MappedDataBuilder implements MappedDataBuilderInterface
     }
 
     /**
+     * Modify entity data before applying mapping
+     *
      * @param mixed $entity
      * @param string $entityType
+     *
      * @return mixed
      * @throws \Magento\Framework\Validation\ValidationException
      */

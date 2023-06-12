@@ -35,7 +35,7 @@ class AddAttributesToSelect implements CollectionProcessorInterface
     public function execute($collection)
     {
         $productAttributes = $this->catalogConfig->getProductAttributes();
-        if (!empty($this->additionalCodes)) {
+        if ($this->additionalCodes) {
             $productAttributes = \array_merge($productAttributes, $this->additionalCodes);
             $productAttributes = \array_values(\array_unique($productAttributes));
         }

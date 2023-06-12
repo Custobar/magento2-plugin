@@ -8,7 +8,7 @@ use Custobar\CustoConnector\Model\ResourceModel\Schedule\CollectionFactory;
 
 class ExportableProvider implements ExportableProviderInterface
 {
-    const DEFAULT_LIMIT = 500;
+    public const DEFAULT_LIMIT = 500;
 
     /**
      * @var CollectionFactory
@@ -20,6 +20,10 @@ class ExportableProvider implements ExportableProviderInterface
      */
     private $scheduleLimit;
 
+    /**
+     * @param CollectionFactory $collectionFactory
+     * @param int $scheduleLimit
+     */
     public function __construct(
         CollectionFactory $collectionFactory,
         int $scheduleLimit = self::DEFAULT_LIMIT

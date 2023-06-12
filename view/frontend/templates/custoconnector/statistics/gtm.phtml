@@ -1,5 +1,10 @@
 <?php
-/* @var \Custobar\CustoConnector\Block\Statistics\GTM $block */
+
+use Custobar\CustoConnector\Block\Statistics\GTM;
+use Magento\Framework\Escaper;
+
+/* @var GTM $block */
+/* @var Escaper $escaper */
 ?>
 
 <?php // cstbrConfig is filled up in child blocks ?>
@@ -9,14 +14,14 @@
 <?= $block->getChildHtml(); ?>
 
 <?php $fieldMapping = $block->getFieldMapping(); ?>
-<?php if (!empty($fieldMapping)) : ?>
+<?php if ($fieldMapping): ?>
     <script>
         var gtmData = {};
 
         <?php // And here it's contents are put to object pushed to dataLayer, based on block configuration ?>
-        <?php foreach ($fieldMapping as $gtmField => $configField) : ?>
-            if (cstbrConfig.hasOwnProperty('<?= $block->escapeJs($configField); ?>')) {
-                gtmData.<?= $block->escapeJs($gtmField); ?> = cstbrConfig.<?= $block->escapeJs($configField); ?>;
+        <?php foreach ($fieldMapping as $gtmField => $configField): ?>
+            if (cstbrConfig.hasOwnProperty('<?= $escaper->escapeJs($configField); ?>')) {
+                gtmData.<?= $escaper->escapeJs($gtmField); ?> = cstbrConfig.<?= $escaper->escapeJs($configField); ?>;
             }
         <?php endforeach; ?>
 
