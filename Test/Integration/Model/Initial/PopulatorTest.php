@@ -9,11 +9,12 @@ use Custobar\CustoConnector\Model\InitialRepository;
 use Custobar\CustoConnector\Model\MappingDataProvider;
 use Magento\Framework\Exception\NoSuchEntityException;
 use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
 
 class PopulatorTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 
@@ -36,7 +37,7 @@ class PopulatorTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->initialRepository = $this->objectManager->get(InitialRepository::class);
@@ -114,7 +115,7 @@ class PopulatorTest extends \PHPUnit\Framework\TestCase
      * @magentoDataFixture Magento/Customer/_files/three_customers.php
      * @magentoDataFixture Magento/Sales/_files/order_list.php
      * @magentoDataFixture Magento/Newsletter/_files/subscribers.php
-     * @magentoDataFixture loadInitialsWithMixedStatusFixture
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/initials_with_mixed_status.php
      */
     public function testExecuteOnExisting()
     {
@@ -253,15 +254,5 @@ class PopulatorTest extends \PHPUnit\Framework\TestCase
                 'Assert that initial for ' . $entityType . ' does not exists'
             );
         }
-    }
-
-    public static function loadInitialsWithMixedStatusFixture()
-    {
-        include __DIR__ . '/../../_files/initials_with_mixed_status.php';
-    }
-
-    public static function loadInitialsWithMixedStatusFixtureRollback()
-    {
-        include __DIR__ . '/../../_files/initials_with_mixed_status_rollback.php';
     }
 }

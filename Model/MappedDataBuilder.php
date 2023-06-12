@@ -64,7 +64,7 @@ class MappedDataBuilder implements MappedDataBuilderInterface
         }
         $mappingData = $this->mappingDataProvider->getMappingDataByEntityType($entityType, $storeId);
         if (!$mappingData) {
-            throw new NotFoundException(\__('No mapping data available for \'%1\'', $entityType));
+            throw new NotFoundException(__('No mapping data available for \'%1\'', $entityType));
         }
         $entity = $this->extendEntityData($entity, $entityType);
 

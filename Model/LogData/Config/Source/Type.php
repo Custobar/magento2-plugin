@@ -15,27 +15,27 @@ class Type implements OptionSourceInterface
         $options = [];
         $options[] = [
             'value' => Logger::INFO,
-            'label' => \__('Info'),
+            'label' => __('Info'),
         ];
         $options[] = [
             'value' => Logger::DEBUG,
-            'label' => \__('Debug'),
+            'label' => __('Debug'),
         ];
         $options[] = [
             'value' => Logger::ERROR,
-            'label' => \__('Error'),
+            'label' => __('Error'),
         ];
         $options[] = [
             'value' => Logger::WARNING,
-            'label' => \__('Warning'),
+            'label' => __('Warning'),
         ];
         $options[] = [
             'value' => Logger::ALERT,
-            'label' => \__('Alert'),
+            'label' => __('Alert'),
         ];
         $options[] = [
             'value' => Logger::CRITICAL,
-            'label' => \__('Critical'),
+            'label' => __('Critical'),
         ];
 
         return $options;

@@ -64,7 +64,7 @@ class Initializer implements InitializerInterface
                     $exportData = $component->execute($exportData);
                 }
             } catch (\Exception $e) {
-                $this->logger->debug(\__(
+                $this->logger->debug(__(
                     'Failed to construct export data for \'%1\': %2',
                     $entityType,
                     $e->getMessage()

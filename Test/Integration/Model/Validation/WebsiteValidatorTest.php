@@ -9,11 +9,12 @@ use Magento\Newsletter\Model\SubscriberFactory;
 use Magento\Sales\Model\OrderFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
 
 class WebsiteValidatorTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 
@@ -51,7 +52,7 @@ class WebsiteValidatorTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->productRepository = $this->objectManager->get(ProductRepository::class);

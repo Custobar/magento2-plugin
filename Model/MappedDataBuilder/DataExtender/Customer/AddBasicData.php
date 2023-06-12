@@ -51,6 +51,6 @@ class AddBasicData implements DataExtenderInterface
     {
         $date = $this->timezone->scopeDate(null, $createdAt, true);
 
-        return $date->format(\Zend_Date::ISO_8601);
+        return $date->format('c');
     }
 }

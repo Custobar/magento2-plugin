@@ -10,11 +10,13 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\StoreManager;
 use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 
@@ -39,7 +41,7 @@ class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
     private $scheduleResource;
 
     /**
-     * @var TimezoneInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var TimezoneInterface|MockObject
      */
     private $localeDateMock;
 
@@ -52,7 +54,7 @@ class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->productRepository = $this->objectManager->get(ProductRepository::class);

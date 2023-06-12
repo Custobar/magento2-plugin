@@ -53,7 +53,7 @@ class ScheduleRepository implements ScheduleRepositoryInterface
             $entity->load($scheduleId);
 
             if (!$entity->getId()) {
-                throw new NoSuchEntityException(\__('No schedule found with id \'%1\'', $scheduleId));
+                throw new NoSuchEntityException(__('No schedule found with id \'%1\'', $scheduleId));
             }
 
             $this->cachedEntities[$scheduleId] = $entity;
@@ -71,7 +71,7 @@ class ScheduleRepository implements ScheduleRepositoryInterface
         if (!isset($this->cachedEntities[$cacheKey])) {
             $existingId = $this->resourceModel->getExistingId($entityType, $entityId, $storeId, '');
             if (!$existingId) {
-                throw new NoSuchEntityException(\__(
+                throw new NoSuchEntityException(__(
                     'No schedule found for entity \'%1\', id \'%2\' and store \'%3\'',
                     $entityType,
                     $entityId,
@@ -106,7 +106,7 @@ class ScheduleRepository implements ScheduleRepositoryInterface
         } catch (LocalizedException $e) {
             $this->logger->error($e);
 
-            throw new CouldNotSaveException(\__(
+            throw new CouldNotSaveException(__(
                 'Failed to save schedule \'%1\': %2',
                 $schedule->getScheduleId(),
                 $e->getMessage()
@@ -114,7 +114,7 @@ class ScheduleRepository implements ScheduleRepositoryInterface
         } catch (\Exception $e) {
             $this->logger->error($e);
 
-            throw new CouldNotSaveException(\__(
+            throw new CouldNotSaveException(__(
                 'Failed to save schedule \'%1\'',
                 $schedule->getScheduleId()
             ));
@@ -136,7 +136,7 @@ class ScheduleRepository implements ScheduleRepositoryInterface
         } catch (LocalizedException $e) {
             $this->logger->error($e);
 
-            throw new CouldNotDeleteException(\__(
+            throw new CouldNotDeleteException(__(
                 'Failed to delete schedule \'%1\': %2',
                 $scheduleId,
                 $e->getMessage()
@@ -144,7 +144,7 @@ class ScheduleRepository implements ScheduleRepositoryInterface
         } catch (\Exception $e) {
             $this->logger->error($e);
 
-            throw new CouldNotDeleteException(\__(
+            throw new CouldNotDeleteException(__(
                 'Failed to delete schedule \'%1\'',
                 $scheduleId
             ));

@@ -38,7 +38,7 @@ class View extends \Magento\Backend\App\Action
         if (!$this->logResource->isLogExists($logId)) {
             /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
             $resultRedirect = $this->resultRedirectFactory->create();
-            $this->messageManager->addErrorMessage(\__('No log found with id \'%1\'', $logId));
+            $this->messageManager->addErrorMessage(__('No log found with id \'%1\'', $logId));
 
             return $resultRedirect->setPath('custobar/logs/index');
         }
@@ -46,7 +46,7 @@ class View extends \Magento\Backend\App\Action
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->pageFactory->create();
         $resultPage->setActiveMenu('Custobar_CustoConnector::logs');
-        $resultPage->getConfig()->getTitle()->prepend(\__('Log Entry #%1', $logId));
+        $resultPage->getConfig()->getTitle()->prepend(__('Log Entry #%1', $logId));
 
         return $resultPage;
     }

@@ -5,13 +5,14 @@ namespace Custobar\CustoConnector\Test\Integration\Block;
 use Custobar\CustoConnector\Block\Statistics;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Customer\Model\SessionFactory;
+use Magento\Framework\ObjectManagerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\TestCase\AbstractController;
 
 class StatisticsTest extends AbstractController
 {
     /**
-     * @var \Magento\Framework\ObjectManagerInterface
+     * @var ObjectManagerInterface
      */
     private $objectManager;
 
@@ -34,7 +35,7 @@ class StatisticsTest extends AbstractController
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -62,14 +63,12 @@ class StatisticsTest extends AbstractController
         $html = $this->getResponse()->getBody();
 
         // Tracking script is intentionally shortened here since the long config line won't pass code quality checks
-        $this->assertNotContains(
-            'v1/custobar.js',
-            $html,
+        $this->assertFalse(
+            \str_contains($html, 'v1/custobar.js'),
             'Assert that code is not present as its set to empty'
         );
-        $this->assertNotContains(
-            'window.dataLayer.push(gtmData)',
-            $html,
+        $this->assertFalse(
+            \str_contains($html, 'window.dataLayer.push(gtmData)'),
             'Assert that GTM script is not added instead'
         );
     }
@@ -91,24 +90,20 @@ class StatisticsTest extends AbstractController
         $this->dispatch('/');
         $html = $this->getResponse()->getBody();
 
-        $this->assertContains(
-            'v1/custobar.js',
-            $html,
+        $this->assertTrue(
+            \str_contains($html, 'v1/custobar.js'),
             'Assert that we get the code when its set'
         );
-        $this->assertNotContains(
-            'cstbrConfig.customerId =',
-            $html,
+        $this->assertFalse(
+            \str_contains($html, 'cstbrConfig.customerId ='),
             'Assert that no customer details is present'
         );
-        $this->assertNotContains(
-            'cstbrConfig.productId =',
-            $html,
-            'Assert that product line is not outputted'
+        $this->assertFalse(
+            \str_contains($html, 'cstbrConfig.productId ='),
+            'Assert that product line is not output'
         );
-        $this->assertNotContains(
-            'window.dataLayer.push(gtmData)',
-            $html,
+        $this->assertFalse(
+            \str_contains($html, 'window.dataLayer.push(gtmData)'),
             'Assert that GTM script is not added instead'
         );
     }
@@ -130,25 +125,21 @@ class StatisticsTest extends AbstractController
         $this->dispatch('/');
         $html = $this->getResponse()->getBody();
 
-        $this->assertContains(
-            'window.dataLayer.push(gtmData)',
-            $html,
+        $this->assertTrue(
+            \str_contains($html, 'window.dataLayer.push(gtmData)'),
             'Assert that GTM script is added'
         );
-        $this->assertNotContains(
-            'v1/custobar.js',
-            $html,
+        $this->assertFalse(
+            \str_contains($html, 'v1/custobar.js'),
             'Assert that custom script is not added instead'
         );
-        $this->assertNotContains(
-            'cstbrConfig.customerId =',
-            $html,
+        $this->assertFalse(
+            \str_contains($html, 'cstbrConfig.customerId ='),
             'Assert that no customer details is present'
         );
-        $this->assertNotContains(
-            'cstbrConfig.productId =',
-            $html,
-            'Assert that product line is not outputted'
+        $this->assertFalse(
+            \str_contains($html, 'cstbrConfig.productId ='),
+            'Assert that product line is not output'
         );
     }
 
@@ -176,24 +167,20 @@ class StatisticsTest extends AbstractController
 
         $html = $this->getResponse()->getBody();
 
-        $this->assertContains(
-            'v1/custobar.js',
-            $html,
+        $this->assertTrue(
+            \str_contains($html, 'v1/custobar.js'),
             'Assert that custom script is added'
         );
-        $this->assertNotContains(
-            'window.dataLayer.push(gtmData)',
-            $html,
+        $this->assertFalse(
+            \str_contains($html, 'window.dataLayer.push(gtmData)'),
             'Assert that GTM script is not added instead'
         );
-        $this->assertContains(
-            'cstbrConfig.customerId = "1";',
-            $html,
+        $this->assertTrue(
+            \str_contains($html, 'cstbrConfig.customerId = "1";'),
             'Is customer id present'
         );
-        $this->assertContains(
-            'cstbrConfig.productId = "simple_product_1";',
-            $html,
+        $this->assertTrue(
+            \str_contains($html, 'cstbrConfig.productId = "simple_product_1";'),
             'Is cb.track_browse_product present'
         );
     }
@@ -222,24 +209,20 @@ class StatisticsTest extends AbstractController
 
         $html = $this->getResponse()->getBody();
 
-        $this->assertContains(
-            'window.dataLayer.push(gtmData)',
-            $html,
+        $this->assertTrue(
+            \str_contains($html, 'window.dataLayer.push(gtmData)'),
             'Assert that GTM script is added'
         );
-        $this->assertNotContains(
-            'v1/custobar.js',
-            $html,
+        $this->assertFalse(
+            \str_contains($html, 'v1/custobar.js'),
             'Assert that custom script is not added instead'
         );
-        $this->assertContains(
-            'cstbrConfig.customerId = "1";',
-            $html,
+        $this->assertTrue(
+            \str_contains($html, 'cstbrConfig.customerId = "1";'),
             'Is customer id present'
         );
-        $this->assertContains(
-            'cstbrConfig.productId = "simple_product_1";',
-            $html,
+        $this->assertTrue(
+            \str_contains($html, 'cstbrConfig.productId = "simple_product_1";'),
             'Is cb.track_browse_product present'
         );
     }
@@ -268,9 +251,8 @@ class StatisticsTest extends AbstractController
 
         $html = $this->getResponse()->getBody();
 
-        $this->assertNotContains(
-            'v1/custobar.js',
-            $html,
+        $this->assertFalse(
+            \str_contains($html, 'v1/custobar.js'),
             'Assert that custobar code is not present'
         );
     }
@@ -299,9 +281,8 @@ class StatisticsTest extends AbstractController
 
         $html = $this->getResponse()->getBody();
 
-        $this->assertNotContains(
-            'window.dataLayer.push(gtmData)',
-            $html,
+        $this->assertFalse(
+            \str_contains($html, 'window.dataLayer.push(gtmData)'),
             'Assert that GTM script is not added'
         );
     }

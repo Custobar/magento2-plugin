@@ -27,7 +27,7 @@ class ClientBuilderTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->urlProvider = $this->objectManager->get(ClientUrlProvider::class);
@@ -46,8 +46,8 @@ class ClientBuilderTest extends \PHPUnit\Framework\TestCase
         $client = $this->clientBuilder->buildClient($clientUrl, []);
 
         $this->assertEquals(
-            'https://dev.custobar.com:443/api/test/upload/',
-            $client->getUri(true)
+            'https://dev.custobar.com/api/test/upload/',
+            $client->getUri()->toString()
         );
     }
 }

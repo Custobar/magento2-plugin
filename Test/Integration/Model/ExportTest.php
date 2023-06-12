@@ -9,31 +9,33 @@ use Custobar\CustoConnector\Model\Export;
 use Custobar\CustoConnector\Model\ResourceModel\Schedule;
 use Custobar\CustoConnector\Model\Schedule\ExportableProvider;
 use Custobar\CustoConnector\Model\ScheduleRepository;
+use Laminas\Http\Headers;
+use Laminas\Http\Response as HttpResponse;
 use Magento\Catalog\Model\Product;
-use Magento\Catalog\Model\ProductFactory;
 use Magento\Customer\Model\Address;
 use Magento\Customer\Model\Customer;
-use Magento\Framework\HTTP\ZendClient;
+use Magento\Framework\HTTP\LaminasClient;
 use Magento\Newsletter\Model\Subscriber;
 use Magento\Sales\Model\Order;
 use Magento\Store\Model\Store;
 use Magento\TestFramework\Helper\Bootstrap;
-use Zend_Http_Response;
+use Magento\TestFramework\ObjectManager;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class ExportTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 
     /**
-     * @var ZendClient|\PHPUnit_Framework_MockObject_MockObject
+     * @var LaminasClient|MockObject
      */
     private $clientMock;
 
     /**
-     * @var ClientBuilder|\PHPUnit_Framework_MockObject_MockObject
+     * @var ClientBuilder|MockObject
      */
     private $clientBuilderMock;
 
@@ -41,11 +43,6 @@ class ExportTest extends \PHPUnit\Framework\TestCase
      * @var ExportableProvider
      */
     private $exportableProvider;
-
-    /**
-     * @var ProductFactory
-     */
-    private $productFactory;
 
     /**
      * @var Export
@@ -56,13 +53,12 @@ class ExportTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->exportableProvider = $this->objectManager->get(ExportableProvider::class);
-        $this->productFactory = $this->objectManager->get(ProductFactory::class);
 
-        $this->clientMock = $this->createMock(ZendClient::class);
+        $this->clientMock = $this->createMock(LaminasClient::class);
         $this->clientBuilderMock = $this->createMock(ClientBuilder::class);
 
         $executeExport = $this->objectManager->create(Export\ExportData\Processor\ExecuteExport::class, [
@@ -83,7 +79,7 @@ class ExportTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @magentoAppIsolation enabled
-     * @magentoDbIsolation enabled
+     * @magentoDbIsolation disabled
      *
      * @magentoConfigFixture default_store custobar/custobar_custoconnector/prefix prefixthatdoesntexists
      * @magentoConfigFixture default_store custobar/custobar_custoconnector/apikey prefixthatdoesntexists
@@ -94,11 +90,11 @@ class ExportTest extends \PHPUnit\Framework\TestCase
      * @magentoDataFixture Magento/Newsletter/_files/subscribers.php
      * @magentoDataFixture Magento/Catalog/_files/products_list.php
      *
-     * @magentoDataFixture loadSchedulesCustomerFixture
-     * @magentoDataFixture loadSchedulesOrderFixture
-     * @magentoDataFixture loadSchedulesNewsletterFixture
-     * @magentoDataFixture loadSchedulesProductFixture
-     * @magentoDataFixture loadSchedulesStoreFixture
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/schedules_customer.php
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/schedules_order.php
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/schedules_newsletter.php
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/schedules_product.php
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/schedules_store.php
      */
     public function testExportBySchedules()
     {
@@ -113,15 +109,18 @@ class ExportTest extends \PHPUnit\Framework\TestCase
         ];
         $this->assertScheduleCounts($scheduleCounts, $schedules);
 
-        $mockResponse = ['response' => 'ok'];
         $this->clientBuilderMock->expects($this->any())->method('buildClient')
             ->willReturn($this->clientMock);
-        $this->clientMock->expects($this->any())->method('request')
-            ->willReturn(new Zend_Http_Response(
-                201,
-                ['Content-Type' => 'application/json'],
-                \json_encode($mockResponse)
-            ));
+        $headers = new Headers();
+        $headers->addHeaders([
+            'Content-Type' => 'application/json',
+        ]);
+        $response = new HttpResponse();
+        $response->setStatusCode(201);
+        $response->setHeaders($headers);
+        $response->setContent(\json_encode(['response' => 'ok']));
+        $this->clientMock->expects($this->any())->method('send')
+            ->willReturn($response);
 
         $allExpectedData = [
             Product::class => [
@@ -166,7 +165,7 @@ class ExportTest extends \PHPUnit\Framework\TestCase
      * @magentoConfigFixture default_store custobar/custobar_custoconnector/allowed_websites 1
      *
      * @magentoDataFixture Magento/Customer/_files/three_customers.php
-     * @magentoDataFixture loadSchedulesCustomerErrorCountFixture
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/schedules_customer_error_count.php
      */
     public function testExportBySchedulesMaxErrorCount()
     {
@@ -196,15 +195,18 @@ class ExportTest extends \PHPUnit\Framework\TestCase
             ],
         ]);
 
-        $mockResponse = ['error' => ['message' => ['test']]];
         $this->clientBuilderMock->expects($this->any())->method('buildClient')
             ->willReturn($this->clientMock);
-        $this->clientMock->expects($this->any())->method('request')
-            ->willReturn(new Zend_Http_Response(
-                201,
-                ['Content-Type' => 'application/json'],
-                \json_encode($mockResponse)
-            ));
+        $headers = new Headers();
+        $headers->addHeaders([
+            'Content-Type' => 'application/json',
+        ]);
+        $response = new HttpResponse();
+        $response->setStatusCode(201);
+        $response->setHeaders($headers);
+        $response->setContent(\json_encode(['error' => ['message' => ['test']]]));
+        $this->clientMock->expects($this->any())->method('send')
+            ->willReturn($response);
 
         $allExpectedData = [
             Customer::class => [
@@ -249,7 +251,7 @@ class ExportTest extends \PHPUnit\Framework\TestCase
      * @magentoConfigFixture default_store custobar/custobar_custoconnector/allowed_websites 1
      *
      * @magentoDataFixture Magento/Customer/_files/customer_one_address.php
-     * @magentoDataFixture loadSchedulesInvalidFixture
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/schedules_invalid.php
      */
     public function testExportBySchedulesInvalid()
     {
@@ -264,7 +266,7 @@ class ExportTest extends \PHPUnit\Framework\TestCase
         $this->assertScheduleCounts($scheduleCounts, $schedules);
 
         $this->clientBuilderMock->expects($this->never())->method('buildClient');
-        $this->clientMock->expects($this->never())->method('request');
+        $this->clientMock->expects($this->never())->method('send');
 
         $allExpectedData = [
             'unknown_type' => [
@@ -431,75 +433,5 @@ class ExportTest extends \PHPUnit\Framework\TestCase
         }
 
         return $schedulesByType;
-    }
-
-    public static function loadSchedulesProductFixture()
-    {
-        include __DIR__ . '/../_files/schedules_product.php';
-    }
-
-    public static function loadSchedulesProductFixtureRollback()
-    {
-        include __DIR__ . '/../_files/schedules_product_rollback.php';
-    }
-
-    public static function loadSchedulesCustomerFixture()
-    {
-        include __DIR__ . '/../_files/schedules_customer.php';
-    }
-
-    public static function loadSchedulesCustomerFixtureRollback()
-    {
-        include __DIR__ . '/../_files/schedules_customer_rollback.php';
-    }
-
-    public static function loadSchedulesCustomerErrorCountFixture()
-    {
-        include __DIR__ . '/../_files/schedules_customer_error_count.php';
-    }
-
-    public static function loadSchedulesCustomerErrorCountFixtureRollback()
-    {
-        include __DIR__ . '/../_files/schedules_customer_error_count_rollback.php';
-    }
-
-    public static function loadSchedulesOrderFixture()
-    {
-        include __DIR__ . '/../_files/schedules_order.php';
-    }
-
-    public static function loadSchedulesOrderFixtureRollback()
-    {
-        include __DIR__ . '/../_files/schedules_order_rollback.php';
-    }
-
-    public static function loadSchedulesNewsletterFixture()
-    {
-        include __DIR__ . '/../_files/schedules_newsletter.php';
-    }
-
-    public static function loadSchedulesNewsletterFixtureRollback()
-    {
-        include __DIR__ . '/../_files/schedules_newsletter_rollback.php';
-    }
-
-    public static function loadSchedulesStoreFixture()
-    {
-        include __DIR__ . '/../_files/schedules_store.php';
-    }
-
-    public static function loadSchedulesStoreFixtureRollback()
-    {
-        include __DIR__ . '/../_files/schedules_store_rollback.php';
-    }
-
-    public static function loadSchedulesInvalidFixture()
-    {
-        include __DIR__ . '/../_files/schedules_invalid.php';
-    }
-
-    public static function loadSchedulesInvalidFixtureRollback()
-    {
-        include __DIR__ . '/../_files/schedules_invalid_rollback.php';
     }
 }

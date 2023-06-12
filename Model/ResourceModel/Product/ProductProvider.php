@@ -77,7 +77,7 @@ class ProductProvider implements ProductProviderInterface
                 continue;
             }
             if (!($collectionProcessor instanceof CollectionProcessorInterface)) {
-                throw new ValidationException(\__(
+                throw new ValidationException(__(
                     'Product collection preprocessor \'%1\' is not valid',
                     $name
                 ));
@@ -93,7 +93,7 @@ class ProductProvider implements ProductProviderInterface
                 continue;
             }
             if (!($collectionProcessor instanceof CollectionProcessorInterface)) {
-                throw new ValidationException(\__(
+                throw new ValidationException(__(
                     'Product collection postprocessor \'%1\' is not valid',
                     $name
                 ));

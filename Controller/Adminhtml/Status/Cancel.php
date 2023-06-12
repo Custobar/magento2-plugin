@@ -70,20 +70,20 @@ class Cancel extends Action
             }
 
             if (!empty($cancelled)) {
-                $this->messageManager->addSuccessMessage(\__('Successfully canceled all running exports'));
+                $this->messageManager->addSuccessMessage(__('Successfully canceled all running exports'));
 
                 return $this->_redirect('custobar/status/index');
             }
 
-            $this->messageManager->addWarningMessage(\__('No exports to cancel'));
+            $this->messageManager->addWarningMessage(__('No exports to cancel'));
         } catch (LocalizedException $e) {
-            $this->messageManager->addErrorMessage(\__($e->getMessage()));
+            $this->messageManager->addErrorMessage(__($e->getMessage()));
 
             $this->logger->error($e->getMessage(), [
                 'exceptionTrace' => $e->getTrace(),
             ]);
         } catch (\Exception $e) {
-            $this->messageManager->addErrorMessage(\__('Failed to cancel export(s)'));
+            $this->messageManager->addErrorMessage(__('Failed to cancel export(s)'));
 
             $this->logger->error($e->getMessage(), [
                 'exceptionTrace' => $e->getTrace(),
@@ -106,7 +106,7 @@ class Cancel extends Action
 
         $mappingData = $this->mappingDataProvider->getMappingDataByTargetField($identifier);
         if (!$mappingData) {
-            throw new LocalizedException(\__(
+            throw new LocalizedException(__(
                 'Cannot start export for unconfigured type \'%1\'',
                 $identifier
             ));

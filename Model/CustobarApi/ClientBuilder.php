@@ -3,12 +3,14 @@
 namespace Custobar\CustoConnector\Model\CustobarApi;
 
 use Custobar\CustoConnector\Model\Config;
-use Magento\Framework\HTTP\ZendClientFactory;
+use Laminas\Http\Request as HttpRequest;
+use Magento\Framework\HTTP\LaminasClient;
+use Magento\Framework\HTTP\LaminasClientFactory;
 
 class ClientBuilder implements ClientBuilderInterface
 {
     /**
-     * @var ZendClientFactory
+     * @var LaminasClientFactory
      */
     private $clientFactory;
 
@@ -18,7 +20,7 @@ class ClientBuilder implements ClientBuilderInterface
     private $config;
 
     public function __construct(
-        ZendClientFactory $clientFactory,
+        LaminasClientFactory $clientFactory,
         Config $config
     ) {
         $this->clientFactory = $clientFactory;
@@ -30,15 +32,14 @@ class ClientBuilder implements ClientBuilderInterface
      */
     public function buildClient(string $hostUrl, array $config)
     {
-        /** @var \Magento\Framework\HTTP\ZendClient $client */
-        $client = $this->clientFactory->create();
-
-        $client->setUri($hostUrl);
-        $client->setConfig($config);
-        $client->setHeaders('Content-Type', 'application/json');
-        $client->setHeaders('Accept-Encoding', 'application/json');
-        $client->setHeaders('Authorization', 'Token ' . $this->config->getApiKey());
-        $client->setMethod(\Zend_Http_Client::POST);
+        /** @var LaminasClient $client */
+        $client = $this->clientFactory->create(['uri' => $hostUrl, 'options' => $config]);
+        $client->setHeaders([
+            'Content-Type' => 'application/json',
+            'Accept-Encoding' => 'application/json',
+            'Authorization' => 'Token ' . $this->config->getApiKey(),
+        ]);
+        $client->setMethod(HttpRequest::METHOD_POST);
 
         return $client;
     }

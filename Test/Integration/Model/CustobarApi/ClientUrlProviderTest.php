@@ -22,7 +22,7 @@ class ClientUrlProviderTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->urlProvider = $this->objectManager->get(ClientUrlProvider::class);

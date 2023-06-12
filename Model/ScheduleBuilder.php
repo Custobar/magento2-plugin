@@ -40,7 +40,7 @@ class ScheduleBuilder implements ScheduleBuilderInterface
 
         $entityId = $scheduleData[ScheduleInterface::SCHEDULED_ENTITY_ID] ?? 0;
         if (empty($entityId)) {
-            throw new LocalizedException(\__(
+            throw new LocalizedException(__(
                 'Field \'%1\' is required',
                 ScheduleInterface::SCHEDULED_ENTITY_ID
             ));
@@ -49,7 +49,7 @@ class ScheduleBuilder implements ScheduleBuilderInterface
 
         $entityType = $scheduleData[ScheduleInterface::SCHEDULED_ENTITY_TYPE] ?? '';
         if (empty($entityType)) {
-            throw new LocalizedException(\__(
+            throw new LocalizedException(__(
                 'Field \'%1\' is required',
                 ScheduleInterface::SCHEDULED_ENTITY_TYPE
             ));

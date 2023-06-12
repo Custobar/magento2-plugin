@@ -33,9 +33,9 @@ class Status implements OptionSourceInterface
     public function getOptions()
     {
         return [
-            self::STATUS_IDLE => \__('Not running'),
-            self::STATUS_PROCESSED => \__('Processed'),
-            self::STATUS_RUNNING => \__('Export running'),
+            self::STATUS_IDLE => __('Not running'),
+            self::STATUS_PROCESSED => __('Processed'),
+            self::STATUS_RUNNING => __('Export running'),
         ];
     }
 
@@ -45,6 +45,6 @@ class Status implements OptionSourceInterface
      */
     public function getOptionLabel(int $status)
     {
-        return $this->getOptions()[$status] ?? \__('Unknown');
+        return $this->getOptions()[$status] ?? __('Unknown');
     }
 }

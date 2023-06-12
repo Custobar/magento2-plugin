@@ -12,11 +12,12 @@ use Magento\Newsletter\Model\SubscriberFactory;
 use Magento\Sales\Model\OrderFactory;
 use Magento\Store\Model\StoreManager;
 use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
 
 class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 
@@ -59,7 +60,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->productRepository = $this->objectManager->get(ProductRepository::class);
@@ -73,7 +74,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @magentoAppIsolation enabled
-     * @magentoDbIsolation enabled
+     * @magentoDbIsolation disabled
      *
      * @magentoDataFixture Magento/Catalog/_files/product_simple_with_all_fields.php
      */
@@ -99,7 +100,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
             'Description with <b>html tag</b>',
             $mappedData->getData('description')
         );
-        $this->assertContains('simple-product', $mappedData->getData('url'));
+        $this->assertStringContainsString('simple-product', $mappedData->getData('url'));
         $this->assertEquals(
             'Default Category,Movable Position 2,Filter category',
             $mappedData->getData('category')
@@ -123,12 +124,12 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
         $mappedData = $this->mappedDataBuilder->buildMappedData($productData);
 
         $this->assertEquals('simple', $mappedData->getData('external_id'));
-        $this->assertContains('/m/a/magento_image.jpg', $mappedData->getData('image'));
+        $this->assertStringContainsString('/m/a/magento_image.jpg', $mappedData->getData('image'));
     }
 
     /**
      * @magentoAppIsolation enabled
-     * @magentoDbIsolation enabled
+     * @magentoDbIsolation disabled
      *
      * @magentoDataFixture Magento/Catalog/_files/product_simple_multistore.php
      */
@@ -172,7 +173,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
             $mappedData->getData('store_id')
         );
 
-        // TODO: Could also cover language, url, category and description differences
+        // TODO: Could also cover language, url, category and description differences
     }
 
     /**
@@ -191,7 +192,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
         );
         $mappedData = $this->mappedDataBuilder->buildMappedData($productData);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'simple-product',
             $mappedData->getData('url'),
             'Assert that product url present'
@@ -497,7 +498,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('PROCESSING', $mappedData->getData('sale_state'));
         $this->assertEquals('100000001', $mappedData->getData('sale_external_id'));
         $this->assertEquals('1', $mappedData->getData('sale_customer_id'));
-        $this->assertEquals('customer@null.com', $mappedData->getData('sale_email'));
+        $this->assertEquals('customer@example.com', $mappedData->getData('sale_email'));
         $this->assertEquals('1', $mappedData->getData('sale_shop_id'));
         $this->assertEquals(0, $mappedData->getData('sale_discount'));
         $this->assertEquals(10000, $mappedData->getData('sale_total'));

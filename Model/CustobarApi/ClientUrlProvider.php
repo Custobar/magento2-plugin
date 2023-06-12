@@ -23,7 +23,10 @@ class ClientUrlProvider implements ClientUrlProviderInterface
      */
     public function getBaseUrl()
     {
-        return "https://{$this->resolveDomain()}.custobar.com";
+        return \sprintf(
+            'https://%s.custobar.com',
+            $this->resolveDomain()
+        );
     }
 
     /**
@@ -31,7 +34,11 @@ class ClientUrlProvider implements ClientUrlProviderInterface
      */
     public function getUploadUrl(string $target)
     {
-        return "{$this->getBaseUrl()}/api/{$target}/upload/";
+        return \sprintf(
+            '%s/api/%s/upload/',
+            $this->getBaseUrl(),
+            $target
+        );
     }
 
     /**
@@ -47,7 +54,7 @@ class ClientUrlProvider implements ClientUrlProviderInterface
         }
 
         if (empty($apiPrefix)) {
-            throw new LocalizedException(\__('Domain name must be set'));
+            throw new LocalizedException(__('Domain name must be set'));
         }
 
         return $apiPrefix;

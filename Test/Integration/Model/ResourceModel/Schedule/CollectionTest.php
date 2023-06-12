@@ -6,11 +6,12 @@ use Custobar\CustoConnector\Api\Data\ScheduleInterface;
 use Custobar\CustoConnector\Model\ResourceModel\Schedule\CollectionFactory;
 use Magento\Framework\Data\Collection\AbstractDb;
 use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
 
 class CollectionTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 
@@ -23,7 +24,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->collectionFactory = $this->objectManager->get(CollectionFactory::class);
@@ -33,7 +34,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
      *
-     * @magentoDataFixture loadSchedulesCustomerFixture
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/schedules_customer.php
      */
     public function testScheduleFilters()
     {
@@ -59,15 +60,5 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
             $first->getStoreId(),
             'Assert if the store is as expected'
         );
-    }
-
-    public static function loadSchedulesCustomerFixture()
-    {
-        include __DIR__ . '/../../../_files/schedules_customer.php';
-    }
-
-    public static function loadSchedulesCustomerFixtureRollback()
-    {
-        include __DIR__ . '/../../../_files/schedules_customer_rollback.php';
     }
 }

@@ -123,7 +123,7 @@ class MappingDataProvider implements MappingDataProviderInterface
                 continue;
             }
             if (!($mappingData instanceof MappingDataInterface)) {
-                throw new ValidationException(\__('Mapping data model \'%1\' is not valid', $index));
+                throw new ValidationException(__('Mapping data model \'%1\' is not valid', $index));
             }
 
             $models[$index] = clone $mappingData;

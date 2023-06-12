@@ -32,7 +32,7 @@ class EntityTypeResolver implements EntityTypeResolverInterface
                 continue;
             }
             if (!($resolverComponent instanceof ResolverComponentInterface)) {
-                throw new ValidationException(\__(
+                throw new ValidationException(__(
                     'Entity type resolver \'%1\' is not valid',
                     $name
                 ));

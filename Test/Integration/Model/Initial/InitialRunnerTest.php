@@ -7,7 +7,6 @@ use Custobar\CustoConnector\Api\Data\ScheduleInterface;
 use Custobar\CustoConnector\Model\Initial\Config\Source\Status;
 use Custobar\CustoConnector\Model\Initial\InitialRunner;
 use Custobar\CustoConnector\Model\Initial\Populator;
-use Custobar\CustoConnector\Model\InitialRepository;
 use Custobar\CustoConnector\Model\ResourceModel\Initial;
 use Custobar\CustoConnector\Model\ResourceModel\Schedule;
 use Custobar\CustoConnector\Model\ResourceModel\Schedule\CollectionFactory;
@@ -19,11 +18,6 @@ class InitialRunnerTest extends \PHPUnit\Framework\TestCase
      * @var \Magento\TestFramework\ObjectManager
      */
     private $objectManager;
-
-    /**
-     * @var InitialRepository
-     */
-    private $initialRepository;
 
     /**
      * @var Populator
@@ -54,10 +48,9 @@ class InitialRunnerTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
-        $this->initialRepository = $this->objectManager->get(InitialRepository::class);
         $this->initialPopulator = $this->objectManager->get(Populator::class);
         $this->collectionFactory = $this->objectManager->get(CollectionFactory::class);
         $this->scheduleResource = $this->objectManager->get(Schedule::class);
@@ -168,10 +161,10 @@ class InitialRunnerTest extends \PHPUnit\Framework\TestCase
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
      *
-     * @magentoDataFixture Magento/Customer/_files/three_customers.php
-     * @magentoDataFixture Magento/Sales/_files/order_list.php
-     * @magentoDataFixture Magento/Newsletter/_files/subscribers.php
-     * @magentoDataFixture Magento/Catalog/_files/products_list.php
+     * @magentoDataFixtureBeforeTransaction Magento/Customer/_files/three_customers.php
+     * @magentoDataFixtureBeforeTransaction Magento/Sales/_files/order_list.php
+     * @magentoDataFixtureBeforeTransaction Magento/Newsletter/_files/subscribers.php
+     * @magentoDataFixtureBeforeTransaction Magento/Catalog/_files/products_list.php
      * @magentoConfigFixture default_store custobar/custobar_custoconnector/allowed_websites 1
      */
     public function testRunInitialAllPagingProgress()

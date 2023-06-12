@@ -26,7 +26,6 @@ class WebsiteResource
      * @param int[] $productIds
      *
      * @return int[][]
-     * @throws \Zend_Db_Statement_Exception
      */
     public function getProductWebsiteIds(array $productIds)
     {

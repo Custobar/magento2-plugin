@@ -8,11 +8,12 @@ use Custobar\CustoConnector\Model\Initial\StatusDataInterface;
 use Custobar\CustoConnector\Model\MappingDataProvider;
 use Magento\Backend\Model\UrlInterface;
 use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
 
 class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 
@@ -35,7 +36,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->mappingDataProvider = $this->objectManager->get(MappingDataProvider::class);
@@ -47,7 +48,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
      *
-     * @magentoDataFixture loadInitialsWithMixedStatusFixture
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/initials_with_mixed_status.php
      */
     public function testBuildByMappingData()
     {
@@ -187,15 +188,5 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
                 );
             }
         }
-    }
-
-    public static function loadInitialsWithMixedStatusFixture()
-    {
-        include __DIR__ . '/../../_files/initials_with_mixed_status.php';
-    }
-
-    public static function loadInitialsWithMixedStatusFixtureRollback()
-    {
-        include __DIR__ . '/../../_files/initials_with_mixed_status_rollback.php';
     }
 }

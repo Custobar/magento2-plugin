@@ -69,7 +69,7 @@ class AddMappedDataRows implements InitializerComponentInterface
         foreach ($schedules as $schedule) {
             $entity = $scheduleEntities[$schedule->getScheduleId()] ?? null;
             if (empty($entity)) {
-                $this->logger->debug(\__(
+                $this->logger->debug(__(
                     'Did not process \'%1\' of \'%2\', entity data not found',
                     $schedule->getScheduledEntityId(),
                     $schedule->getScheduledEntityType()
@@ -80,7 +80,7 @@ class AddMappedDataRows implements InitializerComponentInterface
 
             $mappedData = $this->mappedDataBuilder->buildMappedData($entity, $schedule->getStoreId());
             if (empty($mappedData)) {
-                $this->logger->debug(\__(
+                $this->logger->debug(__(
                     'Did not process \'%1\' of \'%2\', failed to construct data for export',
                     $schedule->getScheduledEntityId(),
                     $schedule->getScheduledEntityType()

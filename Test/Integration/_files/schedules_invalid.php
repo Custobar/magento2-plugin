@@ -4,6 +4,10 @@
 
 use Custobar\CustoConnector\Api\Data\ScheduleInterface;
 use Custobar\CustoConnector\Model\ResourceModel\Schedule\CollectionFactory;
+use Custobar\CustoConnector\Model\ScheduleFactory;
+use Magento\Catalog\Model\Product;
+use Magento\Customer\Model\Address;
+use Magento\Customer\Model\Customer;
 
 $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
 
@@ -12,17 +16,17 @@ $collectionFactory = $objectManager->create(CollectionFactory::class);
 $schedules = $collectionFactory->create()
     ->addFieldToFilter(ScheduleInterface::SCHEDULED_ENTITY_TYPE, [
         'unknown_type',
-        \Magento\Catalog\Model\Product::class,
-        \Magento\Customer\Model\Customer::class,
-        \Magento\Customer\Model\Address::class,
+        Product::class,
+        Customer::class,
+        Address::class,
     ])
     ->getItems();
 foreach ($schedules as $schedule) {
     $schedule->delete();
 }
 
-/** @var \Custobar\CustoConnector\Model\ScheduleFactory $scheduleFactory */
-$scheduleFactory = $objectManager->create(\Custobar\CustoConnector\Model\ScheduleFactory::class);
+/** @var ScheduleFactory $scheduleFactory */
+$scheduleFactory = $objectManager->create(ScheduleFactory::class);
 
 $allScheduleData = [
     [
@@ -35,21 +39,21 @@ $allScheduleData = [
     [
         // Non existing entity
         ScheduleInterface::SCHEDULED_ENTITY_ID => 99999,
-        ScheduleInterface::SCHEDULED_ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
+        ScheduleInterface::SCHEDULED_ENTITY_TYPE => Product::class,
         ScheduleInterface::STORE_ID => 1,
         ScheduleInterface::PROCESSED_AT => '0000-00-00 00:00:00',
     ],
     [
         // Non existing store
         ScheduleInterface::SCHEDULED_ENTITY_ID => 1,
-        ScheduleInterface::SCHEDULED_ENTITY_TYPE => \Magento\Customer\Model\Customer::class,
+        ScheduleInterface::SCHEDULED_ENTITY_TYPE => Customer::class,
         ScheduleInterface::STORE_ID => 1000,
         ScheduleInterface::PROCESSED_AT => '0000-00-00 00:00:00',
     ],
     [
         // Unmapped type
         ScheduleInterface::SCHEDULED_ENTITY_ID => 1,
-        ScheduleInterface::SCHEDULED_ENTITY_TYPE => \Magento\Customer\Model\Address::class,
+        ScheduleInterface::SCHEDULED_ENTITY_TYPE => Address::class,
         ScheduleInterface::STORE_ID => 1,
         ScheduleInterface::PROCESSED_AT => '0000-00-00 00:00:00',
     ],

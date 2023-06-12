@@ -86,7 +86,7 @@ class WebsiteValidator implements WebsiteValidatorInterface
             return \array_fill_keys($entityIds, false);
         }
         if (!($websiteResolver instanceof WebsiteResolverInterface)) {
-            throw new ValidationException(\__('Website resolver for \'%1\' is not valid', $entityType));
+            throw new ValidationException(__('Website resolver for \'%1\' is not valid', $entityType));
         }
 
         $validationResults = [];

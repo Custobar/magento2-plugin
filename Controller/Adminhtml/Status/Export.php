@@ -51,18 +51,18 @@ class Export extends Action
             }
             $this->initialPopulator->execute($entityTypes);
 
-            $this->messageManager->addSuccessMessage(\__(
+            $this->messageManager->addSuccessMessage(__(
                 'Successfully started export for %1 record types',
                 \count($entityTypes)
             ));
         } catch (LocalizedException $e) {
-            $this->messageManager->addErrorMessage(\__($e->getMessage()));
+            $this->messageManager->addErrorMessage(__($e->getMessage()));
 
             $this->logger->error($e->getMessage(), [
                 'exceptionTrace' => $e->getTrace(),
             ]);
         } catch (\Exception $e) {
-            $this->messageManager->addErrorMessage(\__('Failed to start export(s)'));
+            $this->messageManager->addErrorMessage(__('Failed to start export(s)'));
 
             $this->logger->error($e->getMessage(), [
                 'exceptionTrace' => $e->getTrace(),
@@ -85,7 +85,7 @@ class Export extends Action
 
         $mappingData = $this->mappingDataProvider->getMappingDataByTargetField($identifier);
         if (!$mappingData) {
-            throw new LocalizedException(\__(
+            throw new LocalizedException(__(
                 'Cannot start export for unconfigured type \'%1\'',
                 $identifier
             ));

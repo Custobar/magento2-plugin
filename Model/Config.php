@@ -42,7 +42,7 @@ class Config
             ScopeInterface::SCOPE_STORE
         );
 
-        return \explode(',', $websites);
+        return \explode(',', (string) $websites);
     }
 
     /**

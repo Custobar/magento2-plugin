@@ -37,7 +37,7 @@ class AddMappingData implements InitializerComponentInterface
         $entityType = $exportData->getEntityType();
         $mappingData = $this->mappingDataProvider->getMappingDataByEntityType($entityType);
         if (empty($mappingData)) {
-            $this->logger->debug(\__(
+            $this->logger->debug(__(
                 'Did not process \'%1\', insufficient configurations',
                 $entityType
             ));

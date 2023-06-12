@@ -55,7 +55,7 @@ class ExecuteExport implements ProcessorInterface
         $failedIds = $exportData->getFailedScheduleIds();
 
         if (empty($requestData) || empty($mappingData)) {
-            $this->logger->error(\__('Will not export %1, empty request data', $entityType));
+            $this->logger->error(__('Will not export %1, empty request data', $entityType));
 
             $failedIds = \array_merge($failedIds, $attemptedIds);
             $exportData->setFailedScheduleIds(\array_values(\array_unique($failedIds)));
@@ -69,8 +69,8 @@ class ExecuteExport implements ProcessorInterface
             $hostUrl = $this->urlProvider->getUploadUrl($targetField);
             $client = $this->clientBuilder->buildClient($hostUrl, ['timeout' => 5]);
 
-            $client->setRawData($requestData);
-            $response = $client->request();
+            $client->setRawBody($requestData);
+            $response = $client->send();
             $responseBody = \trim($response->getBody());
             $exportData->setRequestDataJson($responseBody);
             $responseBody = $this->jsonSerializer->unserialize($responseBody);
@@ -78,10 +78,10 @@ class ExecuteExport implements ProcessorInterface
             $errorMessage = $responseBody['error']['reason'] ?? '';
             $responseCode = $responseBody['response'] ?? null;
 
-            if (\strtolower($responseCode) != 'ok' || !empty($errorMessage)) {
-                $this->logger->error(\__(
+            if (\strtolower((string)$responseCode) != 'ok' || !empty($errorMessage)) {
+                $this->logger->error(__(
                     'Export request failed with code %1: %2',
-                    $response->getStatus(),
+                    $response->getStatusCode(),
                     $errorMessage
                 ), [
                     'targetUrl' => $hostUrl,
@@ -98,7 +98,11 @@ class ExecuteExport implements ProcessorInterface
 
             $successIds = $attemptedIds;
             $scheduleCount = \count($successIds);
-            $this->logger->info("Export successful for {$scheduleCount} items of type {$entityType}", [
+            $this->logger->info(__(
+                'Export successful for %1 items of type %2',
+                $scheduleCount,
+                $entityType
+            ), [
                 'targetUrl' => $hostUrl,
                 'request' => $this->jsonSerializer->unserialize($requestData),
                 'response' => $responseBody,
@@ -108,7 +112,10 @@ class ExecuteExport implements ProcessorInterface
 
             return $exportData;
         } catch (\Exception $e) {
-            $this->logger->critical("Export request failed with message: {$e->getMessage()}", [
+            $this->logger->critical(__(
+                'Export request failed with message: %1',
+                $e->getMessage()
+            ), [
                 'exceptionTrace' => $e->getTrace(),
             ]);
 

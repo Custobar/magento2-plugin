@@ -5,11 +5,12 @@ namespace Custobar\CustoConnector\Test\Integration\Model;
 use Custobar\CustoConnector\Model\EntityTypeResolver;
 use Magento\Catalog\Model\Product;
 use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
 
 class EntityTypeResolverTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 
@@ -22,7 +23,7 @@ class EntityTypeResolverTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->typeResolver = $this->objectManager->get(EntityTypeResolver::class);

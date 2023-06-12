@@ -20,7 +20,7 @@ class Actions extends Column
                     'custobar/logs/view',
                     [LogDataInterface::LOG_ID => $item[LogDataInterface::LOG_ID]]
                 ),
-                'label' => \__('View'),
+                'label' => __('View'),
                 'hidden' => false,
             ];
             $items[$index] = $item;

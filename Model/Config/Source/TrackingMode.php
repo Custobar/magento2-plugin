@@ -31,9 +31,9 @@ class TrackingMode implements \Magento\Framework\Data\OptionSourceInterface
     public function toArray()
     {
         return [
-            self::MODE_NONE => \__('None'),
-            self::MODE_CUSTOM_SCRIPT => \__('Custom Script'),
-            self::MODE_GTM => \__('Google Tag Manager'),
+            self::MODE_NONE => __('None'),
+            self::MODE_CUSTOM_SCRIPT => __('Custom Script'),
+            self::MODE_GTM => __('Google Tag Manager'),
         ];
     }
 }

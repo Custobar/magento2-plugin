@@ -7,11 +7,12 @@ use Custobar\CustoConnector\Model\Schedule\ExportableProvider;
 use Magento\Catalog\Model\Product;
 use Magento\Store\Model\StoreManagerInterface;
 use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
 
 class InitializerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 
@@ -34,7 +35,7 @@ class InitializerTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->initializer = $this->objectManager->get(Initializer::class);
@@ -44,10 +45,10 @@ class InitializerTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @magentoAppIsolation enabled
-     * @magentoDbIsolation enabled
+     * @magentoDbIsolation disabled
      *
      * @magentoDataFixture Magento/Catalog/_files/product_simple_multistore.php
-     * @magentoDataFixture loadSchedulesProductMultistoreFixture
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/schedules_product_multistore.php
      * @magentoConfigFixture fixturestore_store custobar/custoconnector_field_mapping/product name:scope_title<br>sku:external_id<br>custobar_minimal_price:minimal_price<br>custobar_price:price<br>type_id:mage_type<br>configurable_min_price:my_configurable_min_price<br>custobar_attribute_set_name:type<br>custobar_category:category<br>custobar_category_id:category_id<br>custobar_image:image<br>custobar_product_url:url<br>custobar_special_price:sale_price<br>description:description<br>custobar_language:language<br>custobar_store_id:store_id<br>custobar_child_ids:mage_child_ids<br>custobar_parent_ids:mage_parent_ids
      */
     public function testInitializeBySchedules()
@@ -109,15 +110,5 @@ class InitializerTest extends \PHPUnit\Framework\TestCase
                 ));
             }
         }
-    }
-
-    public static function loadSchedulesProductMultistoreFixture()
-    {
-        include __DIR__ . '/../../../_files/schedules_product_multistore.php';
-    }
-
-    public static function loadSchedulesProductMultistoreFixtureRollback()
-    {
-        include __DIR__ . '/../../../_files/schedules_product_multistore_rollback.php';
     }
 }

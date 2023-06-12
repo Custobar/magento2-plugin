@@ -4,11 +4,12 @@ namespace Custobar\CustoConnector\Test\Integration\Model;
 
 use Custobar\CustoConnector\Model\MappingDataProvider;
 use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
 
 class MappingDataProviderTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 
@@ -21,7 +22,7 @@ class MappingDataProviderTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->dataProvider = $this->objectManager->get(MappingDataProvider::class);
