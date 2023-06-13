@@ -2,7 +2,9 @@
 
 namespace Custobar\CustoConnector\Model\Product;
 
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\Framework\EntityManager\MetadataPool;
 
 class SkuProvider implements SkuProviderInterface
 {
@@ -12,12 +14,20 @@ class SkuProvider implements SkuProviderInterface
     private $collectionFactory;
 
     /**
+     * @var MetadataPool
+     */
+    private $metadataPool;
+
+    /**
      * @param CollectionFactory $collectionFactory
+     * @param MetadataPool $metadataPool
      */
     public function __construct(
-        CollectionFactory $collectionFactory
+        CollectionFactory $collectionFactory,
+        MetadataPool $metadataPool
     ) {
         $this->collectionFactory = $collectionFactory;
+        $this->metadataPool = $metadataPool;
     }
 
     /**
@@ -25,10 +35,12 @@ class SkuProvider implements SkuProviderInterface
      */
     public function getSkusByEntityIds(int $storeId, array $productIds)
     {
+        $metadata = $this->metadataPool->getMetadata(ProductInterface::class);
+
         $collection = $this->collectionFactory->create()
             ->setStoreId($storeId)
             ->addFieldToSelect('sku')
-            ->addFieldToFilter('entity_id', ['in' => $productIds])
+            ->addFieldToFilter($metadata->getLinkField(), ['in' => $productIds])
             ->load();
 
         return $collection->getColumnValues('sku');
