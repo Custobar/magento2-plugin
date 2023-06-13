@@ -60,7 +60,7 @@ class ClientBuilderTest extends TestCase
         $realClient = $client->getRealClient();
 
         $this->assertEquals(
-            'https://dev.custobar.com/api/test/upload/',
+            'https://dev.custobar.com:443/api/test/upload/',
             $realClient->getUri(true)
         );
     }

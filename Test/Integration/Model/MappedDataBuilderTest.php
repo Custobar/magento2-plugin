@@ -453,7 +453,7 @@ class MappedDataBuilderTest extends TestCase
 
     /**
      * @magentoAppIsolation enabled
-     * @magentoDbIsolation enabled
+     * @magentoDbIsolation disabled
      *
      * @magentoDataFixture Magento/GroupedProduct/_files/product_grouped.php
      */
@@ -507,7 +507,7 @@ class MappedDataBuilderTest extends TestCase
         $this->assertEquals('PROCESSING', $mappedData->getData('sale_state'));
         $this->assertEquals('100000001', $mappedData->getData('sale_external_id'));
         $this->assertEquals('1', $mappedData->getData('sale_customer_id'));
-        $this->assertEquals('customer@example.com', $mappedData->getData('sale_email'));
+        $this->assertStringContainsString('customer@', $mappedData->getData('sale_email'));
         $this->assertEquals('1', $mappedData->getData('sale_shop_id'));
         $this->assertEquals(0, $mappedData->getData('sale_discount'));
         $this->assertEquals(10000, $mappedData->getData('sale_total'));

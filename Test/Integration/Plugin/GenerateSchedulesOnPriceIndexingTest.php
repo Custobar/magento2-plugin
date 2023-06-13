@@ -76,7 +76,7 @@ class GenerateSchedulesOnPriceIndexingTest extends TestCase
      * @magentoConfigFixture default_store custobar/custobar_custoconnector/prefix prefixthatdoesntexists
      * @magentoConfigFixture default_store custobar/custobar_custoconnector/apikey prefixthatdoesntexists
      * @magentoConfigFixture default_store custobar/custobar_custoconnector/allowed_websites 1
-     * @magentoDataFixture Magento/Catalog/_files/product_simple_with_all_fields.php
+     * @magentoDataFixtureBeforeTransaction Magento/Catalog/_files/product_simple_with_all_fields.php
      */
     public function testExecuteShouldNotScheduleWhenRefreshSpecialPricesDoesNothing()
     {
@@ -117,7 +117,7 @@ class GenerateSchedulesOnPriceIndexingTest extends TestCase
      * @magentoConfigFixture default_store custobar/custobar_custoconnector/prefix prefixthatdoesntexists
      * @magentoConfigFixture default_store custobar/custobar_custoconnector/apikey prefixthatdoesntexists
      * @magentoConfigFixture default_store custobar/custobar_custoconnector/allowed_websites 1
-     * @magentoDataFixture Magento/Catalog/_files/product_simple_with_all_fields.php
+     * @magentoDataFixtureBeforeTransaction Magento/Catalog/_files/product_simple_with_all_fields.php
      */
     public function testExecuteShouldScheduleWhenRefreshSpecialPricesUpdatesPastPrice()
     {
