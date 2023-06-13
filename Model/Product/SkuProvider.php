@@ -37,10 +37,34 @@ class SkuProvider implements SkuProviderInterface
     {
         $metadata = $this->metadataPool->getMetadata(ProductInterface::class);
 
+        return $this->getSkus($metadata->getIdentifierField(), $storeId, $productIds);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSkusByLinkedIds(int $storeId, array $linkedIds)
+    {
+        $metadata = $this->metadataPool->getMetadata(ProductInterface::class);
+
+        return $this->getSkus($metadata->getLinkField(), $storeId, $linkedIds);
+    }
+
+    /**
+     * Get skus by given parameters
+     *
+     * @param string $linkField
+     * @param int $storeId
+     * @param int[] $productIds
+     *
+     * @return string[]
+     */
+    private function getSkus(string $linkField, int $storeId, array $productIds)
+    {
         $collection = $this->collectionFactory->create()
             ->setStoreId($storeId)
             ->addFieldToSelect('sku')
-            ->addFieldToFilter($metadata->getLinkField(), ['in' => $productIds])
+            ->addFieldToFilter($linkField, ['in' => $productIds])
             ->load();
 
         return $collection->getColumnValues('sku');

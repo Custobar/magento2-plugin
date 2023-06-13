@@ -63,7 +63,7 @@ class AddGroupedData implements DataExtenderInterface
             $entity->getId(),
             Link::LINK_TYPE_GROUPED
         );
-        $parentSkus = $this->skuProvider->getSkusByEntityIds(
+        $parentSkus = $this->skuProvider->getSkusByLinkedIds(
             $entity->getStore()->getId(),
             $parentIds
         );
