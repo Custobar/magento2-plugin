@@ -7,6 +7,7 @@ use Custobar\CustoConnector\Model\ScheduleRepository;
 use Magento\Catalog\Cron\RefreshSpecialPrices;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ProductRepository;
+use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\StoreManager;
@@ -21,6 +22,11 @@ class GenerateSchedulesOnPriceIndexingTest extends TestCase
      * @var ObjectManager
      */
     private $objectManager;
+
+    /**
+     * @var ProductMetadataInterface
+     */
+    private $metadata;
 
     /**
      * @var ProductRepository
@@ -59,6 +65,7 @@ class GenerateSchedulesOnPriceIndexingTest extends TestCase
     protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
+        $this->metadata = $this->objectManager->get(ProductMetadataInterface::class);
         $this->productRepository = $this->objectManager->get(ProductRepository::class);
         $this->scheduleRepository = $this->objectManager->get(ScheduleRepository::class);
         $this->storeManager = $this->objectManager->get(StoreManager::class);
@@ -80,6 +87,10 @@ class GenerateSchedulesOnPriceIndexingTest extends TestCase
      */
     public function testExecuteShouldNotScheduleWhenRefreshSpecialPricesDoesNothing()
     {
+        if ($this->getCurrentSystemVersionAsInteger() < 246) {
+            $this->markTestSkipped('Test unsupported in 2.4.5 and older');
+        }
+
         $timestamp = \date('Y-m-d 00:00', \time());
         $timestamp = \strtotime($timestamp);
         $this->localeDateMock->expects($this->any())->method('scopeTimeStamp')
@@ -121,6 +132,10 @@ class GenerateSchedulesOnPriceIndexingTest extends TestCase
      */
     public function testExecuteShouldScheduleWhenRefreshSpecialPricesUpdatesPastPrice()
     {
+        if ($this->getCurrentSystemVersionAsInteger() < 246) {
+            $this->markTestSkipped('Test unsupported in 2.4.5 and older');
+        }
+
         $timestamp = \date('Y-m-d 00:00', \strtotime('+2 day'));
         $timestamp = \strtotime($timestamp);
         $this->localeDateMock->expects($this->any())->method('scopeTimeStamp')
@@ -152,5 +167,15 @@ class GenerateSchedulesOnPriceIndexingTest extends TestCase
         $this->assertEquals($product->getId(), $schedule->getScheduledEntityId());
         $this->assertEquals(Product::class, $schedule->getScheduledEntityType());
         $this->assertEquals($storeId, $schedule->getStoreId());
+    }
+
+    /**
+     * @return int
+     */
+    private function getCurrentSystemVersionAsInteger()
+    {
+        $version = $this->metadata->getVersion();
+
+        return (int) \str_replace('.', '', $version);
     }
 }
