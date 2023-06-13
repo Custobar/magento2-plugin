@@ -75,9 +75,8 @@ class ExecuteExport implements ProcessorInterface
             $hostUrl = $this->urlProvider->getUploadUrl($targetField);
             $client = $this->clientBuilder->buildClient($hostUrl, ['timeout' => 5]);
 
-            $client->setRawBody($requestData);
-            $response = $client->send();
-            $responseBody = \trim($response->getBody());
+            $client->sendRequest($requestData);
+            $responseBody = $client->getResponseBody();
             $exportData->setRequestDataJson($responseBody);
             $responseBody = $this->jsonSerializer->unserialize($responseBody);
 
@@ -87,7 +86,7 @@ class ExecuteExport implements ProcessorInterface
             if (\strtolower((string)$responseCode) != 'ok' || $errorMessage) {
                 $this->logger->error(__(
                     'Export request failed with code %1: %2',
-                    $response->getStatusCode(),
+                    $client->getResponseCode(),
                     $errorMessage
                 ), [
                     'targetUrl' => $hostUrl,

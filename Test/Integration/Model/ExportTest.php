@@ -5,17 +5,15 @@ namespace Custobar\CustoConnector\Test\Integration\Model;
 use Custobar\CustoConnector\Api\Data\ExportDataInterface;
 use Custobar\CustoConnector\Api\Data\ScheduleInterface;
 use Custobar\CustoConnector\Model\CustobarApi\ClientBuilder;
+use Custobar\CustoConnector\Model\CustobarApi\ClientInterface;
 use Custobar\CustoConnector\Model\Export;
 use Custobar\CustoConnector\Model\ResourceModel\Schedule;
 use Custobar\CustoConnector\Model\Schedule\ExportableProvider;
 use Custobar\CustoConnector\Model\ScheduleRepository;
-use Laminas\Http\Headers;
-use Laminas\Http\Response as HttpResponse;
 use Magento\Catalog\Model\Product;
 use Magento\Customer\Model\Address;
 use Magento\Customer\Model\Customer;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\HTTP\LaminasClient;
 use Magento\Newsletter\Model\Subscriber;
 use Magento\Sales\Model\Order;
 use Magento\Store\Model\Store;
@@ -35,7 +33,7 @@ class ExportTest extends TestCase
     private $objectManager;
 
     /**
-     * @var LaminasClient|MockObject
+     * @var ClientInterface|MockObject
      */
     private $clientMock;
 
@@ -63,7 +61,7 @@ class ExportTest extends TestCase
         $this->objectManager = Bootstrap::getObjectManager();
         $this->exportableProvider = $this->objectManager->get(ExportableProvider::class);
 
-        $this->clientMock = $this->createMock(LaminasClient::class);
+        $this->clientMock = $this->createMock(ClientInterface::class);
         $this->clientBuilderMock = $this->createMock(ClientBuilder::class);
 
         $executeExport = $this->objectManager->create(Export\ExportData\Processor\ExecuteExport::class, [
@@ -116,16 +114,10 @@ class ExportTest extends TestCase
 
         $this->clientBuilderMock->expects($this->any())->method('buildClient')
             ->willReturn($this->clientMock);
-        $headers = new Headers();
-        $headers->addHeaders([
-            'Content-Type' => 'application/json',
-        ]);
-        $response = new HttpResponse();
-        $response->setStatusCode(201);
-        $response->setHeaders($headers);
-        $response->setContent(\json_encode(['response' => 'ok']));
-        $this->clientMock->expects($this->any())->method('send')
-            ->willReturn($response);
+        $this->clientMock->expects($this->any())->method('sendRequest');
+        $this->clientMock->expects($this->any())->method('getResponseCode')->willReturn(201);
+        $this->clientMock->expects($this->any())->method('getResponseBody')
+            ->willReturn(\json_encode(['response' => 'ok']));
 
         $allExpectedData = [
             Product::class => [
@@ -202,16 +194,10 @@ class ExportTest extends TestCase
 
         $this->clientBuilderMock->expects($this->any())->method('buildClient')
             ->willReturn($this->clientMock);
-        $headers = new Headers();
-        $headers->addHeaders([
-            'Content-Type' => 'application/json',
-        ]);
-        $response = new HttpResponse();
-        $response->setStatusCode(201);
-        $response->setHeaders($headers);
-        $response->setContent(\json_encode(['error' => ['message' => ['test']]]));
-        $this->clientMock->expects($this->any())->method('send')
-            ->willReturn($response);
+        $this->clientMock->expects($this->any())->method('sendRequest');
+        $this->clientMock->expects($this->any())->method('getResponseCode')->willReturn(201);
+        $this->clientMock->expects($this->any())->method('getResponseBody')
+            ->willReturn(\json_encode(['error' => ['message' => ['test']]]));
 
         $allExpectedData = [
             Customer::class => [
@@ -271,7 +257,9 @@ class ExportTest extends TestCase
         $this->assertScheduleCounts($scheduleCounts, $schedules);
 
         $this->clientBuilderMock->expects($this->never())->method('buildClient');
-        $this->clientMock->expects($this->never())->method('send');
+        $this->clientMock->expects($this->never())->method('sendRequest');
+        $this->clientMock->expects($this->never())->method('getResponseCode');
+        $this->clientMock->expects($this->never())->method('getResponseBody');
 
         $allExpectedData = [
             'unknown_type' => [

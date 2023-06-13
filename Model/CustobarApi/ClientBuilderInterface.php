@@ -2,8 +2,6 @@
 
 namespace Custobar\CustoConnector\Model\CustobarApi;
 
-use Magento\Framework\HTTP\LaminasClient;
-
 interface ClientBuilderInterface
 {
     /**
@@ -12,7 +10,7 @@ interface ClientBuilderInterface
      * @param string $hostUrl
      * @param mixed[] $config
      *
-     * @return LaminasClient
+     * @return ClientInterface
      */
     public function buildClient(string $hostUrl, array $config);
 }
