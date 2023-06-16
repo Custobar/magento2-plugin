@@ -2,15 +2,17 @@
 
 use Custobar\CustoConnector\Api\Data\ScheduleInterface;
 use Custobar\CustoConnector\Model\ResourceModel\Schedule\CollectionFactory;
+use Magento\Sales\Model\Order;
+use Magento\TestFramework\Helper\Bootstrap;
 
-$objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
+$objectManager = Bootstrap::getObjectManager();
 
 /** @var CollectionFactory $collectionFactory */
 $collectionFactory = $objectManager->create(CollectionFactory::class);
 $schedules = $collectionFactory->create()
     ->addFieldToFilter(
         ScheduleInterface::SCHEDULED_ENTITY_TYPE,
-        \Magento\Sales\Model\Order::class
+        Order::class
     )
     ->getItems();
 foreach ($schedules as $schedule) {

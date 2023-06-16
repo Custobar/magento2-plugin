@@ -12,6 +12,9 @@ class NewsletterSubscriber implements ResolverComponentInterface
      */
     private $collectionFactory;
 
+    /**
+     * @param CollectionFactory $collectionFactory
+     */
     public function __construct(
         CollectionFactory $collectionFactory
     ) {

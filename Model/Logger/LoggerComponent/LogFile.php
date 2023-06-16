@@ -12,6 +12,9 @@ class LogFile implements LoggerComponentInterface
      */
     private $logger;
 
+    /**
+     * @param LoggerInterface $logger
+     */
     public function __construct(
         LoggerInterface $logger
     ) {

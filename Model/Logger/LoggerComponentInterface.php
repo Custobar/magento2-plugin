@@ -10,6 +10,7 @@ interface LoggerComponentInterface
      * @param int $level
      * @param string $message
      * @param mixed[] $contextData
+     *
      * @return void
      */
     public function execute(int $level, string $message, array $contextData);

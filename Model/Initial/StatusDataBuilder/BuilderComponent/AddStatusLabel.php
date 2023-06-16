@@ -14,6 +14,9 @@ class AddStatusLabel implements BuilderComponentInterface
      */
     private $statusSource;
 
+    /**
+     * @param Status $statusSource
+     */
     public function __construct(
         Status $statusSource
     ) {
@@ -30,7 +33,7 @@ class AddStatusLabel implements BuilderComponentInterface
 
         $statusLabel = $this->statusSource->getOptionLabel($status);
         if ($status == Status::STATUS_RUNNING) {
-            $statusLabel .= \__(', started at %1', $initial->getCreatedAt());
+            $statusLabel .= __(', started at %1', $initial->getCreatedAt());
         }
 
         $statusData->setStatusLabel($statusLabel);

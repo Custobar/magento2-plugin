@@ -3,16 +3,18 @@
 namespace Custobar\CustoConnector\Model\ResourceModel;
 
 use Custobar\CustoConnector\Api\Data\ScheduleInterface;
-use \Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use Zend_Db_Expr;
 
 class Schedule extends AbstractDb
 {
-    const MAIN_TABLE = 'custoconnector_schedule';
-    const MAX_ERROR_COUNT = '7200';
+    public const MAIN_TABLE = 'custoconnector_schedule';
+    public const MAX_ERROR_COUNT = '7200';
 
     /**
      * @inheritDoc
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _construct()
     {
@@ -20,8 +22,10 @@ class Schedule extends AbstractDb
     }
 
     /**
-     * @return $this
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * Delete all schedules that have been processed
+     *
+     * @return Schedule
+     * @throws LocalizedException
      */
     public function removeProcessedSchedules()
     {
@@ -34,8 +38,10 @@ class Schedule extends AbstractDb
     }
 
     /**
-     * @return $this
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * Delete all schedules
+     *
+     * @return Schedule
+     * @throws LocalizedException
      */
     public function removeAll()
     {
@@ -45,12 +51,15 @@ class Schedule extends AbstractDb
     }
 
     /**
+     * Get existing schedule entity id by given parameters
+     *
      * @param string $entityType
      * @param int $entityId
      * @param int $storeId
      * @param string $processedAt
+     *
      * @return int
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function getExistingId(
         string $entityType,
@@ -64,7 +73,7 @@ class Schedule extends AbstractDb
             ->where(ScheduleInterface::SCHEDULED_ENTITY_TYPE . ' = ?', $entityType)
             ->where(ScheduleInterface::SCHEDULED_ENTITY_ID . ' = ?', $entityId)
             ->where(ScheduleInterface::STORE_ID . ' = ?', $storeId);
-        if (!empty($processedAt)) {
+        if ($processedAt) {
             $select->where(ScheduleInterface::PROCESSED_AT . ' = ?', $processedAt);
         }
 
@@ -72,10 +81,13 @@ class Schedule extends AbstractDb
     }
 
     /**
+     * Update error count for a schedule
+     *
      * @param int $scheduleId
      * @param int $errorCount
      * @return int
-     * @throws \Magento\Framework\Exception\LocalizedException
+     *
+     * @throws LocalizedException
      */
     public function updateErrorCount(int $scheduleId, int $errorCount)
     {
@@ -89,14 +101,17 @@ class Schedule extends AbstractDb
     }
 
     /**
+     * Increase error counts by given number on the given schedules
+     *
      * @param int[] $scheduleIds
      * @param int $increment
+     *
      * @return int
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function increaseErrorCounts(array $scheduleIds, int $increment = 1)
     {
-        if (empty($scheduleIds)) {
+        if (!$scheduleIds) {
             return 0;
         }
 
@@ -118,14 +133,17 @@ class Schedule extends AbstractDb
     }
 
     /**
+     * Updated processed_at values on multiple schedules
+     *
      * @param int[] $scheduleIds
      * @param string $processedAt
+     *
      * @return int
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function updateProcessedAt(array $scheduleIds, string $processedAt)
     {
-        if (empty($scheduleIds)) {
+        if (!$scheduleIds) {
             return 0;
         }
 
@@ -143,24 +161,23 @@ class Schedule extends AbstractDb
     }
 
     /**
+     * Return from given schedule ids the ones that can be rescheduled for more export attempts
+     *
      * @param int[] $scheduleIds
+     *
      * @return int[]
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function filterReschedulable(array $scheduleIds)
     {
-        if (empty($scheduleIds)) {
+        if (!$scheduleIds) {
             return [];
         }
 
         $connection = $this->getConnection();
         $select = $connection->select()
             ->from($this->getMainTable(), ScheduleInterface::SCHEDULE_ID)
-            ->where(\sprintf(
-                '%s in (%s)',
-                ScheduleInterface::SCHEDULE_ID,
-                \implode(',', $scheduleIds)
-            ))
+            ->where(ScheduleInterface::SCHEDULE_ID . ' in (?)', $scheduleIds)
             ->where(ScheduleInterface::ERROR_COUNT . ' < ?', self::MAX_ERROR_COUNT);
 
         return $connection->fetchCol($select);

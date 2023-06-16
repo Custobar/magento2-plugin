@@ -12,6 +12,9 @@ class CatalogProduct implements ResolverComponentInterface
      */
     private $productProvider;
 
+    /**
+     * @param ProductProviderInterface $productProvider
+     */
     public function __construct(
         ProductProviderInterface $productProvider
     ) {

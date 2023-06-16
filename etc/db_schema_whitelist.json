@@ -1,0 +1,47 @@
+{
+    "custoconnector_schedule": {
+        "column": {
+            "id": true,
+            "entity_id": true,
+            "entity_type": true,
+            "store_id": true,
+            "created_at": true,
+            "processed_at": true,
+            "errors": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "CUSTOCONNECTOR_SCHEDULE_ENTITY_TYPE_ENTITY_ID_STORE_ID_PROCESSED_AT": true
+        }
+    },
+    "custoconnector_initial": {
+        "column": {
+            "id": true,
+            "page": true,
+            "pages": true,
+            "entity_type": true,
+            "created_at": true,
+            "processed_at": true,
+            "status": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "CUSTOCONNECTOR_INITIAL_ENTITY_TYPE": true
+        }
+    },
+    "custoconnector_log": {
+        "column": {
+            "log_id": true,
+            "created_at": true,
+            "type": true,
+            "message": true,
+            "context_data": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        },
+        "index": {
+            "CUSTOCONNECTOR_LOG_TYPE": true
+        }
+    }
+}

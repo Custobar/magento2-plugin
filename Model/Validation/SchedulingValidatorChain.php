@@ -31,7 +31,7 @@ class SchedulingValidatorChain implements SchedulingValidatorInterface
                 continue;
             }
             if (!($validator instanceof SchedulingValidatorInterface)) {
-                throw new ValidationException(\__('Scheduling validator \'%1\' is not valid', $name));
+                throw new ValidationException(__('Scheduling validator \'%1\' is not valid', $name));
             }
 
             if (!$validator->canScheduleEntity($entity)) {
@@ -53,7 +53,7 @@ class SchedulingValidatorChain implements SchedulingValidatorInterface
                 continue;
             }
             if (!($validator instanceof SchedulingValidatorInterface)) {
-                throw new ValidationException(\__('Scheduling validator \'%1\' is not valid', $name));
+                throw new ValidationException(__('Scheduling validator \'%1\' is not valid', $name));
             }
 
             $results = $validator->canScheduleEntityTypeAndIds($entityIds, $entityType);

@@ -7,12 +7,19 @@ use Custobar\CustoConnector\Model\Initial\StatusDataBuilder;
 use Custobar\CustoConnector\Model\Initial\StatusDataInterface;
 use Custobar\CustoConnector\Model\MappingDataProvider;
 use Magento\Backend\Model\UrlInterface;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\Catalog\Model\Product;
+use Magento\Customer\Model\Customer;
+use Magento\Newsletter\Model\Subscriber;
+use Magento\Sales\Model\Order;
+use Magento\Store\Model\Store;
+use Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
+use PHPUnit\Framework\TestCase;
 
-class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
+class StatusDataBuilderTest extends TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 
@@ -35,7 +42,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->mappingDataProvider = $this->objectManager->get(MappingDataProvider::class);
@@ -47,7 +54,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
      *
-     * @magentoDataFixture loadInitialsWithMixedStatusFixture
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/initials_with_mixed_status.php
      */
     public function testBuildByMappingData()
     {
@@ -59,7 +66,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
         }
 
         $allExpectedData = [
-            \Magento\Catalog\Model\Product::class => [
+            Product::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_RUNNING,
                 StatusDataInterface::EXPORT_PERCENT => '50 %',
                 StatusDataInterface::ACTION_LABEL => 'Cancel',
@@ -67,7 +74,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
                     'identifier' => 'products',
                 ]),
             ],
-            \Magento\Customer\Model\Customer::class => [
+            Customer::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_PROCESSED,
                 StatusDataInterface::EXPORT_PERCENT => '-',
                 StatusDataInterface::ACTION_LABEL => 'Rerun',
@@ -75,7 +82,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
                     'identifier' => 'customers',
                 ]),
             ],
-            \Magento\Sales\Model\Order::class => [
+            Order::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_IDLE,
                 StatusDataInterface::EXPORT_PERCENT => '-',
                 StatusDataInterface::ACTION_LABEL => 'Run',
@@ -83,7 +90,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
                     'identifier' => 'sales',
                 ]),
             ],
-            \Magento\Newsletter\Model\Subscriber::class => [
+            Subscriber::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_RUNNING,
                 StatusDataInterface::EXPORT_PERCENT => '0 %',
                 StatusDataInterface::ACTION_LABEL => 'Cancel',
@@ -91,7 +98,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
                     'identifier' => 'events',
                 ]),
             ],
-            \Magento\Store\Model\Store::class => [
+            Store::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_IDLE,
                 StatusDataInterface::EXPORT_PERCENT => '-',
                 StatusDataInterface::ACTION_LABEL => 'Run',
@@ -118,7 +125,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
         }
 
         $allExpectedData = [
-            \Magento\Catalog\Model\Product::class => [
+            Product::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_IDLE,
                 StatusDataInterface::EXPORT_PERCENT => '-',
                 StatusDataInterface::ACTION_LABEL => 'Run',
@@ -126,7 +133,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
                     'identifier' => 'products',
                 ]),
             ],
-            \Magento\Customer\Model\Customer::class => [
+            Customer::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_IDLE,
                 StatusDataInterface::EXPORT_PERCENT => '-',
                 StatusDataInterface::ACTION_LABEL => 'Run',
@@ -134,7 +141,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
                     'identifier' => 'customers',
                 ]),
             ],
-            \Magento\Sales\Model\Order::class => [
+            Order::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_IDLE,
                 StatusDataInterface::EXPORT_PERCENT => '-',
                 StatusDataInterface::ACTION_LABEL => 'Run',
@@ -142,7 +149,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
                     'identifier' => 'sales',
                 ]),
             ],
-            \Magento\Newsletter\Model\Subscriber::class => [
+            Subscriber::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_IDLE,
                 StatusDataInterface::EXPORT_PERCENT => '-',
                 StatusDataInterface::ACTION_LABEL => 'Run',
@@ -150,7 +157,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
                     'identifier' => 'events',
                 ]),
             ],
-            \Magento\Store\Model\Store::class => [
+            Store::class => [
                 StatusDataInterface::STATUS_ID => Status::STATUS_IDLE,
                 StatusDataInterface::EXPORT_PERCENT => '-',
                 StatusDataInterface::ACTION_LABEL => 'Run',
@@ -166,6 +173,7 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
     /**
      * @param mixed[] $allExpectedData
      * @param StatusDataInterface[] $allStatusData
+     *
      * @return void
      */
     private function assertStatusData(array $allExpectedData, array $allStatusData)
@@ -187,15 +195,5 @@ class StatusDataBuilderTest extends \PHPUnit\Framework\TestCase
                 );
             }
         }
-    }
-
-    public static function loadInitialsWithMixedStatusFixture()
-    {
-        include __DIR__ . '/../../_files/initials_with_mixed_status.php';
-    }
-
-    public static function loadInitialsWithMixedStatusFixtureRollback()
-    {
-        include __DIR__ . '/../../_files/initials_with_mixed_status_rollback.php';
     }
 }

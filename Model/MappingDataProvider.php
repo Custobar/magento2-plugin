@@ -66,7 +66,7 @@ class MappingDataProvider implements MappingDataProviderInterface
                 $mappingModels[$index] = $mappingModel;
             }
 
-            if (empty($mappingModels)) {
+            if (!$mappingModels) {
                 $this->logger->debug('No mapping data models set');
             }
 
@@ -112,6 +112,8 @@ class MappingDataProvider implements MappingDataProviderInterface
     }
 
     /**
+     * Collect all valid mapping data models
+     *
      * @return MappingDataInterface[]
      * @throws ValidationException
      */
@@ -123,7 +125,7 @@ class MappingDataProvider implements MappingDataProviderInterface
                 continue;
             }
             if (!($mappingData instanceof MappingDataInterface)) {
-                throw new ValidationException(\__('Mapping data model \'%1\' is not valid', $index));
+                throw new ValidationException(__('Mapping data model \'%1\' is not valid', $index));
             }
 
             $models[$index] = clone $mappingData;

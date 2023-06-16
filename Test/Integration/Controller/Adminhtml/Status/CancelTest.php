@@ -8,12 +8,17 @@ use Custobar\CustoConnector\Model\InitialRepository;
 use Magento\Framework\App\Request\Http as HttpRequest;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\MessageInterface;
+use Magento\Framework\ObjectManagerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\TestCase\AbstractBackendController;
 
-class CancelTest extends \Magento\TestFramework\TestCase\AbstractBackendController
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
+class CancelTest extends AbstractBackendController
 {
     /**
-     * @var \Magento\Framework\ObjectManagerInterface
+     * @var ObjectManagerInterface
      */
     private $objectManager;
 
@@ -26,7 +31,7 @@ class CancelTest extends \Magento\TestFramework\TestCase\AbstractBackendControll
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->resource = 'Custobar_CustoConnector::status';
         $this->uri = 'backend/custobar/status/cancel';
@@ -41,7 +46,7 @@ class CancelTest extends \Magento\TestFramework\TestCase\AbstractBackendControll
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
      *
-     * @magentoDataFixture loadInitialsForAllFixture
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/initials_for_all.php
      */
     public function testCancel()
     {
@@ -118,7 +123,7 @@ class CancelTest extends \Magento\TestFramework\TestCase\AbstractBackendControll
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
      *
-     * @magentoDataFixture loadInitialsForAllFixture
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/initials_for_all.php
      */
     public function testCancelAll()
     {
@@ -191,15 +196,5 @@ class CancelTest extends \Magento\TestFramework\TestCase\AbstractBackendControll
                 ));
             }
         }
-    }
-
-    public static function loadInitialsForAllFixture()
-    {
-        include __DIR__ . '/../../../_files/initials_for_all.php';
-    }
-
-    public static function loadInitialsForAllFixtureRollback()
-    {
-        include __DIR__ . '/../../../_files/initials_for_all_rollback.php';
     }
 }

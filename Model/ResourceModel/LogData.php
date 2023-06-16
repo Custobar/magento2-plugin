@@ -3,19 +3,25 @@
 namespace Custobar\CustoConnector\Model\ResourceModel;
 
 use Custobar\CustoConnector\Api\Data\LogDataInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use Magento\Framework\Model\ResourceModel\Db\Context;
 use Magento\Framework\Serialize\Serializer\Json;
 
 class LogData extends AbstractDb
 {
-    const MAIN_TABLE = 'custoconnector_log';
+    public const MAIN_TABLE = 'custoconnector_log';
 
     /**
      * @var Json
      */
     private $jsonSerializer;
 
+    /**
+     * @param Context $context
+     * @param Json $jsonSerializer
+     * @param string|null $connectionName
+     */
     public function __construct(
         Context $context,
         Json $jsonSerializer,
@@ -27,6 +33,7 @@ class LogData extends AbstractDb
 
     /**
      * @inheritDoc
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _construct()
     {
@@ -34,7 +41,10 @@ class LogData extends AbstractDb
     }
 
     /**
+     * Check if log entry exists in database
+     *
      * @param int $logId
+     *
      * @return bool
      */
     public function isLogExists(int $logId)
@@ -48,10 +58,12 @@ class LogData extends AbstractDb
     }
 
     /**
+     * Add a log entry to database
+     *
      * @param string $type
      * @param string $message
      * @param mixed[] $contextData
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function addLog(string $type, string $message, array $contextData = [])
     {

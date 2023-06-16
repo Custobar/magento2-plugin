@@ -2,7 +2,9 @@
 
 namespace Custobar\CustoConnector\Model\Schedule;
 
-class LockFlag extends \Magento\Framework\Flag
+use Magento\Framework\Flag;
+
+class LockFlag extends Flag
 {
 
 }

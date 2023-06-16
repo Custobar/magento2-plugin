@@ -3,6 +3,8 @@
 namespace Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\SalesOrder;
 
 use Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderInterface;
+use Magento\Sales\Model\Order;
+use Magento\Sales\Model\Order\Item;
 
 class AddItemData implements DataExtenderInterface
 {
@@ -11,11 +13,11 @@ class AddItemData implements DataExtenderInterface
      */
     public function execute($entity)
     {
-        /** @var \Magento\Sales\Model\Order $entity */
+        /** @var Order $entity */
         $itemsData = [];
 
         $visibleItems = $entity->getAllVisibleItems();
-        /** @var \Magento\Sales\Model\Order\Item $item */
+        /** @var Item $item */
         foreach ($visibleItems as $item) {
             $orderItem = [];
             $orderItem['sale_external_id'] = $entity->getIncrementId();

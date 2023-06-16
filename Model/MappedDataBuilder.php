@@ -38,6 +38,13 @@ class MappedDataBuilder implements MappedDataBuilderInterface
      */
     private $mapper;
 
+    /**
+     * @param EntityTypeResolverInterface $identiferResolver
+     * @param MappingDataProviderInterface $mappingDataProvider
+     * @param DataObjectFactory $dataFactory
+     * @param DataExtenderProviderInterface $extenderProvider
+     * @param Mapper $mapper
+     */
     public function __construct(
         EntityTypeResolverInterface $identiferResolver,
         MappingDataProviderInterface $mappingDataProvider,
@@ -64,7 +71,7 @@ class MappedDataBuilder implements MappedDataBuilderInterface
         }
         $mappingData = $this->mappingDataProvider->getMappingDataByEntityType($entityType, $storeId);
         if (!$mappingData) {
-            throw new NotFoundException(\__('No mapping data available for \'%1\'', $entityType));
+            throw new NotFoundException(__('No mapping data available for \'%1\'', $entityType));
         }
         $entity = $this->extendEntityData($entity, $entityType);
 
@@ -79,8 +86,11 @@ class MappedDataBuilder implements MappedDataBuilderInterface
     }
 
     /**
+     * Modify entity data before applying mapping
+     *
      * @param mixed $entity
      * @param string $entityType
+     *
      * @return mixed
      * @throws \Magento\Framework\Validation\ValidationException
      */

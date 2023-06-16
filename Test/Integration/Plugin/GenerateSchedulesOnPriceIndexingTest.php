@@ -5,18 +5,28 @@ namespace Custobar\CustoConnector\Test\Integration\Plugin;
 use Custobar\CustoConnector\Model\ResourceModel\Schedule;
 use Custobar\CustoConnector\Model\ScheduleRepository;
 use Magento\Catalog\Cron\RefreshSpecialPrices;
+use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ProductRepository;
+use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\StoreManager;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
+class GenerateSchedulesOnPriceIndexingTest extends TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
+
+    /**
+     * @var ProductMetadataInterface
+     */
+    private $metadata;
 
     /**
      * @var ProductRepository
@@ -39,7 +49,7 @@ class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
     private $scheduleResource;
 
     /**
-     * @var TimezoneInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var TimezoneInterface|MockObject
      */
     private $localeDateMock;
 
@@ -52,9 +62,10 @@ class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
+        $this->metadata = $this->objectManager->get(ProductMetadataInterface::class);
         $this->productRepository = $this->objectManager->get(ProductRepository::class);
         $this->scheduleRepository = $this->objectManager->get(ScheduleRepository::class);
         $this->storeManager = $this->objectManager->get(StoreManager::class);
@@ -72,10 +83,14 @@ class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
      * @magentoConfigFixture default_store custobar/custobar_custoconnector/prefix prefixthatdoesntexists
      * @magentoConfigFixture default_store custobar/custobar_custoconnector/apikey prefixthatdoesntexists
      * @magentoConfigFixture default_store custobar/custobar_custoconnector/allowed_websites 1
-     * @magentoDataFixture Magento/Catalog/_files/product_simple_with_all_fields.php
+     * @magentoDataFixtureBeforeTransaction Magento/Catalog/_files/product_simple_with_all_fields.php
      */
     public function testExecuteShouldNotScheduleWhenRefreshSpecialPricesDoesNothing()
     {
+        if ($this->getCurrentSystemVersionAsInteger() < 246) {
+            $this->markTestSkipped('Test unsupported in 2.4.5 and older');
+        }
+
         $timestamp = \date('Y-m-d 00:00', \time());
         $timestamp = \strtotime($timestamp);
         $this->localeDateMock->expects($this->any())->method('scopeTimeStamp')
@@ -87,7 +102,7 @@ class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
 
         try {
             $this->scheduleRepository->getByData(
-                \Magento\Catalog\Model\Product::class,
+                Product::class,
                 $product->getId(),
                 $storeId
             );
@@ -100,7 +115,7 @@ class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
 
         $this->expectException(NoSuchEntityException::class);
         $this->scheduleRepository->getByData(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $product->getId(),
             $storeId
         );
@@ -113,10 +128,14 @@ class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
      * @magentoConfigFixture default_store custobar/custobar_custoconnector/prefix prefixthatdoesntexists
      * @magentoConfigFixture default_store custobar/custobar_custoconnector/apikey prefixthatdoesntexists
      * @magentoConfigFixture default_store custobar/custobar_custoconnector/allowed_websites 1
-     * @magentoDataFixture Magento/Catalog/_files/product_simple_with_all_fields.php
+     * @magentoDataFixtureBeforeTransaction Magento/Catalog/_files/product_simple_with_all_fields.php
      */
     public function testExecuteShouldScheduleWhenRefreshSpecialPricesUpdatesPastPrice()
     {
+        if ($this->getCurrentSystemVersionAsInteger() < 246) {
+            $this->markTestSkipped('Test unsupported in 2.4.5 and older');
+        }
+
         $timestamp = \date('Y-m-d 00:00', \strtotime('+2 day'));
         $timestamp = \strtotime($timestamp);
         $this->localeDateMock->expects($this->any())->method('scopeTimeStamp')
@@ -128,7 +147,7 @@ class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
 
         try {
             $this->scheduleRepository->getByData(
-                \Magento\Catalog\Model\Product::class,
+                Product::class,
                 $product->getId(),
                 $storeId
             );
@@ -140,13 +159,23 @@ class GenerateSchedulesOnPriceIndexingTest extends \PHPUnit\Framework\TestCase
         $this->refreshSpecialPrices->execute();
 
         $schedule = $this->scheduleRepository->getByData(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $product->getId(),
             $storeId
         );
 
         $this->assertEquals($product->getId(), $schedule->getScheduledEntityId());
-        $this->assertEquals(\Magento\Catalog\Model\Product::class, $schedule->getScheduledEntityType());
+        $this->assertEquals(Product::class, $schedule->getScheduledEntityType());
         $this->assertEquals($storeId, $schedule->getStoreId());
+    }
+
+    /**
+     * @return int
+     */
+    private function getCurrentSystemVersionAsInteger()
+    {
+        $version = $this->metadata->getVersion();
+
+        return (int) \str_replace('.', '', $version);
     }
 }

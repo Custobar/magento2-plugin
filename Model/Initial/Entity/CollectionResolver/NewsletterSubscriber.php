@@ -8,10 +8,13 @@ use Magento\Newsletter\Model\ResourceModel\Subscriber\CollectionFactory;
 class NewsletterSubscriber implements CollectionResolverInterface
 {
     /**
-     * @var mixed
+     * @var CollectionFactory
      */
     private $collectionFactory;
 
+    /**
+     * @param CollectionFactory $collectionFactory
+     */
     public function __construct(
         CollectionFactory $collectionFactory
     ) {

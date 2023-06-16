@@ -5,6 +5,7 @@ namespace Custobar\CustoConnector\Block\Adminhtml;
 use Custobar\CustoConnector\Api\Data\MappingDataInterface;
 use Custobar\CustoConnector\Api\MappingDataProviderInterface;
 use Custobar\CustoConnector\Model\Initial\StatusDataBuilderInterface;
+use Custobar\CustoConnector\Model\Initial\StatusDataInterface;
 use Magento\Backend\Block\Template;
 
 class Status extends Template
@@ -37,7 +38,9 @@ class Status extends Template
     }
 
     /**
-     * @return \Custobar\CustoConnector\Api\Data\MappingDataInterface[]
+     * Get all configured mapping data
+     *
+     * @return MappingDataInterface[]
      */
     public function getAllMappingData()
     {
@@ -45,8 +48,11 @@ class Status extends Template
     }
 
     /**
+     * Get status data instance for mapping data instance
+     *
      * @param MappingDataInterface $mappingData
-     * @return \Custobar\CustoConnector\Model\Initial\StatusDataInterface
+     *
+     * @return StatusDataInterface
      */
     public function getStatusData(MappingDataInterface $mappingData)
     {
@@ -54,6 +60,8 @@ class Status extends Template
     }
 
     /**
+     * Get run all link url
+     *
      * @return string
      */
     public function getExportRunAllUrl()
@@ -64,6 +72,8 @@ class Status extends Template
     }
 
     /**
+     * Get cancel all link url
+     *
      * @return string
      */
     public function getExportCancelAllUrl()
@@ -74,6 +84,8 @@ class Status extends Template
     }
 
     /**
+     * Get refresh link url
+     *
      * @return string
      */
     public function getRefreshDataUrl()

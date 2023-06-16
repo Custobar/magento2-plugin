@@ -23,6 +23,11 @@ class ExportToCustobar
      */
     private $executionValidator;
 
+    /**
+     * @param ExportInterface $export
+     * @param ExportableProviderInterface $exportableProvider
+     * @param ExecutionValidatorInterface $executionValidator
+     */
     public function __construct(
         ExportInterface $export,
         ExportableProviderInterface $exportableProvider,
@@ -33,6 +38,11 @@ class ExportToCustobar
         $this->executionValidator = $executionValidator;
     }
 
+    /**
+     * Execute cron logic
+     *
+     * @return void
+     */
     public function execute()
     {
         if (!$this->executionValidator->canExecute()) {

@@ -18,6 +18,10 @@ class Export implements ExportInterface
      */
     private $exportProcessor;
 
+    /**
+     * @param InitializerInterface $dataInitializer
+     * @param ProcessorInterface $exportProcessor
+     */
     public function __construct(
         InitializerInterface $dataInitializer,
         ProcessorInterface $exportProcessor

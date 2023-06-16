@@ -7,13 +7,23 @@ use Custobar\CustoConnector\Model\Initial\Config\Source\Status;
 use Custobar\CustoConnector\Model\Initial\Populator;
 use Custobar\CustoConnector\Model\InitialRepository;
 use Custobar\CustoConnector\Model\MappingDataProvider;
+use Magento\Catalog\Model\Product;
+use Magento\Customer\Model\Customer;
 use Magento\Framework\Exception\NoSuchEntityException;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\Newsletter\Model\Subscriber;
+use Magento\Sales\Model\Order;
+use Magento\Store\Model\Store;
+use Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
+use PHPUnit\Framework\TestCase;
 
-class PopulatorTest extends \PHPUnit\Framework\TestCase
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
+class PopulatorTest extends TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 
@@ -36,7 +46,7 @@ class PopulatorTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->initialRepository = $this->objectManager->get(InitialRepository::class);
@@ -56,11 +66,11 @@ class PopulatorTest extends \PHPUnit\Framework\TestCase
     public function testExecute()
     {
         $originalData = [
-            \Magento\Catalog\Model\Product::class => [],
-            \Magento\Customer\Model\Customer::class => [],
-            \Magento\Sales\Model\Order::class => [],
-            \Magento\Newsletter\Model\Subscriber::class => [],
-            \Magento\Store\Model\Store::class => [],
+            Product::class => [],
+            Customer::class => [],
+            Order::class => [],
+            Subscriber::class => [],
+            Store::class => [],
         ];
 
         $initials = $this->getInitials(\array_keys($originalData));
@@ -68,34 +78,34 @@ class PopulatorTest extends \PHPUnit\Framework\TestCase
         $this->assertInitials($originalData, $initials);
 
         $expectedData = [
-            \Magento\Catalog\Model\Product::class => [
+            Product::class => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
+                InitialInterface::ENTITY_TYPE => Product::class,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Customer\Model\Customer::class => [
+            Customer::class => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Customer\Model\Customer::class,
+                InitialInterface::ENTITY_TYPE => Customer::class,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Sales\Model\Order::class => [
+            Order::class => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Sales\Model\Order::class,
+                InitialInterface::ENTITY_TYPE => Order::class,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Newsletter\Model\Subscriber::class => [
+            Subscriber::class => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Newsletter\Model\Subscriber::class,
+                InitialInterface::ENTITY_TYPE => Subscriber::class,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Store\Model\Store::class => [
+            Store::class => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Store\Model\Store::class,
+                InitialInterface::ENTITY_TYPE => Store::class,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
         ];
@@ -114,39 +124,39 @@ class PopulatorTest extends \PHPUnit\Framework\TestCase
      * @magentoDataFixture Magento/Customer/_files/three_customers.php
      * @magentoDataFixture Magento/Sales/_files/order_list.php
      * @magentoDataFixture Magento/Newsletter/_files/subscribers.php
-     * @magentoDataFixture loadInitialsWithMixedStatusFixture
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/initials_with_mixed_status.php
      */
     public function testExecuteOnExisting()
     {
         $originalData = [
-            \Magento\Catalog\Model\Product::class => [
+            Product::class => [
                 InitialInterface::PAGE => 1,
                 InitialInterface::PAGES => 2,
-                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
+                InitialInterface::ENTITY_TYPE => Product::class,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Customer\Model\Customer::class => [
+            Customer::class => [
                 InitialInterface::PAGE => 1,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Customer\Model\Customer::class,
+                InitialInterface::ENTITY_TYPE => Customer::class,
                 InitialInterface::STATUS => Status::STATUS_PROCESSED,
             ],
-            \Magento\Sales\Model\Order::class => [
+            Order::class => [
                 InitialInterface::PAGE => 1,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Sales\Model\Order::class,
+                InitialInterface::ENTITY_TYPE => Order::class,
                 InitialInterface::STATUS => Status::STATUS_IDLE,
             ],
-            \Magento\Newsletter\Model\Subscriber::class => [
+            Subscriber::class => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Newsletter\Model\Subscriber::class,
+                InitialInterface::ENTITY_TYPE => Subscriber::class,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Store\Model\Store::class => [
+            Store::class => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Store\Model\Store::class,
+                InitialInterface::ENTITY_TYPE => Store::class,
                 InitialInterface::STATUS => Status::STATUS_IDLE,
             ],
         ];
@@ -155,34 +165,34 @@ class PopulatorTest extends \PHPUnit\Framework\TestCase
         $this->assertInitials($originalData, $initials);
 
         $expectedData = [
-            \Magento\Catalog\Model\Product::class => [
+            Product::class => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
+                InitialInterface::ENTITY_TYPE => Product::class,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Customer\Model\Customer::class => [
+            Customer::class => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Customer\Model\Customer::class,
+                InitialInterface::ENTITY_TYPE => Customer::class,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Sales\Model\Order::class => [
+            Order::class => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Sales\Model\Order::class,
+                InitialInterface::ENTITY_TYPE => Order::class,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Newsletter\Model\Subscriber::class => [
+            Subscriber::class => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Newsletter\Model\Subscriber::class,
+                InitialInterface::ENTITY_TYPE => Subscriber::class,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Store\Model\Store::class => [
+            Store::class => [
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
-                InitialInterface::ENTITY_TYPE => \Magento\Store\Model\Store::class,
+                InitialInterface::ENTITY_TYPE => Store::class,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
         ];
@@ -193,6 +203,7 @@ class PopulatorTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @param string[] $entityTypes
+     *
      * @return InitialInterface[]
      */
     private function getInitials(array $entityTypes)
@@ -214,6 +225,7 @@ class PopulatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @param mixed[] $allExpectedData
      * @param InitialInterface[] $initials
+     *
      * @return void
      */
     private function assertInitials(array $allExpectedData, array $initials)
@@ -226,7 +238,7 @@ class PopulatorTest extends \PHPUnit\Framework\TestCase
 
             $initial = $initials[$entityType] ?? null;
             $expectedData = $allExpectedData[$entityType] ?? [];
-            if (!empty($expectedData)) {
+            if ($expectedData) {
                 $this->assertNotNull(
                     $initial,
                     'Assert that initial for ' . $entityType . ' exists'
@@ -253,15 +265,5 @@ class PopulatorTest extends \PHPUnit\Framework\TestCase
                 'Assert that initial for ' . $entityType . ' does not exists'
             );
         }
-    }
-
-    public static function loadInitialsWithMixedStatusFixture()
-    {
-        include __DIR__ . '/../../_files/initials_with_mixed_status.php';
-    }
-
-    public static function loadInitialsWithMixedStatusFixtureRollback()
-    {
-        include __DIR__ . '/../../_files/initials_with_mixed_status_rollback.php';
     }
 }

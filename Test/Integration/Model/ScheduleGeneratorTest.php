@@ -5,20 +5,18 @@ namespace Custobar\CustoConnector\Test\Integration\Model;
 use Custobar\CustoConnector\Api\Data\ScheduleInterface;
 use Custobar\CustoConnector\Model\ResourceModel\Schedule\CollectionFactory;
 use Custobar\CustoConnector\Model\ScheduleGenerator;
-use Magento\Catalog\Model\ProductRepository;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\Catalog\Model\Product;
+use Magento\Customer\Model\Customer;
+use Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
+use PHPUnit\Framework\TestCase;
 
-class ScheduleGeneratorTest extends \PHPUnit\Framework\TestCase
+class ScheduleGeneratorTest extends TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
-
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
 
     /**
      * @var CollectionFactory
@@ -34,10 +32,9 @@ class ScheduleGeneratorTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
-        $this->productRepository = $this->objectManager->get(ProductRepository::class);
         $this->collectionFactory = $this->objectManager->get(CollectionFactory::class);
         $this->scheduleGenerator = $this->objectManager->get(ScheduleGenerator::class);
     }
@@ -47,14 +44,14 @@ class ScheduleGeneratorTest extends \PHPUnit\Framework\TestCase
      * @magentoDbIsolation enabled
      *
      * @magentoDataFixture Magento/Customer/_files/three_customers.php
-     * @magentoDataFixture loadSchedulesCustomerFixture
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/schedules_customer.php
      */
     public function testSchemaDuplicateKeyRestriction()
     {
         $result = $this->scheduleGenerator->generateByData(
             3,
             1,
-            \Magento\Customer\Model\Customer::class
+            Customer::class
         );
 
         $this->assertFalse(
@@ -69,14 +66,14 @@ class ScheduleGeneratorTest extends \PHPUnit\Framework\TestCase
      *
      * @magentoConfigFixture default_store custobar/custobar_custoconnector/allowed_websites 1
      * @magentoDataFixture Magento/Catalog/_files/products_list.php
-     * @magentoDataFixture loadSchedulesCustomerFixture
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/schedules_customer.php
      */
     public function testAddSchedules()
     {
         $productSchedule = $this->scheduleGenerator->generateByData(
             1,
             1,
-            \Magento\Catalog\Model\Product::class
+            Product::class
         );
 
         $this->assertNotFalse(
@@ -91,7 +88,7 @@ class ScheduleGeneratorTest extends \PHPUnit\Framework\TestCase
         $firstSchedule = $schedules->getFirstItem();
         $this->assertEquals(3, $firstSchedule->getScheduledEntityId());
         $this->assertEquals(
-            \Magento\Customer\Model\Customer::class,
+            Customer::class,
             $firstSchedule->getScheduledEntityType(),
             'Test that customer model is the first in the schedules'
         );
@@ -108,25 +105,5 @@ class ScheduleGeneratorTest extends \PHPUnit\Framework\TestCase
             $schedules->count(),
             'Test that there are only 3 scheduled items'
         );
-    }
-
-    public static function loadSchedulesCustomerFixture()
-    {
-        include __DIR__ . '/../_files/schedules_customer.php';
-    }
-
-    public static function loadSchedulesCustomerFixtureRollback()
-    {
-        include __DIR__ . '/../_files/schedules_customer_rollback.php';
-    }
-
-    public static function loadSchedulesProductFixture()
-    {
-        include __DIR__ . '/../_files/schedules_product.php';
-    }
-
-    public static function loadSchedulesProductFixtureRollback()
-    {
-        include __DIR__ . '/../_files/schedules_product_rollback.php';
     }
 }

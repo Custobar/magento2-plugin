@@ -4,14 +4,16 @@ namespace Custobar\CustoConnector\Model\ResourceModel;
 
 use Custobar\CustoConnector\Api\Data\InitialInterface;
 use Custobar\CustoConnector\Model\Initial\Config\Source\Status;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class Initial extends AbstractDb
 {
-    const MAIN_TABLE = 'custoconnector_initial';
+    public const MAIN_TABLE = 'custoconnector_initial';
 
     /**
      * @inheritDoc
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _construct()
     {
@@ -19,8 +21,10 @@ class Initial extends AbstractDb
     }
 
     /**
-     * @return $this
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * Delete all initials
+     *
+     * @return Initial
+     * @throws LocalizedException
      */
     public function removeAll()
     {
@@ -31,9 +35,12 @@ class Initial extends AbstractDb
     }
 
     /**
+     * Get existing initial entity id by entity type
+     *
      * @param string $entityType
+     *
      * @return int
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function getExistingId(string $entityType)
     {
@@ -46,9 +53,12 @@ class Initial extends AbstractDb
     }
 
     /**
+     * Check if there's any initial created for the given entity type
+     *
      * @param string $entityType
+     *
      * @return bool
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function isTypeExists(string $entityType)
     {
@@ -62,9 +72,11 @@ class Initial extends AbstractDb
     }
 
     /**
+     * Delete all initials by entity type
+     *
      * @param string $entityType
      * @return int
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function deleteType(string $entityType)
     {
@@ -78,8 +90,10 @@ class Initial extends AbstractDb
     }
 
     /**
+     * Check if any of the initials are in running state
+     *
      * @return bool
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function isInitialRunning()
     {

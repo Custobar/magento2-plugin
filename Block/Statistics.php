@@ -4,6 +4,7 @@ namespace Custobar\CustoConnector\Block;
 
 use Custobar\CustoConnector\Model\Config;
 use Custobar\CustoConnector\Api\WebsiteValidatorInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template;
 
 class Statistics extends Template
@@ -36,6 +37,8 @@ class Statistics extends Template
     }
 
     /**
+     * Get tracking script from config
+     *
      * @return string
      */
     public function getTrackingScript()
@@ -44,6 +47,8 @@ class Statistics extends Template
     }
 
     /**
+     * Get tracking mode from config
+     *
      * @return int
      */
     public function getTrackingMode()
@@ -52,13 +57,15 @@ class Statistics extends Template
     }
 
     /**
+     * Check if tracking can be done
+     *
      * @return bool
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function canTrack()
     {
         $mode = $this->getTrackingMode();
-        if (!$this->isAllowedWebsite() || empty($mode)) {
+        if (!$this->isAllowedWebsite() || !$mode) {
             return false;
         }
 
@@ -66,8 +73,10 @@ class Statistics extends Template
     }
 
     /**
+     * Check if we are currently in website configured in module settings
+     *
      * @return bool
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     private function isAllowedWebsite()
     {

@@ -21,6 +21,10 @@ class AddMappingData implements InitializerComponentInterface
      */
     private $logger;
 
+    /**
+     * @param MappingDataProviderInterface $mappingDataProvider
+     * @param LoggerInterface $logger
+     */
     public function __construct(
         MappingDataProviderInterface $mappingDataProvider,
         LoggerInterface $logger
@@ -36,8 +40,8 @@ class AddMappingData implements InitializerComponentInterface
     {
         $entityType = $exportData->getEntityType();
         $mappingData = $this->mappingDataProvider->getMappingDataByEntityType($entityType);
-        if (empty($mappingData)) {
-            $this->logger->debug(\__(
+        if (!$mappingData) {
+            $this->logger->debug(__(
                 'Did not process \'%1\', insufficient configurations',
                 $entityType
             ));

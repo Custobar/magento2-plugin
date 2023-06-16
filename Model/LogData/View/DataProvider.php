@@ -55,7 +55,7 @@ class DataProvider extends AbstractDataProvider
     }
 
     /**
-     * @return \Custobar\CustoConnector\Model\ResourceModel\LogData\Collection
+     * @inheritDoc
      */
     public function getCollection()
     {
@@ -78,7 +78,7 @@ class DataProvider extends AbstractDataProvider
      */
     public function getData()
     {
-        if (!empty($this->loadedData)) {
+        if ($this->loadedData) {
             return $this->loadedData;
         }
 

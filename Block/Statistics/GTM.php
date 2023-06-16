@@ -2,9 +2,13 @@
 
 namespace Custobar\CustoConnector\Block\Statistics;
 
-class GTM extends \Magento\Framework\View\Element\Template
+use Magento\Framework\View\Element\Template;
+
+class GTM extends Template
 {
     /**
+     * Get field mapping from block data
+     *
      * @return mixed[]
      */
     public function getFieldMapping()

@@ -4,6 +4,7 @@ namespace Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponent;
 
 use Custobar\CustoConnector\Model\EntityTypeResolver\ResolverComponentInterface;
 use Magento\Customer\Api\Data\AddressInterface;
+use Magento\Customer\Model\Address;
 
 class CustomerAddress implements ResolverComponentInterface
 {
@@ -15,7 +16,7 @@ class CustomerAddress implements ResolverComponentInterface
         if ($entity instanceof AddressInterface) {
             return true;
         }
-        if ($entity instanceof \Magento\Customer\Model\Address) {
+        if ($entity instanceof Address) {
             return true;
         }
 
@@ -27,6 +28,6 @@ class CustomerAddress implements ResolverComponentInterface
      */
     public function getEntityType()
     {
-        return \Magento\Customer\Model\Address::class;
+        return Address::class;
     }
 }

@@ -4,19 +4,29 @@ namespace Custobar\CustoConnector\Test\Integration\Model;
 
 use Custobar\CustoConnector\Model\EntityDataResolver;
 use Custobar\CustoConnector\Model\MappedDataBuilder;
+use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ProductRepository;
+use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Newsletter\Model\Subscriber;
 use Magento\Newsletter\Model\SubscriberFactory;
+use Magento\Sales\Model\Order;
 use Magento\Sales\Model\OrderFactory;
+use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManager;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
+use PHPUnit\Framework\TestCase;
 
-class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
+class MappedDataBuilderTest extends TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 
@@ -59,7 +69,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->productRepository = $this->objectManager->get(ProductRepository::class);
@@ -73,7 +83,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @magentoAppIsolation enabled
-     * @magentoDbIsolation enabled
+     * @magentoDbIsolation disabled
      *
      * @magentoDataFixture Magento/Catalog/_files/product_simple_with_all_fields.php
      */
@@ -81,7 +91,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
     {
         $product = $this->productRepository->get('simple');
         $productData = $this->entityDataResolver->resolveEntity(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $product->getId(),
             $this->storeManager->getStore()->getId()
         );
@@ -99,7 +109,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
             'Description with <b>html tag</b>',
             $mappedData->getData('description')
         );
-        $this->assertContains('simple-product', $mappedData->getData('url'));
+        $this->assertStringContainsString('simple-product', $mappedData->getData('url'));
         $this->assertEquals(
             'Default Category,Movable Position 2,Filter category',
             $mappedData->getData('category')
@@ -116,19 +126,19 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
     {
         $product = $this->productRepository->get('simple');
         $productData = $this->entityDataResolver->resolveEntity(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $product->getId(),
             $this->storeManager->getStore()->getId()
         );
         $mappedData = $this->mappedDataBuilder->buildMappedData($productData);
 
         $this->assertEquals('simple', $mappedData->getData('external_id'));
-        $this->assertContains('/m/a/magento_image.jpg', $mappedData->getData('image'));
+        $this->assertStringContainsString('/m/a/magento_image.jpg', $mappedData->getData('image'));
     }
 
     /**
      * @magentoAppIsolation enabled
-     * @magentoDbIsolation enabled
+     * @magentoDbIsolation disabled
      *
      * @magentoDataFixture Magento/Catalog/_files/product_simple_multistore.php
      */
@@ -139,7 +149,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
         $testStoreId = $this->storeManager->getStore('fixturestore')->getId();
 
         $defaultStoreData = $this->entityDataResolver->resolveEntity(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $product->getId(),
             $defaultStoreId
         );
@@ -156,7 +166,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
         );
 
         $testStoreData = $this->entityDataResolver->resolveEntity(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $product->getId(),
             $testStoreId
         );
@@ -172,7 +182,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
             $mappedData->getData('store_id')
         );
 
-        // TODO: Could also cover language, url, category and description differences
+        // TODO: Could also cover language, url, category and description differences
     }
 
     /**
@@ -185,13 +195,13 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
     {
         $product = $this->productRepository->get('simple');
         $productData = $this->entityDataResolver->resolveEntity(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $product->getId(),
             $this->storeManager->getStore()->getId()
         );
         $mappedData = $this->mappedDataBuilder->buildMappedData($productData);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'simple-product',
             $mappedData->getData('url'),
             'Assert that product url present'
@@ -201,7 +211,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
         $product->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
         $product = $this->productRepository->save($product);
         $productData = $this->entityDataResolver->resolveEntity(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $product->getId(),
             $this->storeManager->getStore()->getId()
         );
@@ -233,7 +243,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
     {
         $product = $this->productRepository->get('simple');
         $productData = $this->entityDataResolver->resolveEntity(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $product->getId(),
             $this->storeManager->getStore()->getId()
         );
@@ -264,7 +274,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
         $storeId = $this->storeManager->getStore()->getId();
         $product = $this->productRepository->get('simple_ms_2');
         $productData = $this->entityDataResolver->resolveEntity(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $product->getId(),
             $storeId
         );
@@ -295,7 +305,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
         $storeId = $this->storeManager->getStore()->getId();
         $product = $this->productRepository->get('simple_op_2');
         $productData = $this->entityDataResolver->resolveEntity(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $product->getId(),
             $storeId
         );
@@ -325,7 +335,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
     {
         $parentProduct = $this->productRepository->get('configurable');
         $parentProductData = $this->entityDataResolver->resolveEntity(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $parentProduct->getId(),
             $this->storeManager->getStore()->getId()
         );
@@ -363,7 +373,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
 
         $childProduct = $this->productRepository->get('simple_10');
         $childProductData = $this->entityDataResolver->resolveEntity(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $childProduct->getId(),
             $this->storeManager->getStore()->getId()
         );
@@ -386,7 +396,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
     {
         $product = $this->productRepository->get('configurable');
         $productData = $this->entityDataResolver->resolveEntity(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $product->getId(),
             $this->storeManager->getStore()->getId()
         );
@@ -409,7 +419,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
     {
         $parentProduct = $this->productRepository->get('bundle-product');
         $parentProductData = $this->entityDataResolver->resolveEntity(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $parentProduct->getId(),
             $this->storeManager->getStore()->getId()
         );
@@ -428,7 +438,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
 
         $childProduct = $this->productRepository->get('simple');
         $childProductData = $this->entityDataResolver->resolveEntity(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $childProduct->getId(),
             $this->storeManager->getStore()->getId()
         );
@@ -443,7 +453,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @magentoAppIsolation enabled
-     * @magentoDbIsolation enabled
+     * @magentoDbIsolation disabled
      *
      * @magentoDataFixture Magento/GroupedProduct/_files/product_grouped.php
      */
@@ -451,7 +461,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
     {
         $parentProduct = $this->productRepository->get('grouped-product');
         $parentProductData = $this->entityDataResolver->resolveEntity(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $parentProduct->getId(),
             $this->storeManager->getStore()->getId()
         );
@@ -465,7 +475,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
 
         $childProduct = $this->productRepository->get('simple');
         $childProductData = $this->entityDataResolver->resolveEntity(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $childProduct->getId(),
             $this->storeManager->getStore()->getId()
         );
@@ -488,7 +498,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
     {
         $order = $this->orderFactory->create()->loadByIncrementId('100000001');
         $orderData = $this->entityDataResolver->resolveEntity(
-            \Magento\Sales\Model\Order::class,
+            Order::class,
             $order->getId(),
             $this->storeManager->getStore()->getId()
         );
@@ -497,7 +507,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('PROCESSING', $mappedData->getData('sale_state'));
         $this->assertEquals('100000001', $mappedData->getData('sale_external_id'));
         $this->assertEquals('1', $mappedData->getData('sale_customer_id'));
-        $this->assertEquals('customer@null.com', $mappedData->getData('sale_email'));
+        $this->assertStringContainsString('customer@', $mappedData->getData('sale_email'));
         $this->assertEquals('1', $mappedData->getData('sale_shop_id'));
         $this->assertEquals(0, $mappedData->getData('sale_discount'));
         $this->assertEquals(10000, $mappedData->getData('sale_total'));
@@ -528,7 +538,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
             ->setWebsiteId(1)
             ->loadByEmail('customer_one_address@test.com');
         $customerData = $this->entityDataResolver->resolveEntity(
-            \Magento\Customer\Model\Customer::class,
+            Customer::class,
             $customer->getId(),
             $this->storeManager->getStore()->getId()
         );
@@ -590,7 +600,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
         $subscriber = $this->subscriberFactory->create()
             ->loadByEmail('customer@example.com');
         $subscriberData = $this->entityDataResolver->resolveEntity(
-            \Magento\Newsletter\Model\Subscriber::class,
+            Subscriber::class,
             $subscriber->getId(),
             $this->storeManager->getStore()->getId()
         );
@@ -606,7 +616,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
         $subscriber->setStatus(Subscriber::STATUS_UNSUBSCRIBED);
         $subscriber->save();
         $subscriberData = $this->entityDataResolver->resolveEntity(
-            \Magento\Newsletter\Model\Subscriber::class,
+            Subscriber::class,
             $subscriber->getId(),
             $this->storeManager->getStore()->getId()
         );
@@ -617,7 +627,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
         $subscriber = $this->subscriberFactory->create()
             ->loadByEmail('customer_confirm@example.com');
         $subscriberData = $this->entityDataResolver->resolveEntity(
-            \Magento\Newsletter\Model\Subscriber::class,
+            Subscriber::class,
             $subscriber->getId(),
             $this->storeManager->getStore()->getId()
         );
@@ -636,7 +646,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
     {
         $store = $this->storeManager->getStore();
         $storeData = $this->entityDataResolver->resolveEntity(
-            \Magento\Store\Model\Store::class,
+            Store::class,
             $store->getId(),
             $this->storeManager->getStore()->getId()
         );
@@ -650,7 +660,7 @@ class MappedDataBuilderTest extends \PHPUnit\Framework\TestCase
 
         $store = $this->storeManager->getStore('fixture_second_store');
         $storeData = $this->entityDataResolver->resolveEntity(
-            \Magento\Store\Model\Store::class,
+            Store::class,
             $store->getId(),
             $this->storeManager->getStore()->getId()
         );

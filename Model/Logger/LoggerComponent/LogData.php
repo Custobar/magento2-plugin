@@ -12,6 +12,9 @@ class LogData implements LoggerComponentInterface
      */
     private $logResource;
 
+    /**
+     * @param LogResource $logResource
+     */
     public function __construct(
         LogResource $logResource
     ) {

@@ -3,6 +3,7 @@
 namespace Custobar\CustoConnector\Model\EntityDataConverter\ToMapped;
 
 use Custobar\CustoConnector\Api\EntityDataConverterInterface;
+use Magento\Customer\Model\Address;
 
 class CustomerAddress implements EntityDataConverterInterface
 {
@@ -11,7 +12,7 @@ class CustomerAddress implements EntityDataConverterInterface
      */
     public function convertToMappedEntity($entity)
     {
-        /** @var \Magento\Customer\Model\Address $entity */
+        /** @var Address $entity */
 
         return $entity->getCustomer();
     }

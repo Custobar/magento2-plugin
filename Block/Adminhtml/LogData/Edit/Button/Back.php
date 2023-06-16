@@ -12,6 +12,9 @@ class Back implements ButtonProviderInterface
      */
     private $context;
 
+    /**
+     * @param Context $context
+     */
     public function __construct(
         Context $context
     ) {
@@ -24,7 +27,7 @@ class Back implements ButtonProviderInterface
     public function getButtonData()
     {
         return [
-            'label' => \__('Back'),
+            'label' => __('Back'),
             'on_click' => \sprintf(
                 'location.href = \'%s\';',
                 $this->context->getUrl('custobar/logs/index')

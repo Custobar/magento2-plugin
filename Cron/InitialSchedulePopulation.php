@@ -29,6 +29,12 @@ class InitialSchedulePopulation
      */
     private $logger;
 
+    /**
+     * @param InitialRunnerInterface $initialRunner
+     * @param MappingDataProviderInterface $mappingDataProvider
+     * @param LockControlInterface $lockControl
+     * @param LoggerInterface $logger
+     */
     public function __construct(
         InitialRunnerInterface $initialRunner,
         MappingDataProviderInterface $mappingDataProvider,
@@ -41,6 +47,11 @@ class InitialSchedulePopulation
         $this->logger = $logger;
     }
 
+    /**
+     * Execute cron logic
+     *
+     * @return void
+     */
     public function execute()
     {
         if ($this->lockControl->isLocked()) {

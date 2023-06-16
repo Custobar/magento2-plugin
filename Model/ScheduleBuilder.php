@@ -19,6 +19,10 @@ class ScheduleBuilder implements ScheduleBuilderInterface
      */
     private $typeResolver;
 
+    /**
+     * @param ScheduleFactory $scheduleFactory
+     * @param EntityTypeResolverInterface $typeResolver
+     */
     public function __construct(
         ScheduleFactory $scheduleFactory,
         EntityTypeResolverInterface $typeResolver
@@ -39,17 +43,17 @@ class ScheduleBuilder implements ScheduleBuilderInterface
         $schedule->setStoreId((int)$storeId);
 
         $entityId = $scheduleData[ScheduleInterface::SCHEDULED_ENTITY_ID] ?? 0;
-        if (empty($entityId)) {
-            throw new LocalizedException(\__(
+        if (!$entityId) {
+            throw new LocalizedException(__(
                 'Field \'%1\' is required',
                 ScheduleInterface::SCHEDULED_ENTITY_ID
             ));
         }
         $schedule->setScheduledEntityId((int)$entityId);
 
-        $entityType = $scheduleData[ScheduleInterface::SCHEDULED_ENTITY_TYPE] ?? '';
-        if (empty($entityType)) {
-            throw new LocalizedException(\__(
+        $entityType = $scheduleData[ScheduleInterface::SCHEDULED_ENTITY_TYPE] ?? null;
+        if (!$entityType) {
+            throw new LocalizedException(__(
                 'Field \'%1\' is required',
                 ScheduleInterface::SCHEDULED_ENTITY_TYPE
             ));
@@ -71,14 +75,13 @@ class ScheduleBuilder implements ScheduleBuilderInterface
     public function buildByEntity($entity)
     {
         $entityType = $this->typeResolver->resolveEntityType($entity);
-        $schedule = $this->buildByData([
+
+        return $this->buildByData([
             ScheduleInterface::STORE_ID => $entity->getStoreId(),
             ScheduleInterface::SCHEDULED_ENTITY_ID => $entity->getId(),
             ScheduleInterface::SCHEDULED_ENTITY_TYPE => $entityType,
             ScheduleInterface::PROCESSED_AT => '0000-00-00 00:00:00',
             ScheduleInterface::ERROR_COUNT => 0,
         ]);
-
-        return $schedule;
     }
 }

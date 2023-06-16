@@ -7,25 +7,28 @@ use Magento\Store\Model\ScopeInterface;
 
 class Config
 {
-    const CONFIG_BASE_ROOT = 'custobar/custobar_custoconnector/';
-    const CONFIG_ALLOWED_WEBSITES = self::CONFIG_BASE_ROOT . 'allowed_websites';
-    const CONFIG_API_PREFIX = self::CONFIG_BASE_ROOT . 'prefix';
-    const CONFIG_API_KEY = self::CONFIG_BASE_ROOT . 'apikey';
-    const CONFIG_MODE = self::CONFIG_BASE_ROOT . 'mode';
-    const CONFIG_TRACKING_MODE = self::CONFIG_BASE_ROOT . 'tracking_mode';
-    const CONFIG_TRACKING_SCRIPT = self::CONFIG_BASE_ROOT . 'tracking_script';
+    public const CONFIG_BASE_ROOT = 'custobar/custobar_custoconnector/';
+    public const CONFIG_ALLOWED_WEBSITES = self::CONFIG_BASE_ROOT . 'allowed_websites';
+    public const CONFIG_API_PREFIX = self::CONFIG_BASE_ROOT . 'prefix';
+    public const CONFIG_API_KEY = self::CONFIG_BASE_ROOT . 'apikey';
+    public const CONFIG_MODE = self::CONFIG_BASE_ROOT . 'mode';
+    public const CONFIG_TRACKING_MODE = self::CONFIG_BASE_ROOT . 'tracking_mode';
+    public const CONFIG_TRACKING_SCRIPT = self::CONFIG_BASE_ROOT . 'tracking_script';
 
-    const CONFIG_MAPPING_ROOT = 'custobar/custoconnector_field_mapping/';
-    const CONFIG_MAPPING_PRODUCT = self::CONFIG_MAPPING_ROOT . 'product';
-    const CONFIG_MAPPING_CUSTOMER = self::CONFIG_MAPPING_ROOT . 'customer';
-    const CONFIG_MAPPING_ORDER = self::CONFIG_MAPPING_ROOT . 'order';
-    const CONFIG_MAPPING_NEWSLETTER = self::CONFIG_MAPPING_ROOT . 'newsletter';
+    public const CONFIG_MAPPING_ROOT = 'custobar/custoconnector_field_mapping/';
+    public const CONFIG_MAPPING_PRODUCT = self::CONFIG_MAPPING_ROOT . 'product';
+    public const CONFIG_MAPPING_CUSTOMER = self::CONFIG_MAPPING_ROOT . 'customer';
+    public const CONFIG_MAPPING_ORDER = self::CONFIG_MAPPING_ROOT . 'order';
+    public const CONFIG_MAPPING_NEWSLETTER = self::CONFIG_MAPPING_ROOT . 'newsletter';
 
     /**
      * @var ScopeConfigInterface
      */
     private $scopeConfig;
 
+    /**
+     * @param ScopeConfigInterface $scopeConfig
+     */
     public function __construct(
         ScopeConfigInterface $scopeConfig
     ) {
@@ -33,6 +36,8 @@ class Config
     }
 
     /**
+     * Get allowed website ids from config
+     *
      * @return int[]
      */
     public function getAllowedWebsites()
@@ -42,10 +47,12 @@ class Config
             ScopeInterface::SCOPE_STORE
         );
 
-        return \explode(',', $websites);
+        return \explode(',', (string) $websites);
     }
 
     /**
+     * Get Custobar API prefix from config
+     *
      * @return string
      */
     public function getApiPrefix()
@@ -57,6 +64,8 @@ class Config
     }
 
     /**
+     * Get Custobar API key from config
+     *
      * @return string
      */
     public function getApiKey()
@@ -68,7 +77,9 @@ class Config
     }
 
     /**
-     * @return mixed
+     * Check if we should use dev mode logic
+     *
+     * @return bool
      */
     public function isDevMode()
     {
@@ -79,6 +90,8 @@ class Config
     }
 
     /**
+     * Get tracking mode from config
+     *
      * @return int
      */
     public function getTrackingMode()
@@ -90,7 +103,9 @@ class Config
     }
 
     /**
-     * @return mixed
+     * Get tracking script from config
+     *
+     * @return string
      */
     public function getTrackingScript()
     {
@@ -101,6 +116,8 @@ class Config
     }
 
     /**
+     * Get field mapping for products from config
+     *
      * @return string
      */
     public function getFieldMappingProduct()
@@ -112,6 +129,8 @@ class Config
     }
 
     /**
+     * Get field mapping for customers from config
+     *
      * @return string
      */
     public function getFieldMappingCustomer()
@@ -123,6 +142,8 @@ class Config
     }
 
     /**
+     * Get field mapping for orders from config
+     *
      * @return string
      */
     public function getFieldMappingOrder()
@@ -134,6 +155,8 @@ class Config
     }
 
     /**
+     * Get field mapping for newsletters from config
+     *
      * @return string
      */
     public function getFieldMappingNewsletter()

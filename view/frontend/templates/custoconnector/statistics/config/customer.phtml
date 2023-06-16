@@ -1,11 +1,16 @@
 <?php
-/* @var \Custobar\CustoConnector\Block\Statistics\Config\Customer $block */
+
+use Custobar\CustoConnector\Block\Statistics\Config\Customer;
+use Magento\Framework\Escaper;
+
+/* @var Customer $block */
+/* @var Escaper $escaper */
 ?>
 
 <?php // Assumes cstbrConfig is defined in parent blocks --> ?>
 <?php $customerId = $block->getCurrentCustomerId(); ?>
-<?php if ($customerId > 0) : ?>
+<?php if ($customerId > 0): ?>
     <script>
-        cstbrConfig.customerId = "<?= $block->escapeHtml($customerId); ?>";
+        cstbrConfig.customerId = "<?= $escaper->escapeHtml($customerId); ?>";
     </script>
 <?php endif; ?>

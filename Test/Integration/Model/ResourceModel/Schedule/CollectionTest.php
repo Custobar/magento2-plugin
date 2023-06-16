@@ -4,13 +4,16 @@ namespace Custobar\CustoConnector\Test\Integration\Model\ResourceModel\Schedule;
 
 use Custobar\CustoConnector\Api\Data\ScheduleInterface;
 use Custobar\CustoConnector\Model\ResourceModel\Schedule\CollectionFactory;
+use Magento\Customer\Model\Customer;
 use Magento\Framework\Data\Collection\AbstractDb;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
+use PHPUnit\Framework\TestCase;
 
-class CollectionTest extends \PHPUnit\Framework\TestCase
+class CollectionTest extends TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 
@@ -23,7 +26,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->collectionFactory = $this->objectManager->get(CollectionFactory::class);
@@ -33,7 +36,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
      *
-     * @magentoDataFixture loadSchedulesCustomerFixture
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/schedules_customer.php
      */
     public function testScheduleFilters()
     {
@@ -50,7 +53,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
             'Assert if id is as expected'
         );
         $this->assertEquals(
-            \Magento\Customer\Model\Customer::class,
+            Customer::class,
             $first->getScheduledEntityType(),
             'Assert if type is as expected'
         );
@@ -59,15 +62,5 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
             $first->getStoreId(),
             'Assert if the store is as expected'
         );
-    }
-
-    public static function loadSchedulesCustomerFixture()
-    {
-        include __DIR__ . '/../../../_files/schedules_customer.php';
-    }
-
-    public static function loadSchedulesCustomerFixtureRollback()
-    {
-        include __DIR__ . '/../../../_files/schedules_customer_rollback.php';
     }
 }

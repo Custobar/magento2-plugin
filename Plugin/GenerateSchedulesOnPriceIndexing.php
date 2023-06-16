@@ -7,6 +7,7 @@ use Custobar\CustoConnector\Api\ScheduleGeneratorInterface;
 use Custobar\CustoConnector\Api\SchedulingValidatorInterface;
 use Custobar\CustoConnector\Api\LoggerInterface;
 use Magento\Catalog\Model\Indexer\Product\Price\Action\Rows;
+use Magento\Catalog\Model\Product;
 use Magento\Store\Model\StoreManagerInterface;
 
 class GenerateSchedulesOnPriceIndexing
@@ -36,6 +37,13 @@ class GenerateSchedulesOnPriceIndexing
      */
     private $storeManager;
 
+    /**
+     * @param LoggerInterface $logger
+     * @param SchedulingValidatorInterface $schedulingValidator
+     * @param ScheduleGeneratorInterface $scheduleGenerator
+     * @param ExecutionValidatorInterface $executionValidator
+     * @param StoreManagerInterface $storeManager
+     */
     public function __construct(
         LoggerInterface $logger,
         SchedulingValidatorInterface $schedulingValidator,
@@ -51,11 +59,15 @@ class GenerateSchedulesOnPriceIndexing
     }
 
     /**
+     * After price indexing runs, generate schedules for the indexed ids
+     *
      * @param Rows $subject
      * @param mixed $result
      * @param mixed[] $ids
      *
      * @return mixed
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function afterExecute(
         Rows $subject,
@@ -67,7 +79,7 @@ class GenerateSchedulesOnPriceIndexing
         }
 
         $scheduleIds = [];
-        $entityType = \Magento\Catalog\Model\Product::class;
+        $entityType = Product::class;
         $validationResults = $this->schedulingValidator->canScheduleEntityTypeAndIds($ids, $entityType);
         foreach ($validationResults as $entityId => $validationResult) {
             if ($validationResult) {
@@ -75,7 +87,7 @@ class GenerateSchedulesOnPriceIndexing
                 continue;
             }
 
-            $this->logger->debug("Rejected tracking item {$entityId} of {$entityType}");
+            $this->logger->debug(__('Rejected tracking item %1 of %2', $entityId, $entityType));
         }
 
         $stores = $this->storeManager->getStores();
@@ -85,9 +97,10 @@ class GenerateSchedulesOnPriceIndexing
                     $this->scheduleGenerator->generateByData($scheduleId, $store->getId(), $entityType);
                 }
             } catch (\Exception $exception) {
-                $this->logger->debug("Generate schedules on price indexing failed {$exception->getMessage()}", [
-                    'exceptionTrace' => $exception->getTrace(),
-                ]);
+                $this->logger->debug(
+                    __('Generate schedules on price indexing failed %1', $exception->getMessage()),
+                    ['exceptionTrace' => $exception->getTrace()]
+                );
             }
         }
 

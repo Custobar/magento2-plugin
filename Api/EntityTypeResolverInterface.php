@@ -5,7 +5,7 @@ namespace Custobar\CustoConnector\Api;
 interface EntityTypeResolverInterface
 {
     /**
-     * Returns type for the given entity
+     * Returns entity type understood by this module based on the given entity
      *
      * @param mixed $entity
      * @return string

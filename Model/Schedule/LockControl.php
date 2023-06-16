@@ -9,6 +9,9 @@ class LockControl implements LockControlInterface
      */
     private $flagFactory;
 
+    /**
+     * @param LockFlagFactory $flagFactory
+     */
     public function __construct(
         LockFlagFactory $flagFactory
     ) {
@@ -45,6 +48,8 @@ class LockControl implements LockControlInterface
     }
 
     /**
+     * Get current flag instance
+     *
      * @return LockFlag
      */
     private function getFlag()

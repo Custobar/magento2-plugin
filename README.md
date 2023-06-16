@@ -9,8 +9,8 @@ CustoConnector is used to send usage statistics from the Magento installation to
 
 ## System Requirements
 
-* PHP 7
-* Magento 2
+* PHP 8.1
+* Magento 2.4.4 or newer
 
 NOTE: Module requires that the Magento [cron](http://devdocs.magento.com/guides/v2.0/config-guide/cli/config-cli-subcommands-cron.html) is correctly configured and running 
 
@@ -71,6 +71,9 @@ Magento crons run above the /pub folder so If you are running Magento frontend f
 
 
 ## Update notices
+
+### 2.1.1:
+- Add compatibility with Magento 2.4.5 & PHP 8.1
 
 ### 2.1.0:
 - Fixed issue where entities that were restricted to certain websites still got scheduled for export

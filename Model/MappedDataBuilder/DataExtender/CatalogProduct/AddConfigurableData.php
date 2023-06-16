@@ -4,6 +4,7 @@ namespace Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogPr
 
 use Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderInterface;
 use Custobar\CustoConnector\Model\Product\SkuProviderInterface;
+use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Type;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable as ConfigurableResource;
@@ -20,6 +21,10 @@ class AddConfigurableData implements DataExtenderInterface
      */
     private $skuProvider;
 
+    /**
+     * @param ConfigurableResource $configurableResource
+     * @param SkuProviderInterface $skuProvider
+     */
     public function __construct(
         ConfigurableResource $configurableResource,
         SkuProviderInterface $skuProvider
@@ -33,7 +38,7 @@ class AddConfigurableData implements DataExtenderInterface
      */
     public function execute($entity)
     {
-        /** @var \Magento\Catalog\Model\Product $entity */
+        /** @var Product $entity */
 
         if ($entity->getTypeId() == Configurable::TYPE_CODE) {
             $typeInstance = $entity->getTypeInstance();
@@ -59,7 +64,7 @@ class AddConfigurableData implements DataExtenderInterface
             $entity->getStore()->getId(),
             $parentIds
         );
-        if (!empty($parentSkus)) {
+        if ($parentSkus) {
             $entity->setData('custobar_parent_ids', \implode(',', $parentSkus));
         }
 
