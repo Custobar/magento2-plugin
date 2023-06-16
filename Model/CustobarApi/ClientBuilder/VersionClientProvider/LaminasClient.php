@@ -49,12 +49,16 @@ class LaminasClient implements VersionClientProviderInterface
             'uri' => $hostUrl,
             'options' => $config,
         ]);
+        // Specifically use the adapter from Laminas, since Laminas client handles the headers as
+        // associative array (even if you set them as non assoc array here), but Magento's CURL adapter
+        // doesn't expect associative array for headers so headers will not be set correctly
+        $actualClient->setAdapter(\Laminas\Http\Client\Adapter\Curl::class);
+        $actualClient->setMethod('POST');
         $actualClient->setHeaders([
             'Content-Type' => 'application/json',
             'Accept-Encoding' => 'application/json',
             'Authorization' => 'Token ' . $this->config->getApiKey(),
         ]);
-        $actualClient->setMethod('POST');
 
         // Instead of returning the actual client, return instance of
         // Custobar\CustoConnector\Model\CustobarApi\ClientInterface to make sure the calls to the client
