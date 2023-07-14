@@ -5,7 +5,7 @@ namespace Custobar\CustoConnector\Api;
 interface ExecutionValidatorInterface
 {
     /**
-     * Intended for determining whether or not the module functionality is allowed to execute
+     * Intended for determining if the module functionality is allowed to execute
      *
      * @return bool
      */

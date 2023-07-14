@@ -8,7 +8,7 @@ use Custobar\CustoConnector\Api\ScheduleBuilderInterface;
 use Custobar\CustoConnector\Api\ScheduleGeneratorInterface;
 use Custobar\CustoConnector\Api\ScheduleRepositoryInterface;
 use Custobar\CustoConnector\Api\WebsiteValidatorInterface;
-use \Custobar\CustoConnector\Model\ResourceModel\Schedule as ScheduleResource;
+use Custobar\CustoConnector\Model\ResourceModel\Schedule as ScheduleResource;
 use Magento\Store\Model\StoreManagerInterface;
 
 class ScheduleGenerator implements ScheduleGeneratorInterface
@@ -43,6 +43,14 @@ class ScheduleGenerator implements ScheduleGeneratorInterface
      */
     private $websiteValidator;
 
+    /**
+     * @param ScheduleRepositoryInterface $scheduleRepository
+     * @param ScheduleBuilderInterface $scheduleBuilder
+     * @param ScheduleResource $scheduleResource
+     * @param EntityTypeResolverInterface $typeResolver
+     * @param StoreManagerInterface $storeManager
+     * @param WebsiteValidatorInterface $websiteValidator
+     */
     public function __construct(
         ScheduleRepositoryInterface $scheduleRepository,
         ScheduleBuilderInterface $scheduleBuilder,
@@ -94,7 +102,7 @@ class ScheduleGenerator implements ScheduleGeneratorInterface
 
         $storeId = $entity->getStoreId();
         $storeIds = $entity->getStoreIds() ?? [];
-        if (empty($storeIds) && $storeId !== null) {
+        if (!$storeIds && $storeId !== null) {
             $storeIds[] = $storeId;
         }
 

@@ -7,23 +7,28 @@ use Custobar\CustoConnector\Api\Data\ScheduleInterface;
 use Custobar\CustoConnector\Model\Initial\Config\Source\Status;
 use Custobar\CustoConnector\Model\Initial\InitialRunner;
 use Custobar\CustoConnector\Model\Initial\Populator;
-use Custobar\CustoConnector\Model\InitialRepository;
 use Custobar\CustoConnector\Model\ResourceModel\Initial;
 use Custobar\CustoConnector\Model\ResourceModel\Schedule;
 use Custobar\CustoConnector\Model\ResourceModel\Schedule\CollectionFactory;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\Catalog\Model\Product;
+use Magento\Customer\Model\Customer;
+use Magento\Framework\DataObject;
+use Magento\Newsletter\Model\Subscriber;
+use Magento\Sales\Model\Order;
+use Magento\Store\Model\Store;
+use Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
+use PHPUnit\Framework\TestCase;
 
-class InitialRunnerTest extends \PHPUnit\Framework\TestCase
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
+class InitialRunnerTest extends TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
-
-    /**
-     * @var InitialRepository
-     */
-    private $initialRepository;
 
     /**
      * @var Populator
@@ -54,10 +59,9 @@ class InitialRunnerTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
-        $this->initialRepository = $this->objectManager->get(InitialRepository::class);
         $this->initialPopulator = $this->objectManager->get(Populator::class);
         $this->collectionFactory = $this->objectManager->get(CollectionFactory::class);
         $this->scheduleResource = $this->objectManager->get(Schedule::class);
@@ -77,10 +81,10 @@ class InitialRunnerTest extends \PHPUnit\Framework\TestCase
         $this->initialResource->removeAll();
         $this->scheduleResource->removeAll();
 
-        $initials = $this->initialPopulator->execute([\Magento\Catalog\Model\Product::class]);
+        $initials = $this->initialPopulator->execute([Product::class]);
         $expectedData = [
-            \Magento\Catalog\Model\Product::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
+            Product::class => [
+                InitialInterface::ENTITY_TYPE => Product::class,
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 1,
                 InitialInterface::PROCESSED_AT => '0000-00-00 00:00:00',
@@ -88,21 +92,21 @@ class InitialRunnerTest extends \PHPUnit\Framework\TestCase
             ],
         ];
         $this->assertInitials($expectedData, $initials);
-        $this->assertScheduleCounts([\Magento\Catalog\Model\Product::class => 0]);
+        $this->assertScheduleCounts([Product::class => 0]);
 
         foreach ($initials as $entityType => $initial) {
             $initials[$entityType] = $this->initialRunner->runInitial($initial);
         }
         $expectedData = [
-            \Magento\Catalog\Model\Product::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
+            Product::class => [
+                InitialInterface::ENTITY_TYPE => Product::class,
                 InitialInterface::PAGE => 1,
                 InitialInterface::PAGES => 1,
                 InitialInterface::STATUS => Status::STATUS_PROCESSED,
             ],
         ];
         $this->assertInitials($expectedData, $initials);
-        $this->assertScheduleCounts([\Magento\Catalog\Model\Product::class => 3]);
+        $this->assertScheduleCounts([Product::class => 3]);
     }
 
     /**
@@ -119,10 +123,10 @@ class InitialRunnerTest extends \PHPUnit\Framework\TestCase
 
         /** @var Populator $initialPopulator */
         $initialPopulator = $this->objectManager->create(Populator::class, ['pageSize' => 2]);
-        $initials = $initialPopulator->execute([\Magento\Catalog\Model\Product::class]);
+        $initials = $initialPopulator->execute([Product::class]);
         $expectedData = [
-            \Magento\Catalog\Model\Product::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
+            Product::class => [
+                InitialInterface::ENTITY_TYPE => Product::class,
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 2,
                 InitialInterface::PROCESSED_AT => '0000-00-00 00:00:00',
@@ -130,7 +134,7 @@ class InitialRunnerTest extends \PHPUnit\Framework\TestCase
             ],
         ];
         $this->assertInitials($expectedData, $initials);
-        $this->assertScheduleCounts([\Magento\Catalog\Model\Product::class => 0]);
+        $this->assertScheduleCounts([Product::class => 0]);
 
         /** @var InitialRunner $initialRunner */
         $initialRunner = $this->objectManager->create(InitialRunner::class, ['pageSize' => 2]);
@@ -138,8 +142,8 @@ class InitialRunnerTest extends \PHPUnit\Framework\TestCase
             $initials[$entityType] = $initialRunner->runInitial($initial);
         }
         $expectedData = [
-            \Magento\Catalog\Model\Product::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
+            Product::class => [
+                InitialInterface::ENTITY_TYPE => Product::class,
                 InitialInterface::PAGE => 1,
                 InitialInterface::PAGES => 2,
                 InitialInterface::PROCESSED_AT => '0000-00-00 00:00:00',
@@ -147,32 +151,34 @@ class InitialRunnerTest extends \PHPUnit\Framework\TestCase
             ],
         ];
         $this->assertInitials($expectedData, $initials);
-        $this->assertScheduleCounts([\Magento\Catalog\Model\Product::class => 2]);
+        $this->assertScheduleCounts([Product::class => 2]);
 
         foreach ($initials as $entityType => $initial) {
             $initials[$entityType] = $initialRunner->runInitial($initial);
         }
         $expectedData = [
-            \Magento\Catalog\Model\Product::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
+            Product::class => [
+                InitialInterface::ENTITY_TYPE => Product::class,
                 InitialInterface::PAGE => 2,
                 InitialInterface::PAGES => 2,
                 InitialInterface::STATUS => Status::STATUS_PROCESSED,
             ],
         ];
         $this->assertInitials($expectedData, $initials);
-        $this->assertScheduleCounts([\Magento\Catalog\Model\Product::class => 3]);
+        $this->assertScheduleCounts([Product::class => 3]);
     }
 
     /**
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
      *
-     * @magentoDataFixture Magento/Customer/_files/three_customers.php
-     * @magentoDataFixture Magento/Sales/_files/order_list.php
-     * @magentoDataFixture Magento/Newsletter/_files/subscribers.php
-     * @magentoDataFixture Magento/Catalog/_files/products_list.php
+     * @magentoDataFixtureBeforeTransaction Magento/Customer/_files/three_customers.php
+     * @magentoDataFixtureBeforeTransaction Magento/Sales/_files/order_list.php
+     * @magentoDataFixtureBeforeTransaction Magento/Newsletter/_files/subscribers.php
+     * @magentoDataFixtureBeforeTransaction Magento/Catalog/_files/products_list.php
      * @magentoConfigFixture default_store custobar/custobar_custoconnector/allowed_websites 1
+     *
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function testRunInitialAllPagingProgress()
     {
@@ -183,36 +189,36 @@ class InitialRunnerTest extends \PHPUnit\Framework\TestCase
         $initialPopulator = $this->objectManager->create(Populator::class, ['pageSize' => 2]);
         $initials = $initialPopulator->execute();
         $expectedData = [
-            \Magento\Catalog\Model\Product::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
+            Product::class => [
+                InitialInterface::ENTITY_TYPE => Product::class,
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 2,
                 InitialInterface::PROCESSED_AT => '0000-00-00 00:00:00',
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Customer\Model\Customer::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Customer\Model\Customer::class,
+            Customer::class => [
+                InitialInterface::ENTITY_TYPE => Customer::class,
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 2,
                 InitialInterface::PROCESSED_AT => '0000-00-00 00:00:00',
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Sales\Model\Order::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Sales\Model\Order::class,
+            Order::class => [
+                InitialInterface::ENTITY_TYPE => Order::class,
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 2,
                 InitialInterface::PROCESSED_AT => '0000-00-00 00:00:00',
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Newsletter\Model\Subscriber::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Newsletter\Model\Subscriber::class,
+            Subscriber::class => [
+                InitialInterface::ENTITY_TYPE => Subscriber::class,
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 2,
                 InitialInterface::PROCESSED_AT => '0000-00-00 00:00:00',
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Store\Model\Store::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Store\Model\Store::class,
+            Store::class => [
+                InitialInterface::ENTITY_TYPE => Store::class,
                 InitialInterface::PAGE => 0,
                 InitialInterface::PAGES => 2,
                 InitialInterface::PROCESSED_AT => '0000-00-00 00:00:00',
@@ -229,36 +235,36 @@ class InitialRunnerTest extends \PHPUnit\Framework\TestCase
         }
 
         $expectedData = [
-            \Magento\Catalog\Model\Product::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
+            Product::class => [
+                InitialInterface::ENTITY_TYPE => Product::class,
                 InitialInterface::PAGE => 1,
                 InitialInterface::PAGES => 2,
                 InitialInterface::PROCESSED_AT => '0000-00-00 00:00:00',
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Customer\Model\Customer::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Customer\Model\Customer::class,
+            Customer::class => [
+                InitialInterface::ENTITY_TYPE => Customer::class,
                 InitialInterface::PAGE => 1,
                 InitialInterface::PAGES => 2,
                 InitialInterface::PROCESSED_AT => '0000-00-00 00:00:00',
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Sales\Model\Order::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Sales\Model\Order::class,
+            Order::class => [
+                InitialInterface::ENTITY_TYPE => Order::class,
                 InitialInterface::PAGE => 1,
                 InitialInterface::PAGES => 2,
                 InitialInterface::PROCESSED_AT => '0000-00-00 00:00:00',
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Newsletter\Model\Subscriber::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Newsletter\Model\Subscriber::class,
+            Subscriber::class => [
+                InitialInterface::ENTITY_TYPE => Subscriber::class,
                 InitialInterface::PAGE => 1,
                 InitialInterface::PAGES => 2,
                 InitialInterface::PROCESSED_AT => '0000-00-00 00:00:00',
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
             ],
-            \Magento\Store\Model\Store::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Store\Model\Store::class,
+            Store::class => [
+                InitialInterface::ENTITY_TYPE => Store::class,
                 InitialInterface::PAGE => 1,
                 InitialInterface::PAGES => 2,
                 InitialInterface::STATUS => Status::STATUS_RUNNING,
@@ -266,11 +272,11 @@ class InitialRunnerTest extends \PHPUnit\Framework\TestCase
         ];
         $this->assertInitials($expectedData, $initials);
         $this->assertScheduleCounts([
-            \Magento\Catalog\Model\Product::class => 4,
-            \Magento\Customer\Model\Customer::class => 2,
-            \Magento\Sales\Model\Order::class => 2,
-            \Magento\Newsletter\Model\Subscriber::class => 2,
-            \Magento\Store\Model\Store::class => 2,
+            Product::class => 4,
+            Customer::class => 2,
+            Order::class => 2,
+            Subscriber::class => 2,
+            Store::class => 2,
         ]);
 
         foreach ($initials as $entityType => $initial) {
@@ -278,32 +284,32 @@ class InitialRunnerTest extends \PHPUnit\Framework\TestCase
         }
 
         $expectedData = [
-            \Magento\Catalog\Model\Product::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Catalog\Model\Product::class,
+            Product::class => [
+                InitialInterface::ENTITY_TYPE => Product::class,
                 InitialInterface::PAGE => 2,
                 InitialInterface::PAGES => 2,
                 InitialInterface::STATUS => Status::STATUS_PROCESSED,
             ],
-            \Magento\Customer\Model\Customer::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Customer\Model\Customer::class,
+            Customer::class => [
+                InitialInterface::ENTITY_TYPE => Customer::class,
                 InitialInterface::PAGE => 2,
                 InitialInterface::PAGES => 2,
                 InitialInterface::STATUS => Status::STATUS_PROCESSED,
             ],
-            \Magento\Sales\Model\Order::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Sales\Model\Order::class,
+            Order::class => [
+                InitialInterface::ENTITY_TYPE => Order::class,
                 InitialInterface::PAGE => 2,
                 InitialInterface::PAGES => 2,
                 InitialInterface::STATUS => Status::STATUS_PROCESSED,
             ],
-            \Magento\Newsletter\Model\Subscriber::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Newsletter\Model\Subscriber::class,
+            Subscriber::class => [
+                InitialInterface::ENTITY_TYPE => Subscriber::class,
                 InitialInterface::PAGE => 2,
                 InitialInterface::PAGES => 2,
                 InitialInterface::STATUS => Status::STATUS_PROCESSED,
             ],
-            \Magento\Store\Model\Store::class => [
-                InitialInterface::ENTITY_TYPE => \Magento\Store\Model\Store::class,
+            Store::class => [
+                InitialInterface::ENTITY_TYPE => Store::class,
                 InitialInterface::PAGE => 2,
                 InitialInterface::PAGES => 2,
                 InitialInterface::STATUS => Status::STATUS_PROCESSED,
@@ -311,11 +317,11 @@ class InitialRunnerTest extends \PHPUnit\Framework\TestCase
         ];
         $this->assertInitials($expectedData, $initials);
         $this->assertScheduleCounts([
-            \Magento\Catalog\Model\Product::class => 8,
-            \Magento\Customer\Model\Customer::class => 3,
-            \Magento\Sales\Model\Order::class => 4,
-            \Magento\Newsletter\Model\Subscriber::class => 3,
-            \Magento\Store\Model\Store::class => 2,
+            Product::class => 8,
+            Customer::class => 3,
+            Order::class => 4,
+            Subscriber::class => 3,
+            Store::class => 2,
         ]);
 
         foreach ($initials as $entityType => $initial) {
@@ -323,31 +329,32 @@ class InitialRunnerTest extends \PHPUnit\Framework\TestCase
         }
 
         $expectedData = [
-            \Magento\Catalog\Model\Product::class => null,
-            \Magento\Customer\Model\Customer::class => null,
-            \Magento\Sales\Model\Order::class => null,
-            \Magento\Newsletter\Model\Subscriber::class => null,
-            \Magento\Store\Model\Store::class => null,
+            Product::class => null,
+            Customer::class => null,
+            Order::class => null,
+            Subscriber::class => null,
+            Store::class => null,
         ];
         $this->assertInitials($expectedData, $initials);
         $this->assertScheduleCounts([
-            \Magento\Catalog\Model\Product::class => 8,
-            \Magento\Customer\Model\Customer::class => 3,
-            \Magento\Sales\Model\Order::class => 4,
-            \Magento\Newsletter\Model\Subscriber::class => 3,
-            \Magento\Store\Model\Store::class => 2,
+            Product::class => 8,
+            Customer::class => 3,
+            Order::class => 4,
+            Subscriber::class => 3,
+            Store::class => 2,
         ]);
     }
 
     /**
      * @param string[] $entityTypes
-     * @return \Magento\Framework\DataObject[]|ScheduleInterface[]
+     *
+     * @return DataObject[]|ScheduleInterface[]
      */
     private function getSchedules(array $entityTypes = [])
     {
         $collection = $this->collectionFactory->create()
             ->addOnlyForSendingFilter();
-        if (!empty($entityTypes)) {
+        if ($entityTypes) {
             $collection->addFieldToFilter(
                 ScheduleInterface::SCHEDULED_ENTITY_TYPE,
                 ['in' => $entityTypes]

@@ -46,6 +46,17 @@
     <preference for="Custobar\CustoConnector\Model\CustobarApi\ClientBuilderInterface" type="Custobar\CustoConnector\Model\CustobarApi\ClientBuilder" />
     <preference for="Custobar\CustoConnector\Model\CustobarApi\ClientUrlProviderInterface" type="Custobar\CustoConnector\Model\CustobarApi\ClientUrlProvider" />
 
+    <!-- CLIENT BUILDER -->
+
+    <type name="Custobar\CustoConnector\Model\CustobarApi\ClientBuilder">
+        <arguments>
+            <argument name="clientResolvers" xsi:type="array">
+                <item name="laminas_client" xsi:type="object">Custobar\CustoConnector\Model\CustobarApi\ClientBuilder\VersionClientProviderResolver\LaminasClient</item>
+                <item name="zend_client" xsi:type="object">Custobar\CustoConnector\Model\CustobarApi\ClientBuilder\VersionClientProviderResolver\ZendClient</item>
+            </argument>
+        </arguments>
+    </type>
+
     <!-- LOGGER CONFIGURATION -->
 
     <virtualType name="custoConnectorDebugLoggerHandler" type="Magento\Framework\Logger\Handler\Base">

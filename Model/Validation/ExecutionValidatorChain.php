@@ -31,7 +31,7 @@ class ExecutionValidatorChain implements ExecutionValidatorInterface
                 continue;
             }
             if (!($validator instanceof ExecutionValidatorInterface)) {
-                throw new ValidationException(\__('Execution validator \'%1\' is not valid', $name));
+                throw new ValidationException(__('Execution validator \'%1\' is not valid', $name));
             }
 
             if (!$validator->canExecute()) {

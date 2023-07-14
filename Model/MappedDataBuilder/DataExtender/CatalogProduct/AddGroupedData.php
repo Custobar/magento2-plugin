@@ -4,6 +4,7 @@ namespace Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogPr
 
 use Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderInterface;
 use Custobar\CustoConnector\Model\Product\SkuProviderInterface;
+use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Type;
 use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Magento\GroupedProduct\Model\ResourceModel\Product\Link;
@@ -20,6 +21,10 @@ class AddGroupedData implements DataExtenderInterface
      */
     private $skuProvider;
 
+    /**
+     * @param Link $linkResource
+     * @param SkuProviderInterface $skuProvider
+     */
     public function __construct(
         Link $linkResource,
         SkuProviderInterface $skuProvider
@@ -33,7 +38,7 @@ class AddGroupedData implements DataExtenderInterface
      */
     public function execute($entity)
     {
-        /** @var \Magento\Catalog\Model\Product $entity */
+        /** @var Product $entity */
 
         if ($entity->getTypeId() == Grouped::TYPE_CODE) {
             $typeInstance = $entity->getTypeInstance();
@@ -56,13 +61,13 @@ class AddGroupedData implements DataExtenderInterface
 
         $parentIds = $this->linkResource->getParentIdsByChild(
             $entity->getId(),
-            \Magento\GroupedProduct\Model\ResourceModel\Product\Link::LINK_TYPE_GROUPED
+            Link::LINK_TYPE_GROUPED
         );
-        $parentSkus = $this->skuProvider->getSkusByEntityIds(
+        $parentSkus = $this->skuProvider->getSkusByLinkedIds(
             $entity->getStore()->getId(),
             $parentIds
         );
-        if (!empty($parentSkus)) {
+        if ($parentSkus) {
             $entity->setData('custobar_parent_ids', \implode(',', $parentSkus));
         }
 

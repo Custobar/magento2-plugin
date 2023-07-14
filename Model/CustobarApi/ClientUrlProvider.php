@@ -12,6 +12,9 @@ class ClientUrlProvider implements ClientUrlProviderInterface
      */
     private $config;
 
+    /**
+     * @param Config $config
+     */
     public function __construct(
         Config $config
     ) {
@@ -23,7 +26,10 @@ class ClientUrlProvider implements ClientUrlProviderInterface
      */
     public function getBaseUrl()
     {
-        return "https://{$this->resolveDomain()}.custobar.com";
+        return \sprintf(
+            'https://%s.custobar.com',
+            $this->resolveDomain()
+        );
     }
 
     /**
@@ -31,10 +37,16 @@ class ClientUrlProvider implements ClientUrlProviderInterface
      */
     public function getUploadUrl(string $target)
     {
-        return "{$this->getBaseUrl()}/api/{$target}/upload/";
+        return \sprintf(
+            '%s/api/%s/upload/',
+            $this->getBaseUrl(),
+            $target
+        );
     }
 
     /**
+     * Get domain based on config
+     *
      * @return string
      * @throws LocalizedException
      */
@@ -46,8 +58,8 @@ class ClientUrlProvider implements ClientUrlProviderInterface
             $apiPrefix = 'dev';
         }
 
-        if (empty($apiPrefix)) {
-            throw new LocalizedException(\__('Domain name must be set'));
+        if (!$apiPrefix) {
+            throw new LocalizedException(__('Domain name must be set'));
         }
 
         return $apiPrefix;

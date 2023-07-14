@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="custoconnector_schedule" resource="default" engine="innodb" comment="custoconnector_schedule">
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" comment="Schedule ID" />
+        <column xsi:type="int" name="entity_id" comment="Id of the entity stored" />
+        <column xsi:type="varchar" name="entity_type" length="255" comment="Type of the entity stored" />
+        <column xsi:type="int" name="store_id" nullable="false" comment="Store view id when the event happened" />
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="true" default="CURRENT_TIMESTAMP" comment="" />
+        <column xsi:type="timestamp" name="processed_at" nullable="false" comment="Finish Time" />
+        <column xsi:type="int" name="errors" nullable="false" comment="Cumulative error count" />
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id" />
+        </constraint>
+        <constraint xsi:type="unique" referenceId="CUSTOCONNECTOR_SCHEDULE_ENTITY_TYPE_ENTITY_ID_STORE_ID_PROCESSED_AT">
+            <column name="entity_type" />
+            <column name="entity_id" />
+            <column name="store_id" />
+            <column name="processed_at" />
+        </constraint>
+    </table>
+    <table name="custoconnector_initial" resource="default" engine="innodb" comment="custoconnector_initial">
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" comment="initial ID" />
+        <column xsi:type="int" name="page" comment="current page" />
+        <column xsi:type="int" name="pages" comment="total pages" />
+        <column xsi:type="varchar" name="entity_type" length="255" comment="Type of the entity stored" />
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="true" default="CURRENT_TIMESTAMP" comment="" />
+        <column xsi:type="timestamp" name="processed_at" nullable="false" comment="Processed at" />
+        <column xsi:type="smallint" name="status" nullable="false" comment="Status" />
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id" />
+        </constraint>
+        <constraint xsi:type="unique" referenceId="CUSTOCONNECTOR_INITIAL_ENTITY_TYPE">
+            <column name="entity_type" />
+        </constraint>
+    </table>
+    <table name="custoconnector_log" resource="default" engine="innodb" comment="custoconnector_log">
+        <column xsi:type="int" name="log_id" unsigned="true" nullable="false" identity="true" comment="Log ID" />
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="true" default="CURRENT_TIMESTAMP" comment="Created at" />
+        <column xsi:type="varchar" name="type" length="255" nullable="false" comment="Type" />
+        <column xsi:type="text" name="message" nullable="false" comment="Message" />
+        <column xsi:type="text" name="context_data" nullable="false" comment="Context data" />
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="log_id" />
+        </constraint>
+        <index referenceId="CUSTOCONNECTOR_LOG_TYPE" indexType="btree">
+            <column name="type" />
+        </index>
+    </table>
+</schema>

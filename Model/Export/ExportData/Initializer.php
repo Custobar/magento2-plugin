@@ -64,7 +64,7 @@ class Initializer implements InitializerInterface
                     $exportData = $component->execute($exportData);
                 }
             } catch (\Exception $e) {
-                $this->logger->debug(\__(
+                $this->logger->debug(__(
                     'Failed to construct export data for \'%1\': %2',
                     $entityType,
                     $e->getMessage()
@@ -80,7 +80,10 @@ class Initializer implements InitializerInterface
     }
 
     /**
+     * Group the given schedule entities by their related entity types and ids
+     *
      * @param \Custobar\CustoConnector\Api\Data\ScheduleInterface[] $schedules
+     *
      * @return mixed[]
      */
     private function groupSchedulesByEntityType(array $schedules)

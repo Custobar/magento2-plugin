@@ -4,12 +4,13 @@ namespace Custobar\CustoConnector\Test\Integration\Model\ResourceModel\Schedule;
 
 use Custobar\CustoConnector\Model\ResourceModel\Schedule;
 use Custobar\CustoConnector\Model\ResourceModel\Schedule\CollectionFactory;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
 
 class ScheduleTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 
@@ -27,7 +28,7 @@ class ScheduleTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->collectionFactory = $this->objectManager->get(CollectionFactory::class);
@@ -38,7 +39,7 @@ class ScheduleTest extends \PHPUnit\Framework\TestCase
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
      *
-     * @magentoDataFixture loadSchedulesCustomerFixture
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/schedules_customer.php
      */
     public function testRemoveProcessedSchedules()
     {
@@ -53,15 +54,5 @@ class ScheduleTest extends \PHPUnit\Framework\TestCase
         $schedules->resetData()->clear();
         $data = $schedules->getData();
         $this->assertCount(2, $data);
-    }
-
-    public static function loadSchedulesCustomerFixture()
-    {
-        include __DIR__ . '/../../_files/schedules_customer.php';
-    }
-
-    public static function loadSchedulesCustomerFixtureRollback()
-    {
-        include __DIR__ . '/../../_files/schedules_customer_rollback.php';
     }
 }

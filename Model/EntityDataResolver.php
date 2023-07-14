@@ -65,7 +65,7 @@ class EntityDataResolver implements EntityDataResolverInterface
                 $resolvedEntities = $this->resolveEntities($entityType, $entityIds, $storeId);
                 foreach ($entityIds as $scheduleId => $entityId) {
                     $resolvedEntity = $resolvedEntities[$entityId] ?? null;
-                    if (empty($resolvedEntity)) {
+                    if (!$resolvedEntity) {
                         continue;
                     }
 
@@ -97,7 +97,7 @@ class EntityDataResolver implements EntityDataResolverInterface
             return [];
         }
         if (!($component instanceof ResolverComponentInterface)) {
-            throw new ValidationException(\__('Entity resolver for \'%1\' is not valid', $entityType));
+            throw new ValidationException(__('Entity resolver for \'%1\' is not valid', $entityType));
         }
 
         $mappingData = $this->mappingDataProvider->getMappingDataByEntityType($entityType, $storeId);

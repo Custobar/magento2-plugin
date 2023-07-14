@@ -21,6 +21,10 @@ class AddActionData implements BuilderComponentInterface
      */
     private $mappingDataProvider;
 
+    /**
+     * @param UrlInterface $urlBuilder
+     * @param MappingDataProviderInterface $mappingDataProvider
+     */
     public function __construct(
         UrlInterface $urlBuilder,
         MappingDataProviderInterface $mappingDataProvider
@@ -49,15 +53,15 @@ class AddActionData implements BuilderComponentInterface
 
         if ($status == InitialStatus::STATUS_RUNNING) {
             $statusData->setActionUrl($cancelUrl);
-            $statusData->setActionLabel(\__('Cancel'));
+            $statusData->setActionLabel(__('Cancel'));
         }
         if ($status == InitialStatus::STATUS_IDLE) {
             $statusData->setActionUrl($exportUrl);
-            $statusData->setActionLabel(\__('Run'));
+            $statusData->setActionLabel(__('Run'));
         }
         if ($status == InitialStatus::STATUS_PROCESSED) {
             $statusData->setActionUrl($exportUrl);
-            $statusData->setActionLabel(\__('Rerun'));
+            $statusData->setActionLabel(__('Rerun'));
         }
 
         return $statusData;

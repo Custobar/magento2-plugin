@@ -9,8 +9,8 @@ CustoConnector is used to send usage statistics from the Magento installation to
 
 ## System Requirements
 
-* PHP 7, 8.1
-* Magento 2
+* PHP 8.1
+* Magento 2.4.4 or newer
 
 NOTE: Module requires that the Magento [cron](http://devdocs.magento.com/guides/v2.0/config-guide/cli/config-cli-subcommands-cron.html) is correctly configured and running 
 
@@ -71,6 +71,15 @@ Magento crons run above the /pub folder so If you are running Magento frontend f
 
 
 ## Update notices
+
+### 3.0.0:
+- Dropped support for currently unsupported Magento versions, so as of July 2023 the oldest supported version is 2.4.4
+- Dropped InstallSchema and UpgradeSchema scripts and replaced these with the new declarative schema definition
+- Updated construction of cURL client (for Custobar API calls) to support 2.4.6 but also 2.4.4 and 2.4.5
+- Brought test definitions up to date so that they can be run in newer Magento test frameworks
+- Fixed several code sniffer related warnings to make sure that catching actual errors is easier
+- Fixed issue with order placement time not exporting with correct value to Custobar API
+- Fixed issue with sku resolving not always working in Commerce edition due to the row_id and entity_id differences
 
 ### 2.1.1:
 - Add compatibility with Magento 2.4.5 & PHP 8.1

@@ -33,6 +33,11 @@ class InitialRepository implements InitialRepositoryInterface
      */
     private $cachedEntities;
 
+    /**
+     * @param InitialFactory $entityFactory
+     * @param ResourceModel $resourceModel
+     * @param LoggerInterface $logger
+     */
     public function __construct(
         InitialFactory $entityFactory,
         ResourceModel $resourceModel,
@@ -53,7 +58,7 @@ class InitialRepository implements InitialRepositoryInterface
             $entity->load($initialId);
 
             if (!$entity->getId()) {
-                throw new NoSuchEntityException(\__('No initial found with id \'%1\'', $initialId));
+                throw new NoSuchEntityException(__('No initial found with id \'%1\'', $initialId));
             }
 
             $this->cachedEntities[$initialId] = $entity;
@@ -70,7 +75,7 @@ class InitialRepository implements InitialRepositoryInterface
         if (!isset($this->cachedEntities[$entityType])) {
             $existingId = $this->resourceModel->getExistingId($entityType);
             if (!$existingId) {
-                throw new NoSuchEntityException(\__(
+                throw new NoSuchEntityException(__(
                     'No initial found for entity type \'%1\'',
                     $entityType
                 ));
@@ -99,7 +104,7 @@ class InitialRepository implements InitialRepositoryInterface
         } catch (LocalizedException $e) {
             $this->logger->error($e);
 
-            throw new CouldNotSaveException(\__(
+            throw new CouldNotSaveException(__(
                 'Failed to save initial \'%1\': %2',
                 $initial->getInitialId(),
                 $e->getMessage()
@@ -107,7 +112,7 @@ class InitialRepository implements InitialRepositoryInterface
         } catch (\Exception $e) {
             $this->logger->error($e);
 
-            throw new CouldNotSaveException(\__(
+            throw new CouldNotSaveException(__(
                 'Failed to save initial \'%1\'',
                 $initial->getInitialId()
             ));
@@ -129,7 +134,7 @@ class InitialRepository implements InitialRepositoryInterface
         } catch (LocalizedException $e) {
             $this->logger->error($e);
 
-            throw new CouldNotDeleteException(\__(
+            throw new CouldNotDeleteException(__(
                 'Failed to delete initial \'%1\': %2',
                 $initialId,
                 $e->getMessage()
@@ -137,7 +142,7 @@ class InitialRepository implements InitialRepositoryInterface
         } catch (\Exception $e) {
             $this->logger->error($e);
 
-            throw new CouldNotDeleteException(\__(
+            throw new CouldNotDeleteException(__(
                 'Failed to delete initial \'%1\'',
                 $initialId
             ));
@@ -146,11 +151,20 @@ class InitialRepository implements InitialRepositoryInterface
         return true;
     }
 
+    /**
+     * Clean cached instance for the initial
+     *
+     * @param InitialInterface $initial
+     *
+     * @return void
+     */
     private function clearCached(InitialInterface $initial)
     {
         $initialId = $initial->getInitialId();
-        if (isset($this->cachedEntities[$initialId])) {
-            unset($this->cachedEntities[$initialId]);
+        if (!isset($this->cachedEntities[$initialId])) {
+            return;
         }
+
+        unset($this->cachedEntities[$initialId]);
     }
 }

@@ -28,10 +28,10 @@ class DataExtenderProvider implements DataExtenderProviderInterface
     {
         $dataExtender = $this->dataExtenders[$entityType] ?? null;
         if ($dataExtender === null) {
-            throw new NotFoundException(\__('No data extender found for \'%1\'', $entityType));
+            throw new NotFoundException(__('No data extender found for \'%1\'', $entityType));
         }
         if (!($dataExtender instanceof DataExtenderInterface)) {
-            throw new ValidationException(\__('Data extender found for \'%1\' is not valid', $entityType));
+            throw new ValidationException(__('Data extender found for \'%1\' is not valid', $entityType));
         }
 
         return $dataExtender;

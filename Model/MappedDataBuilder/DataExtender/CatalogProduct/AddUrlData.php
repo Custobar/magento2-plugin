@@ -4,6 +4,7 @@ namespace Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogPr
 
 use Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderInterface;
 use Magento\Catalog\Model\Product;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 class AddUrlData implements DataExtenderInterface
 {
@@ -12,7 +13,7 @@ class AddUrlData implements DataExtenderInterface
      */
     public function execute($entity)
     {
-        /** @var \Magento\Catalog\Model\Product $entity */
+        /** @var Product $entity */
 
         if ($entity->isVisibleInSiteVisibility()) {
             $entity->setData('custobar_product_url', $this->resolveUrl($entity));
@@ -22,9 +23,12 @@ class AddUrlData implements DataExtenderInterface
     }
 
     /**
+     * Resolve url from product instance
+     *
      * @param Product $product
+     *
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     private function resolveUrl(Product $product)
     {

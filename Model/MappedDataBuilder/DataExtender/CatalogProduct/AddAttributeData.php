@@ -6,7 +6,6 @@ use Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderInterface;
 use Custobar\CustoConnector\Api\MappingDataProviderInterface;
 use Magento\Catalog\Model\ResourceModel\Product;
 use Magento\Eav\Model\Entity\Attribute\SetFactory;
-use Magento\Framework\Exception\LocalizedException;
 
 class AddAttributeData implements DataExtenderInterface
 {
@@ -25,6 +24,11 @@ class AddAttributeData implements DataExtenderInterface
      */
     private $attributeSetFactory;
 
+    /**
+     * @param Product $productResource
+     * @param MappingDataProviderInterface $mappingDataProvider
+     * @param SetFactory $attributeSetFactory
+     */
     public function __construct(
         Product $productResource,
         MappingDataProviderInterface $mappingDataProvider,
@@ -55,7 +59,8 @@ class AddAttributeData implements DataExtenderInterface
         $fieldMap = $mappingData->getFieldMap();
 
         $additionalData = [];
-        foreach ($fieldMap as $index => $item) {
+        $mapIndexes = \array_keys($fieldMap);
+        foreach ($mapIndexes as $index) {
             if (\strpos($index, 'custobar') !== false || !\array_key_exists($index, $attributes)) {
                 continue;
             }

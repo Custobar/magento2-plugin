@@ -70,6 +70,8 @@ class Logger implements LoggerInterface
     }
 
     /**
+     * Add a log entry through all logger components configured on the class
+     *
      * @param int $level
      * @param string $message
      * @param mixed[] $contextData

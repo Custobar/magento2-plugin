@@ -4,19 +4,29 @@ namespace Custobar\CustoConnector\Test\Integration\Observer;
 
 use Custobar\CustoConnector\Model\ResourceModel\Schedule;
 use Custobar\CustoConnector\Model\ScheduleRepository;
+use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\CategoryFactory;
+use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ProductRepository;
+use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Newsletter\Model\Subscriber;
 use Magento\Newsletter\Model\SubscriberFactory;
+use Magento\Sales\Model\Order;
 use Magento\Sales\Model\OrderFactory;
 use Magento\Store\Model\StoreManager;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
+use PHPUnit\Framework\TestCase;
 
-class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
+class GenerateScheduleOnEntitySaveTest extends TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 
@@ -64,7 +74,7 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->productRepository = $this->objectManager->get(ProductRepository::class);
@@ -94,7 +104,7 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
 
         try {
             $this->scheduleRepository->getByData(
-                \Magento\Catalog\Model\Product::class,
+                Product::class,
                 $product->getId(),
                 $this->storeManager->getStore()->getId()
             );
@@ -112,13 +122,13 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($updatedName, $product->getName());
 
         $schedule = $this->scheduleRepository->getByData(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $product->getId(),
             $this->storeManager->getStore()->getId()
         );
 
         $this->assertEquals($product->getId(), $schedule->getScheduledEntityId());
-        $this->assertEquals(\Magento\Catalog\Model\Product::class, $schedule->getScheduledEntityType());
+        $this->assertEquals(Product::class, $schedule->getScheduledEntityType());
         $this->assertEquals($this->storeManager->getStore()->getId(), $schedule->getStoreId());
     }
 
@@ -136,7 +146,7 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
 
         try {
             $this->scheduleRepository->getByData(
-                \Magento\Catalog\Model\Product::class,
+                Product::class,
                 $product->getId(),
                 $this->storeManager->getStore()->getId()
             );
@@ -156,12 +166,12 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
         $this->expectException(NoSuchEntityException::class);
         $this->expectExceptionMessage(\sprintf(
             'No schedule found for entity \'%s\', id \'%s\' and store \'%s\'',
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $product->getId(),
             $this->storeManager->getStore()->getId()
         ));
         $this->scheduleRepository->getByData(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $product->getId(),
             $this->storeManager->getStore()->getId()
         );
@@ -184,7 +194,7 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
 
         try {
             $this->scheduleRepository->getByData(
-                \Magento\Catalog\Model\Product::class,
+                Product::class,
                 $product->getId(),
                 $this->storeManager->getStore()->getId()
             );
@@ -204,12 +214,12 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
         $this->expectException(NoSuchEntityException::class);
         $this->expectExceptionMessage(\sprintf(
             'No schedule found for entity \'%s\', id \'%s\' and store \'%s\'',
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $product->getId(),
             $this->storeManager->getStore()->getId()
         ));
         $this->scheduleRepository->getByData(
-            \Magento\Catalog\Model\Product::class,
+            Product::class,
             $product->getId(),
             $this->storeManager->getStore()->getId()
         );
@@ -246,13 +256,13 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($updatedStreet, $address->getStreetFull());
 
         $schedule = $this->scheduleRepository->getByData(
-            \Magento\Customer\Model\Customer::class,
+            Customer::class,
             $customer->getId(),
             $customer->getStoreId()
         );
 
         $this->assertEquals($customer->getId(), $schedule->getScheduledEntityId());
-        $this->assertEquals(\Magento\Customer\Model\Customer::class, $schedule->getScheduledEntityType());
+        $this->assertEquals(Customer::class, $schedule->getScheduledEntityType());
         $this->assertEquals($customer->getStoreId(), $schedule->getStoreId());
     }
 
@@ -279,12 +289,12 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
         $this->expectException(NoSuchEntityException::class);
         $this->expectExceptionMessage(\sprintf(
             'No schedule found for entity \'%s\', id \'%s\' and store \'%s\'',
-            \Magento\Catalog\Model\Category::ENTITY,
+            Category::ENTITY,
             $category->getId(),
             $this->storeManager->getStore()->getId()
         ));
         $this->scheduleRepository->getByData(
-            \Magento\Catalog\Model\Category::ENTITY,
+            Category::ENTITY,
             $category->getId(),
             $this->storeManager->getStore()->getId()
         );
@@ -309,7 +319,7 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
 
         try {
             $this->scheduleRepository->getByData(
-                \Magento\Customer\Model\Customer::class,
+                Customer::class,
                 $customer->getId(),
                 $this->storeManager->getStore()->getId()
             );
@@ -331,13 +341,13 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($updatedFieldValue, $customer->getDataModel()->getFirstname());
 
         $schedule = $this->scheduleRepository->getByData(
-            \Magento\Customer\Model\Customer::class,
+            Customer::class,
             $customer->getId(),
             $this->storeManager->getStore()->getId()
         );
 
         $this->assertEquals($customer->getId(), $schedule->getScheduledEntityId());
-        $this->assertEquals(\Magento\Customer\Model\Customer::class, $schedule->getScheduledEntityType());
+        $this->assertEquals(Customer::class, $schedule->getScheduledEntityType());
         $this->assertEquals($this->storeManager->getStore()->getId(), $schedule->getStoreId());
     }
 
@@ -359,7 +369,7 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
 
         try {
             $this->scheduleRepository->getByData(
-                \Magento\Sales\Model\Order::class,
+                Order::class,
                 $order->getId(),
                 $this->storeManager->getStore()->getId()
             );
@@ -378,13 +388,13 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($newSubTotal, $order->getSubtotal());
 
         $schedule = $this->scheduleRepository->getByData(
-            \Magento\Sales\Model\Order::class,
+            Order::class,
             $order->getId(),
             $order->getStoreId()
         );
 
         $this->assertEquals($order->getId(), $schedule->getScheduledEntityId());
-        $this->assertEquals(\Magento\Sales\Model\Order::class, $schedule->getScheduledEntityType());
+        $this->assertEquals(Order::class, $schedule->getScheduledEntityType());
         $this->assertEquals($order->getStoreId(), $schedule->getStoreId());
     }
 
@@ -403,13 +413,13 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
         $subscriber = $this->subscriberFactory->create()
             ->loadByEmail('customer@example.com');
         $this->assertEquals(
-            \Magento\Newsletter\Model\Subscriber::STATUS_SUBSCRIBED,
+            Subscriber::STATUS_SUBSCRIBED,
             $subscriber->getStatus()
         );
 
         try {
             $this->scheduleRepository->getByData(
-                \Magento\Newsletter\Model\Subscriber::class,
+                Subscriber::class,
                 $subscriber->getId(),
                 $this->storeManager->getStore()->getId()
             );
@@ -418,7 +428,7 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
             $this->assertTrue(true, 'Assert that exception was thrown');
         }
 
-        $updatedStatus = \Magento\Newsletter\Model\Subscriber::STATUS_UNSUBSCRIBED;
+        $updatedStatus = Subscriber::STATUS_UNSUBSCRIBED;
         $subscriber->setSubscriberStatus($updatedStatus);
         $subscriber->save();
 
@@ -427,13 +437,13 @@ class GenerateScheduleOnEntitySaveTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($updatedStatus, $subscriber->getStatus());
 
         $schedule = $this->scheduleRepository->getByData(
-            \Magento\Newsletter\Model\Subscriber::class,
+            Subscriber::class,
             $subscriber->getId(),
             $subscriber->getStoreId()
         );
 
         $this->assertEquals($subscriber->getId(), $schedule->getScheduledEntityId());
-        $this->assertEquals(\Magento\Newsletter\Model\Subscriber::class, $schedule->getScheduledEntityType());
+        $this->assertEquals(Subscriber::class, $schedule->getScheduledEntityType());
         $this->assertEquals($subscriber->getStoreId(), $schedule->getStoreId());
     }
 }

@@ -3,6 +3,7 @@
 namespace Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogProduct;
 
 use Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderInterface;
+use Magento\Catalog\Model\Product;
 
 class AddBasicData implements DataExtenderInterface
 {
@@ -11,7 +12,7 @@ class AddBasicData implements DataExtenderInterface
      */
     public function execute($entity)
     {
-        /** @var \Magento\Catalog\Model\Product $entity */
+        /** @var Product $entity */
 
         $entity->setData('custobar_price', \round((float)$entity->getPrice() * 100));
         $entity->setData('custobar_minimal_price', \round((float)$entity->getMinimalPrice() * 100));

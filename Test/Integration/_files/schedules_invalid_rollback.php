@@ -1,8 +1,9 @@
 <?php
 
 use Custobar\CustoConnector\Model\ResourceModel\Schedule\CollectionFactory;
+use Magento\TestFramework\Helper\Bootstrap;
 
-$objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
+$objectManager = Bootstrap::getObjectManager();
 
 /** @var CollectionFactory $collectionFactory */
 $collectionFactory = $objectManager->create(CollectionFactory::class);

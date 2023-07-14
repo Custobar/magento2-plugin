@@ -28,13 +28,13 @@ class CollectionResolverProvider implements CollectionResolverProviderInterface
     {
         $resolver = $this->resolvers[$entityType] ?? null;
         if ($resolver === null) {
-            throw new NotFoundException(\__(
+            throw new NotFoundException(__(
                 'Collection resolver not found for type \'%1\'',
                 $entityType
             ));
         }
         if (!($resolver instanceof CollectionResolverInterface)) {
-            throw new ValidationException(\__(
+            throw new ValidationException(__(
                 'Collection resolver not valid for type \'%1\'',
                 $entityType
             ));

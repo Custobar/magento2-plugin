@@ -31,7 +31,7 @@ class DataExtenderChain implements DataExtenderInterface
                 continue;
             }
             if (!($dataExtender instanceof DataExtenderInterface)) {
-                throw new ValidationException(\__('Mapping data extender \'%1\' is not valid', $name));
+                throw new ValidationException(__('Mapping data extender \'%1\' is not valid', $name));
             }
 
             $mappingData = $dataExtender->extendData($mappingData, $storeId);

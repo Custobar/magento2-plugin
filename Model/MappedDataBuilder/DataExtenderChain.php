@@ -30,7 +30,7 @@ class DataExtenderChain implements DataExtenderInterface
                 continue;
             }
             if (!($dataExtender instanceof DataExtenderInterface)) {
-                throw new ValidationException(\__('Data extender \'%1\' is not valid', $name));
+                throw new ValidationException(__('Data extender \'%1\' is not valid', $name));
             }
 
             $entity = $dataExtender->execute($entity);

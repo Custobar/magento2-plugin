@@ -13,6 +13,9 @@ class RequestLocator implements LocatorInterface
      */
     private $request;
 
+    /**
+     * @param RequestInterface $request
+     */
     public function __construct(
         RequestInterface $request
     ) {
@@ -20,7 +23,7 @@ class RequestLocator implements LocatorInterface
     }
 
     /**
-     * @return int
+     * @inheritDoc
      */
     public function getCurrentLogId()
     {

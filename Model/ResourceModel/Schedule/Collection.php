@@ -2,25 +2,28 @@
 
 namespace Custobar\CustoConnector\Model\ResourceModel\Schedule;
 
+use Custobar\CustoConnector\Model\ResourceModel\Schedule as ResourceModel;
+use Custobar\CustoConnector\Model\Schedule as Model;
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 class Collection extends AbstractCollection
 {
     /**
      * @inheritDoc
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     public function _construct()
     {
         $this->_init(
-            \Custobar\CustoConnector\Model\Schedule::class,
-            \Custobar\CustoConnector\Model\ResourceModel\Schedule::class
+            Model::class,
+            ResourceModel::class
         );
     }
 
     /**
-     * Add filter by only ready for sending item
+     * Add filter to return only rows that are ready for sending
      *
-     * @return \Custobar\CustoConnector\Model\ResourceModel\Schedule\Collection
+     * @return Collection
      */
     public function addOnlyForSendingFilter()
     {
@@ -30,7 +33,9 @@ class Collection extends AbstractCollection
     }
 
     /**
-     * @return \Custobar\CustoConnector\Model\ResourceModel\Schedule\Collection
+     * Add filter to return only rows that have failed to export
+     *
+     * @return Collection
      */
     public function addOnlyErroneousFilter()
     {

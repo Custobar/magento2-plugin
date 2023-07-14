@@ -2,15 +2,18 @@
 
 namespace Custobar\CustoConnector\Controller\Adminhtml\Status;
 
+use Custobar\CustoConnector\Api\Data\MappingDataInterface;
 use Custobar\CustoConnector\Api\LoggerInterface;
 use Custobar\CustoConnector\Api\MappingDataProviderInterface;
 use Custobar\CustoConnector\Model\Initial\PopulatorInterface;
-use \Magento\Backend\App\Action;
-use \Magento\Backend\App\Action\Context;
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
 use Magento\Framework\Exception\LocalizedException;
 
 class Export extends Action
 {
+    public const ADMIN_RESOURCE = 'Custobar_CustoConnector::status';
+
     /**
      * @var PopulatorInterface
      */
@@ -26,6 +29,12 @@ class Export extends Action
      */
     private $logger;
 
+    /**
+     * @param Context $context
+     * @param PopulatorInterface $initialPopulator
+     * @param MappingDataProviderInterface $mappingDataProvider
+     * @param LoggerInterface $logger
+     */
     public function __construct(
         Context $context,
         PopulatorInterface $initialPopulator,
@@ -51,18 +60,18 @@ class Export extends Action
             }
             $this->initialPopulator->execute($entityTypes);
 
-            $this->messageManager->addSuccessMessage(\__(
+            $this->messageManager->addSuccessMessage(__(
                 'Successfully started export for %1 record types',
                 \count($entityTypes)
             ));
         } catch (LocalizedException $e) {
-            $this->messageManager->addErrorMessage(\__($e->getMessage()));
+            $this->messageManager->addErrorMessage(__($e->getMessage()));
 
             $this->logger->error($e->getMessage(), [
                 'exceptionTrace' => $e->getTrace(),
             ]);
         } catch (\Exception $e) {
-            $this->messageManager->addErrorMessage(\__('Failed to start export(s)'));
+            $this->messageManager->addErrorMessage(__('Failed to start export(s)'));
 
             $this->logger->error($e->getMessage(), [
                 'exceptionTrace' => $e->getTrace(),
@@ -73,7 +82,9 @@ class Export extends Action
     }
 
     /**
-     * @return \Custobar\CustoConnector\Api\Data\MappingDataInterface[]
+     * Get mapping data instances based on current request
+     *
+     * @return MappingDataInterface[]
      * @throws LocalizedException
      */
     private function resolveMappingData()
@@ -85,20 +96,12 @@ class Export extends Action
 
         $mappingData = $this->mappingDataProvider->getMappingDataByTargetField($identifier);
         if (!$mappingData) {
-            throw new LocalizedException(\__(
+            throw new LocalizedException(__(
                 'Cannot start export for unconfigured type \'%1\'',
                 $identifier
             ));
         }
 
         return [$mappingData];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('Custobar_CustoConnector::status');
     }
 }

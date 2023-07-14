@@ -79,7 +79,7 @@ class StatusDataBuilder implements StatusDataBuilderInterface
                 continue;
             }
             if (!($builderComponent instanceof BuilderComponentInterface)) {
-                throw new ValidationException(\__(
+                throw new ValidationException(__(
                     'Status data builder component \'%1\' is not valid',
                     $name
                 ));

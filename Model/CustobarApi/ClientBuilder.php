@@ -2,27 +2,36 @@
 
 namespace Custobar\CustoConnector\Model\CustobarApi;
 
-use Custobar\CustoConnector\Model\Config;
-use Magento\Framework\HTTP\ZendClientFactory;
+use Custobar\CustoConnector\Model\CustobarApi\ClientBuilder\VersionClientProviderResolverInterface;
+use Magento\Framework\App\ProductMetadataInterface;
+use Magento\Framework\Exception\LocalizedException;
 
 class ClientBuilder implements ClientBuilderInterface
 {
-    /**
-     * @var ZendClientFactory
-     */
-    private $clientFactory;
+    // TODO: Eventually can directly construct the LaminasClient instance here, whenever 2.4.6 becomes the oldest
+    // supported version for this module. Right now this is just to cover for the 2.4.4 and 2.4.5 where
+    // LaminasClient does not exist but which still are wanted to be supported.
 
     /**
-     * @var Config
+     * @var ProductMetadataInterface
      */
-    private $config;
+    private $metadata;
 
+    /**
+     * @var VersionClientProviderResolverInterface[]
+     */
+    private $clientResolvers;
+
+    /**
+     * @param ProductMetadataInterface $metadata
+     * @param VersionClientProviderResolverInterface[] $clientResolvers
+     */
     public function __construct(
-        ZendClientFactory $clientFactory,
-        Config $config
+        ProductMetadataInterface $metadata,
+        array $clientResolvers = []
     ) {
-        $this->clientFactory = $clientFactory;
-        $this->config = $config;
+        $this->metadata = $metadata;
+        $this->clientResolvers = $clientResolvers;
     }
 
     /**
@@ -30,16 +39,28 @@ class ClientBuilder implements ClientBuilderInterface
      */
     public function buildClient(string $hostUrl, array $config)
     {
-        /** @var \Magento\Framework\HTTP\ZendClient $client */
-        $client = $this->clientFactory->create();
+        $systemVersion = $this->metadata->getVersion();
+        foreach ($this->clientResolvers as $index => $clientResolver) {
+            if ($clientResolver === null) {
+                continue;
+            }
 
-        $client->setUri($hostUrl);
-        $client->setConfig($config);
-        $client->setHeaders('Content-Type', 'application/json');
-        $client->setHeaders('Accept-Encoding', 'application/json');
-        $client->setHeaders('Authorization', 'Token ' . $this->config->getApiKey());
-        $client->setMethod(\Zend_Http_Client::POST);
+            if (!($clientResolver instanceof VersionClientProviderResolverInterface)) {
+                throw new LocalizedException(__(
+                    '\'%1\' must implement interface VersionClientProviderResolverInterface',
+                    $index
+                ));
+            }
 
-        return $client;
+            if (!$clientResolver->doesVersionApply($systemVersion)) {
+                continue;
+            }
+
+            $clientProvider = $clientResolver->getProvider();
+
+            return $clientProvider->getClient($hostUrl, $config);
+        }
+
+        throw new LocalizedException(__('Unable to create HTTP client on version \'%1\'', $systemVersion));
     }
 }

@@ -10,6 +10,7 @@ class FieldMapping extends Fieldset
 {
     /**
      * @inheritDoc
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _getChildrenElementsHtml(AbstractElement $element)
     {

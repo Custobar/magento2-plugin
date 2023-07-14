@@ -10,6 +10,7 @@ class Schedule extends AbstractModel implements ScheduleInterface
 {
     /**
      * @inheritDoc
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _construct()
     {

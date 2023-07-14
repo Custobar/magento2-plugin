@@ -4,12 +4,14 @@ namespace Custobar\CustoConnector\Test\Integration\Model\ResourceModel\Schedule;
 
 use Custobar\CustoConnector\Model\ResourceModel\Initial;
 use Custobar\CustoConnector\Model\ResourceModel\Initial\CollectionFactory;
-use \Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
+use PHPUnit\Framework\TestCase;
 
-class InitialTest extends \PHPUnit\Framework\TestCase
+class InitialTest extends TestCase
 {
     /**
-     * @var \Magento\TestFramework\ObjectManager
+     * @var ObjectManager
      */
     private $objectManager;
 
@@ -27,7 +29,7 @@ class InitialTest extends \PHPUnit\Framework\TestCase
      * @inheritDoc
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->collectionFactory = $this->objectManager->get(CollectionFactory::class);
@@ -38,7 +40,7 @@ class InitialTest extends \PHPUnit\Framework\TestCase
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
      *
-     * @magentoDataFixture loadInitialsForPartial
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/initials_for_partial.php
      */
     public function testRemoveAll()
     {
@@ -57,7 +59,7 @@ class InitialTest extends \PHPUnit\Framework\TestCase
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
      *
-     * @magentoDataFixture loadInitialsWithMixedStatus
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/initials_with_mixed_status.php
      */
     public function testIsInitialRunningWithRunningInitials()
     {
@@ -68,40 +70,10 @@ class InitialTest extends \PHPUnit\Framework\TestCase
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
      *
-     * @magentoDataFixture loadInitialsWithNonRunning
+     * @magentoDataFixture Custobar_CustoConnector::Test/Integration/_files/initials_with_non_running.php
      */
     public function testIsInitialRunningWithNonRunningInitials()
     {
         $this->assertFalse($this->initialResource->isInitialRunning());
-    }
-
-    public static function loadInitialsForPartial()
-    {
-        include __DIR__ . '/../../_files/initials_for_partial.php';
-    }
-
-    public static function loadInitialsForPartialRollback()
-    {
-        include __DIR__ . '/../../_files/initials_for_partial_rollback.php';
-    }
-
-    public static function loadInitialsWithMixedStatus()
-    {
-        include __DIR__ . '/../../_files/initials_with_mixed_status.php';
-    }
-
-    public static function loadInitialsWithMixedStatusRollback()
-    {
-        include __DIR__ . '/../../_files/initials_with_mixed_status_rollback.php';
-    }
-
-    public static function loadInitialsWithNonRunning()
-    {
-        include __DIR__ . '/../../_files/initials_with_non_running.php';
-    }
-
-    public static function loadInitialsWithNonRunningRollback()
-    {
-        include __DIR__ . '/../../_files/initials_with_non_running_rollback.php';
     }
 }

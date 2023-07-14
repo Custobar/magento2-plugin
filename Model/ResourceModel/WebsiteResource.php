@@ -3,6 +3,7 @@
 namespace Custobar\CustoConnector\Model\ResourceModel;
 
 use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\DB\Adapter\AdapterInterface;
 
 class WebsiteResource
 {
@@ -12,10 +13,13 @@ class WebsiteResource
     private $resourceConnection;
 
     /**
-     * @var \Magento\Framework\DB\Adapter\AdapterInterface
+     * @var AdapterInterface
      */
     private $connection;
 
+    /**
+     * @param ResourceConnection $resourceConnection
+     */
     public function __construct(
         ResourceConnection $resourceConnection
     ) {
@@ -23,10 +27,11 @@ class WebsiteResource
     }
 
     /**
+     * Get website ids for product ids
+     *
      * @param int[] $productIds
      *
      * @return int[][]
-     * @throws \Zend_Db_Statement_Exception
      */
     public function getProductWebsiteIds(array $productIds)
     {
@@ -45,6 +50,8 @@ class WebsiteResource
     }
 
     /**
+     * Get website ids for store ids
+     *
      * @param int[] $storeIds
      *
      * @return int[]
@@ -60,6 +67,8 @@ class WebsiteResource
     }
 
     /**
+     * Get website ids for customer ids
+     *
      * @param int[] $customerIds
      *
      * @return int[]
@@ -75,6 +84,8 @@ class WebsiteResource
     }
 
     /**
+     * Get website ids for order ids
+     *
      * @param int[] $orderIds
      *
      * @return int[]
@@ -95,6 +106,8 @@ class WebsiteResource
     }
 
     /**
+     * Get website ids for newsletter subscription ids
+     *
      * @param int[] $subscriberIds
      *
      * @return int[]
@@ -115,7 +128,9 @@ class WebsiteResource
     }
 
     /**
-     * @return \Magento\Framework\DB\Adapter\AdapterInterface
+     * Get connection instance
+     *
+     * @return AdapterInterface
      */
     private function getConnection()
     {

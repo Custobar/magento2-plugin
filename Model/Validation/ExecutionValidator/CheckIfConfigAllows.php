@@ -12,6 +12,9 @@ class CheckIfConfigAllows implements ExecutionValidatorInterface
      */
     private $config;
 
+    /**
+     * @param Config $config
+     */
     public function __construct(
         Config $config
     ) {

@@ -1,22 +1,31 @@
 <?php
 
-$objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
+use Custobar\CustoConnector\Model\InitialRepository;
+use Magento\Catalog\Model\Product;
+use Magento\Customer\Model\Customer;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Newsletter\Model\Subscriber;
+use Magento\Sales\Model\Order;
+use Magento\Store\Model\Store;
+use Magento\TestFramework\Helper\Bootstrap;
 
-/** @var \Custobar\CustoConnector\Model\InitialRepository $initialRepository */
-$initialRepository = $objectManager->create(\Custobar\CustoConnector\Model\InitialRepository::class);
+$objectManager = Bootstrap::getObjectManager();
+
+/** @var InitialRepository $initialRepository */
+$initialRepository = $objectManager->create(InitialRepository::class);
 
 $entityTypes = [
-    \Magento\Catalog\Model\Product::class,
-    \Magento\Customer\Model\Customer::class,
-    \Magento\Sales\Model\Order::class,
-    \Magento\Newsletter\Model\Subscriber::class,
-    \Magento\Store\Model\Store::class,
+    Product::class,
+    Customer::class,
+    Order::class,
+    Subscriber::class,
+    Store::class,
 ];
 
 foreach ($entityTypes as $entityType) {
     try {
         $initial = $initialRepository->getByEntityType($entityType);
-    } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+    } catch (NoSuchEntityException $e) {
         continue;
     }
 

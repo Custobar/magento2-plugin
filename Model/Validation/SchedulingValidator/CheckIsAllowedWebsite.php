@@ -12,6 +12,9 @@ class CheckIsAllowedWebsite implements SchedulingValidatorInterface
      */
     private $websiteValidator;
 
+    /**
+     * @param WebsiteValidatorInterface $websiteValidator
+     */
     public function __construct(
         WebsiteValidatorInterface $websiteValidator
     ) {

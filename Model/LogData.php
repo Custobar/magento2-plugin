@@ -10,6 +10,7 @@ class LogData extends AbstractModel implements LogDataInterface
 {
     /**
      * @inheritDoc
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _construct()
     {

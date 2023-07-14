@@ -8,7 +8,7 @@ use Custobar\CustoConnector\Model\MappingDataProvider\DataExtenderInterface;
 
 class ApplyDomainOnFieldMapping implements DataExtenderInterface
 {
-    const DEFAULT_NEEDLE = '*domain*';
+    public const DEFAULT_NEEDLE = '*domain*';
 
     /**
      * @var Config
@@ -20,6 +20,10 @@ class ApplyDomainOnFieldMapping implements DataExtenderInterface
      */
     private $needle;
 
+    /**
+     * @param Config $config
+     * @param string $needle
+     */
     public function __construct(
         Config $config,
         string $needle = self::DEFAULT_NEEDLE

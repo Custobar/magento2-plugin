@@ -19,6 +19,10 @@ class AdjustSchedules implements ProcessorInterface
      */
     private $timezone;
 
+    /**
+     * @param Schedule $scheduleResource
+     * @param TimezoneInterface $timezone
+     */
     public function __construct(
         Schedule $scheduleResource,
         TimezoneInterface $timezone
@@ -34,7 +38,7 @@ class AdjustSchedules implements ProcessorInterface
     {
         $currentTime = $this->timezone->date()->format('Y-m-d H:i:s');
 
-        if ($exportData->getMappingData() && !empty($exportData->getRequestDataJson())) {
+        if ($exportData->getMappingData() && $exportData->getRequestDataJson()) {
             $failedIds = $exportData->getFailedScheduleIds();
             $successIds = $exportData->getSuccessfulScheduleIds();
 

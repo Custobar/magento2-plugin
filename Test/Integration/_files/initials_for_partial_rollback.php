@@ -1,19 +1,25 @@
 <?php
 
-$objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
+use Custobar\CustoConnector\Model\InitialRepository;
+use Magento\Catalog\Model\Product;
+use Magento\Customer\Model\Customer;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\TestFramework\Helper\Bootstrap;
 
-/** @var \Custobar\CustoConnector\Model\InitialRepository $initialRepository */
-$initialRepository = $objectManager->create(\Custobar\CustoConnector\Model\InitialRepository::class);
+$objectManager = Bootstrap::getObjectManager();
+
+/** @var InitialRepository $initialRepository */
+$initialRepository = $objectManager->create(InitialRepository::class);
 
 $entityTypes = [
-    \Magento\Catalog\Model\Product::class,
-    \Magento\Customer\Model\Customer::class,
+    Product::class,
+    Customer::class,
 ];
 
 foreach ($entityTypes as $entityType) {
     try {
         $initial = $initialRepository->getByEntityType($entityType);
-    } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+    } catch (NoSuchEntityException $e) {
         continue;
     }
 

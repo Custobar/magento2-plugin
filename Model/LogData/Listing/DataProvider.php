@@ -3,6 +3,7 @@
 namespace Custobar\CustoConnector\Model\LogData\Listing;
 
 use Custobar\CustoConnector\Model\ResourceModel\LogData\CollectionFactory;
+use Magento\Framework\Api\Filter;
 use Magento\Ui\DataProvider\AbstractDataProvider;
 
 class DataProvider extends AbstractDataProvider
@@ -40,7 +41,7 @@ class DataProvider extends AbstractDataProvider
     }
 
     /**
-     * @return \Custobar\CustoConnector\Model\ResourceModel\LogData\Collection
+     * @inheritDoc
      */
     public function getCollection()
     {
@@ -54,7 +55,7 @@ class DataProvider extends AbstractDataProvider
     /**
      * @inheritdoc
      */
-    public function addFilter(\Magento\Framework\Api\Filter $filter)
+    public function addFilter(Filter $filter)
     {
         $this->getCollection()->addFieldToFilter(
             $filter->getField(),

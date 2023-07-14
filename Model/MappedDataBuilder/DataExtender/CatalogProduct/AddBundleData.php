@@ -4,6 +4,7 @@ namespace Custobar\CustoConnector\Model\MappedDataBuilder\DataExtender\CatalogPr
 
 use Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderInterface;
 use Custobar\CustoConnector\Model\Product\SkuProviderInterface;
+use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Bundle\Model\Product\Type as Bundle;
 use Magento\Bundle\Model\ResourceModel\Selection;
@@ -20,6 +21,10 @@ class AddBundleData implements DataExtenderInterface
      */
     private $skuProvider;
 
+    /**
+     * @param Selection $selectionResource
+     * @param SkuProviderInterface $skuProvider
+     */
     public function __construct(
         Selection $selectionResource,
         SkuProviderInterface $skuProvider
@@ -33,7 +38,7 @@ class AddBundleData implements DataExtenderInterface
      */
     public function execute($entity)
     {
-        /** @var \Magento\Catalog\Model\Product $entity */
+        /** @var Product $entity */
 
         if ($entity->getTypeId() == Bundle::TYPE_CODE) {
             $typeInstance = $entity->getTypeInstance();
@@ -43,7 +48,7 @@ class AddBundleData implements DataExtenderInterface
                 $childIds
             );
 
-            if (!empty($childSkus)) {
+            if ($childSkus) {
                 $entity->setData('custobar_child_ids', \implode(',', $childSkus));
             }
 
@@ -65,7 +70,7 @@ class AddBundleData implements DataExtenderInterface
             $entity->getStore()->getId(),
             $parentIds
         );
-        if (!empty($parentSkus)) {
+        if ($parentSkus) {
             $entity->setData('custobar_parent_ids', \implode(',', $parentSkus));
         }
 

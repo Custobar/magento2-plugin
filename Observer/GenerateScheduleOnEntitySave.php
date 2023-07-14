@@ -43,6 +43,14 @@ class GenerateScheduleOnEntitySave implements ObserverInterface
      */
     private $dataConverter;
 
+    /**
+     * @param EntityTypeResolverInterface $typeResolver
+     * @param LoggerInterface $logger
+     * @param SchedulingValidatorInterface $schedulingValidator
+     * @param ScheduleGeneratorInterface $scheduleGenerator
+     * @param ExecutionValidatorInterface $executionValidator
+     * @param EntityDataConverterInterface $dataConverter
+     */
     public function __construct(
         EntityTypeResolverInterface $typeResolver,
         LoggerInterface $logger,
@@ -59,6 +67,9 @@ class GenerateScheduleOnEntitySave implements ObserverInterface
         $this->dataConverter = $dataConverter;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function execute(Observer $observer)
     {
         try {
@@ -80,16 +91,17 @@ class GenerateScheduleOnEntitySave implements ObserverInterface
             }
 
             if (!$this->schedulingValidator->canScheduleEntity($entity)) {
-                $this->logger->debug("Rejected tracking item {$entity->getId()} of {$entityType}");
+                $this->logger->debug(__("Rejected tracking item %1 of %2", $entity->getId(), $entityType));
 
                 return;
             }
 
             $this->scheduleGenerator->generateByEntity($entity);
         } catch (\Exception $e) {
-            $this->logger->debug("Model after save failed {$e->getMessage()}", [
-                'exceptionTrace' => $e->getTrace(),
-            ]);
+            $this->logger->debug(
+                __('Model after save failed %1', $e->getMessage()),
+                ['exceptionTrace' => $e->getTrace()]
+            );
         }
     }
 }
