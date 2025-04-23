@@ -18,12 +18,12 @@ use Magento\TestFramework\TestCase\AbstractBackendController;
 class CancelTest extends AbstractBackendController
 {
     /**
-     * @inheritDoc
+     * @var string
      */
     protected $resource = 'Custobar_CustoConnector::status';
 
     /**
-     * @inheritDoc
+     * @var string
      */
     protected $uri = 'backend/custobar/status/cancel';
 
