@@ -71,6 +71,8 @@ Magento crons run above the /pub folder so If you are running Magento frontend f
 
 
 ## Update notices
+### 4.0.0:
+- Support for Magento 2.4.8 and PHP 8.4. Installing still works on 2.4.4 and upwards
 
 ### 3.0.0:
 - Dropped support for currently unsupported Magento versions, so as of July 2023 the oldest supported version is 2.4.4
