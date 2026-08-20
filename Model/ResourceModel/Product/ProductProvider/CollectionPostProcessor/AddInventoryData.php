@@ -1,0 +1,110 @@
+<?php
+
+namespace Custobar\CustoConnector\Model\ResourceModel\Product\ProductProvider\CollectionPostProcessor;
+
+use Custobar\CustoConnector\Model\ResourceModel\Product\ProductProvider\CollectionProcessorInterface;
+use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Model\ResourceModel\Product\Collection;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Inventory\Model\ResourceModel\SourceItem\CollectionFactory;
+use Magento\InventoryApi\Api\Data\SourceItemInterface;
+use Magento\InventorySalesApi\Api\Data\SalesChannelInterface;
+use Magento\InventorySalesApi\Api\StockResolverInterface;
+use Magento\Store\Model\StoreManagerInterface;
+
+class AddInventoryData implements CollectionProcessorInterface
+{
+    /**
+     * @var CollectionFactory
+     */
+    private $collectionFactory;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
+     * @var StockResolverInterface
+     */
+    private $stockResolver;
+
+    /**
+     * @param CollectionFactory $collectionFactory
+     * @param StoreManagerInterface $storeManager
+     * @param StockResolverInterface $stockResolver
+     */
+    public function __construct(
+        CollectionFactory $collectionFactory,
+        StoreManagerInterface $storeManager,
+        StockResolverInterface $stockResolver
+    ) {
+        $this->collectionFactory = $collectionFactory;
+        $this->storeManager = $storeManager;
+        $this->stockResolver = $stockResolver;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function execute($collection)
+    {
+        $sourceItems = $this->getSourceItemsByProductCollection($collection);
+        foreach ($sourceItems as $sourceItem) {
+            $sku = $sourceItem->getSku();
+            $product = $collection->getItemByColumnValue(ProductInterface::SKU, $sku);
+            if (!$product) {
+                continue;
+            }
+
+            $qty = $sourceItem->getQuantity();
+            if ($sourceItem->getStatus() === SourceItemInterface::STATUS_OUT_OF_STOCK) {
+                $qty = 0;
+            }
+
+            $sourceItem->setQuantity($qty);
+
+            $productSourceItems = $product->getExportSourceItems() ?? [];
+            $productSourceItems[$sourceItem->getSourceCode()] = $sourceItem;
+            $product->setExportSourceItems($productSourceItems);
+        }
+
+        return $collection;
+    }
+
+    /**
+     * Based on given collection, retrieves only the relevant source item data for the products
+     *
+     * @param Collection $collection
+     *
+     * @return SourceItemInterface[]
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    private function getSourceItemsByProductCollection($collection)
+    {
+        $skus = $collection->getColumnValues(ProductInterface::SKU);
+        $storeId = (int) $collection->getStoreId();
+
+        $websiteId = $this->storeManager->getStore($storeId)->getWebsiteId();
+        $websiteCode = $this->storeManager->getWebsite($websiteId)->getCode();
+        $stockId = $this->stockResolver->execute(SalesChannelInterface::TYPE_WEBSITE, $websiteCode)->getStockId();
+
+        $collection = $this->collectionFactory->create()
+            ->addFieldToFilter(SourceItemInterface::SKU, ['in' => $skus]);
+        $collection->getSelect()
+            ->joinInner(
+                ['issl' => 'inventory_source_stock_link'],
+                'issl.source_code = main_table.source_code and issl.stock_id = ' . $stockId,
+                []
+            )
+            ->joinInner(
+                ['is' => 'inventory_source'],
+                'issl.source_code = is.source_code and is.enabled = 1',
+                []
+            );
+
+        return $collection->getItems();
+    }
+}
