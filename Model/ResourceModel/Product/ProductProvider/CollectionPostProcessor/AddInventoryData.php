@@ -7,6 +7,7 @@ use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\ResourceModel\Product\Collection;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Module\Manager as ModuleManager;
 use Magento\Inventory\Model\ResourceModel\SourceItem\CollectionFactory;
 use Magento\InventoryApi\Api\Data\SourceItemInterface;
 use Magento\InventorySalesApi\Api\Data\SalesChannelInterface;
@@ -31,18 +32,26 @@ class AddInventoryData implements CollectionProcessorInterface
     private $stockResolver;
 
     /**
+     * @var ModuleManager
+     */
+    private $moduleManager;
+
+    /**
      * @param CollectionFactory $collectionFactory
      * @param StoreManagerInterface $storeManager
      * @param StockResolverInterface $stockResolver
+     * @param ModuleManager $moduleManager
      */
     public function __construct(
         CollectionFactory $collectionFactory,
         StoreManagerInterface $storeManager,
-        StockResolverInterface $stockResolver
+        StockResolverInterface $stockResolver,
+        ModuleManager $moduleManager
     ) {
         $this->collectionFactory = $collectionFactory;
         $this->storeManager = $storeManager;
         $this->stockResolver = $stockResolver;
+        $this->moduleManager = $moduleManager;
     }
 
     /**
@@ -50,6 +59,12 @@ class AddInventoryData implements CollectionProcessorInterface
      */
     public function execute($collection)
     {
+        if (!$this->moduleManager->isEnabled('Magento_Inventory')
+            || !$this->moduleManager->isEnabled('Magento_InventorySales')
+        ) {
+            return $collection;
+        }
+
         $sourceItems = $this->getSourceItemsByProductCollection($collection);
         foreach ($sourceItems as $sourceItem) {
             $sku = $sourceItem->getSku();
