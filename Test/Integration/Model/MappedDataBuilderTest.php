@@ -11,6 +11,7 @@ use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Newsletter\Model\Subscriber;
 use Magento\Newsletter\Model\SubscriberFactory;
+use Magento\Newsletter\Model\ResourceModel\Subscriber as SubscriberResource;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\OrderFactory;
 use Magento\Store\Model\Store;
@@ -700,7 +701,7 @@ class MappedDataBuilderTest extends TestCase
         $this->assertEquals($currentStore, $mappedData->getData('store_id'));
 
         $subscriber->setStatus(Subscriber::STATUS_UNSUBSCRIBED);
-        $subscriber->save();
+        $this->objectManager->get(SubscriberResource::class)->save($subscriber);
         $subscriberData = $this->entityDataResolver->resolveEntity(
             Subscriber::class,
             $subscriber->getId(),

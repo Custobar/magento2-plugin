@@ -2,6 +2,8 @@
 
 namespace Custobar\CustoConnector\Model\Schedule;
 
+use Magento\Framework\Flag\FlagResource;
+
 class LockControl implements LockControlInterface
 {
     /**
@@ -10,12 +12,20 @@ class LockControl implements LockControlInterface
     private $flagFactory;
 
     /**
+     * @var FlagResource
+     */
+    private $flagResource;
+
+    /**
      * @param LockFlagFactory $flagFactory
+     * @param FlagResource $flagResource
      */
     public function __construct(
-        LockFlagFactory $flagFactory
+        LockFlagFactory $flagFactory,
+        FlagResource $flagResource
     ) {
         $this->flagFactory = $flagFactory;
+        $this->flagResource = $flagResource;
     }
 
     /**
@@ -25,7 +35,7 @@ class LockControl implements LockControlInterface
     {
         $flag = $this->getFlag();
         $flag->setFlagData(['locked' => true]);
-        $flag->save();
+        $this->flagResource->save($flag);
     }
 
     /**
@@ -34,7 +44,7 @@ class LockControl implements LockControlInterface
     public function unlock()
     {
         $flag = $this->getFlag();
-        $flag->delete();
+        $this->flagResource->delete($flag);
     }
 
     /**
