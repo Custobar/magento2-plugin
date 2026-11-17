@@ -55,7 +55,7 @@ class ScheduleRepository implements ScheduleRepositoryInterface
     {
         if (!isset($this->cachedEntities[$scheduleId])) {
             $entity = $this->entityFactory->create();
-            $entity->load($scheduleId);
+            $this->resourceModel->load($entity, $scheduleId);
 
             if (!$entity->getId()) {
                 throw new NoSuchEntityException(__('No schedule found with id \'%1\'', $scheduleId));

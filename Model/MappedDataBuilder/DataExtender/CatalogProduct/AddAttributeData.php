@@ -6,6 +6,7 @@ use Custobar\CustoConnector\Model\MappedDataBuilder\DataExtenderInterface;
 use Custobar\CustoConnector\Api\MappingDataProviderInterface;
 use Magento\Catalog\Model\ResourceModel\Product;
 use Magento\Eav\Model\Entity\Attribute\SetFactory;
+use Magento\Eav\Model\ResourceModel\Entity\Attribute\Set as AttributeSetResource;
 
 class AddAttributeData implements DataExtenderInterface
 {
@@ -25,18 +26,26 @@ class AddAttributeData implements DataExtenderInterface
     private $attributeSetFactory;
 
     /**
+     * @var AttributeSetResource
+     */
+    private $attributeSetResource;
+
+    /**
      * @param Product $productResource
      * @param MappingDataProviderInterface $mappingDataProvider
      * @param SetFactory $attributeSetFactory
+     * @param AttributeSetResource $attributeSetResource
      */
     public function __construct(
         Product $productResource,
         MappingDataProviderInterface $mappingDataProvider,
-        SetFactory $attributeSetFactory
+        SetFactory $attributeSetFactory,
+        AttributeSetResource $attributeSetResource
     ) {
         $this->productResource = $productResource;
         $this->mappingDataProvider = $mappingDataProvider;
         $this->attributeSetFactory = $attributeSetFactory;
+        $this->attributeSetResource = $attributeSetResource;
     }
 
     /**
@@ -47,7 +56,7 @@ class AddAttributeData implements DataExtenderInterface
         /** @var \Magento\Catalog\Model\Product $entity */
 
         $attributeSetModel = $this->attributeSetFactory->create();
-        $attributeSetModel->load($entity->getAttributeSetId());
+        $this->attributeSetResource->load($attributeSetModel, $entity->getAttributeSetId());
         $attributeSetName = $attributeSetModel->getAttributeSetName();
         $entity->setData('custobar_attribute_set_name', $attributeSetName);
 

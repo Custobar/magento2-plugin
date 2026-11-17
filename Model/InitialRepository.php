@@ -55,7 +55,7 @@ class InitialRepository implements InitialRepositoryInterface
     {
         if (!isset($this->cachedEntities[$initialId])) {
             $entity = $this->entityFactory->create();
-            $entity->load($initialId);
+            $this->resourceModel->load($entity, $initialId);
 
             if (!$entity->getId()) {
                 throw new NoSuchEntityException(__('No initial found with id \'%1\'', $initialId));

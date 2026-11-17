@@ -10,11 +10,15 @@ use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\CustomerFactory;
+use Magento\Customer\Model\ResourceModel\Address as AddressResource;
+use Magento\Customer\Model\ResourceModel\Customer as CustomerResource;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Newsletter\Model\Subscriber;
 use Magento\Newsletter\Model\SubscriberFactory;
+use Magento\Newsletter\Model\ResourceModel\Subscriber as SubscriberResource;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\OrderFactory;
+use Magento\Sales\Model\ResourceModel\Order as OrderResource;
 use Magento\Store\Model\StoreManager;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
@@ -247,7 +251,7 @@ class GenerateScheduleOnEntitySaveTest extends TestCase
         $updatedStreet = 'Updated street';
         $address->setStreetFull($updatedStreet);
         $address->setHasDataChanges(true);
-        $address->save();
+        $this->objectManager->get(AddressResource::class)->save($address);
 
         $customer = $this->customerFactory->create()
             ->setWebsiteId(1)
@@ -333,7 +337,7 @@ class GenerateScheduleOnEntitySaveTest extends TestCase
         $dataModel->setFirstname($updatedFieldValue);
         $customer->updateData($dataModel);
         $customer->setHasDataChanges(true);
-        $customer->save();
+        $this->objectManager->get(CustomerResource::class)->save($customer);
 
         $customer = $this->customerFactory->create()
             ->setWebsiteId(1)
@@ -381,7 +385,7 @@ class GenerateScheduleOnEntitySaveTest extends TestCase
         $newSubTotal = 200;
         $order->setSubtotal($newSubTotal);
         $order->setHasDataChanges(true);
-        $order->save();
+        $this->objectManager->get(OrderResource::class)->save($order);
 
         $order = $this->orderFactory->create()
             ->loadByIncrementId('100000001');
@@ -430,7 +434,7 @@ class GenerateScheduleOnEntitySaveTest extends TestCase
 
         $updatedStatus = Subscriber::STATUS_UNSUBSCRIBED;
         $subscriber->setSubscriberStatus($updatedStatus);
-        $subscriber->save();
+        $this->objectManager->get(SubscriberResource::class)->save($subscriber);
 
         $subscriber = $this->subscriberFactory->create()
             ->loadByEmail('customer@example.com');

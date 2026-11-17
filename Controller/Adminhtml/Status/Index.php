@@ -15,5 +15,7 @@ class Index extends Action
     {
         $this->_view->loadLayout();
         $this->_view->renderLayout();
+
+        return $this->getResponse();
     }
 }

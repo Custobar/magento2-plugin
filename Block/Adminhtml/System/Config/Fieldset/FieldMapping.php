@@ -18,9 +18,9 @@ class FieldMapping extends Fieldset
         /** @var LockToggle $block */
         $block = $this->getLayout()->createBlock(
             LockToggle::class,
-            $this->getNameInLayout() . '_lock_toggle'
+            $this->getNameInLayout() . '_lock_toggle',
+            ['data' => ['template' => 'Custobar_CustoConnector::system/config/button/lock-toggle.phtml']]
         );
-        $block->setTemplate('Custobar_CustoConnector::system/config/button/lock-toggle.phtml');
         $html .= $block->toHtml();
 
         return $html;
