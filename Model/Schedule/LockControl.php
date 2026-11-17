@@ -2,7 +2,7 @@
 
 namespace Custobar\CustoConnector\Model\Schedule;
 
-use Magento\Framework\Flag\ResourceModel as FlagResource;
+use Magento\Framework\Flag\FlagResource;
 
 class LockControl implements LockControlInterface
 {
