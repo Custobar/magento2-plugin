@@ -5,7 +5,7 @@
         <column xsi:type="int" name="entity_id" comment="Id of the entity stored" />
         <column xsi:type="varchar" name="entity_type" length="255" comment="Type of the entity stored" />
         <column xsi:type="int" name="store_id" nullable="false" comment="Store view id when the event happened" />
-        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="true" default="CURRENT_TIMESTAMP" comment="" />
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="true" default="CURRENT_TIMESTAMP" />
         <column xsi:type="timestamp" name="processed_at" nullable="false" comment="Finish Time" />
         <column xsi:type="int" name="errors" nullable="false" comment="Cumulative error count" />
 
@@ -24,7 +24,7 @@
         <column xsi:type="int" name="page" comment="current page" />
         <column xsi:type="int" name="pages" comment="total pages" />
         <column xsi:type="varchar" name="entity_type" length="255" comment="Type of the entity stored" />
-        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="true" default="CURRENT_TIMESTAMP" comment="" />
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="true" default="CURRENT_TIMESTAMP" />
         <column xsi:type="timestamp" name="processed_at" nullable="false" comment="Processed at" />
         <column xsi:type="smallint" name="status" nullable="false" comment="Status" />
 
